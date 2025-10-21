@@ -1,0 +1,108 @@
+@model ShopQuanAo.Models.ViewModels.UserManagementViewModel
+
+@{
+    ViewData["Title"] = "Xóa người dùng";
+}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header pb-0 bg-gradient-danger">
+                    <h5 class="mb-0 text-white">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Xác nhận xóa người dùng
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Cảnh báo!</strong> Bạn có chắc chắn muốn xóa người dùng này?
+                        <br />Hành động này không thể hoàn tác!
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h6 class="text-uppercase text-body text-xs font-weight-bolder">Thông tin người dùng</h6>
+                            <hr class="horizontal dark mt-0" />
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-sm">
+                                        <strong>Họ và tên:</strong> @Model.FullName
+                                    </p>
+                                    <p class="text-sm">
+                                        <strong>Email:</strong> @Model.Email
+                                    </p>
+                                    <p class="text-sm">
+                                        <strong>Số điện thoại:</strong> 
+                                        @(string.IsNullOrEmpty(Model.PhoneNumber) ? "Chưa có" : Model.PhoneNumber)
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p class="text-sm">
+                                        <strong>Vai trò:</strong>
+                                        @if (Model.Roles.Any())
+                                        {
+                                            @foreach (var role in Model.Roles)
+                                            {
+                                                <span class="badge badge-sm bg-gradient-@(role == "Admin" ? "danger" : "info") me-1">
+                                                    @role
+                                                </span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sm bg-gradient-secondary">Chưa có vai trò</span>
+                                        }
+                                    </p>
+                                    <p class="text-sm">
+                                        <strong>Trạng thái email:</strong>
+                                        @if (Model.EmailConfirmed)
+                                        {
+                                            <span class="badge badge-sm bg-gradient-success">Đã xác thực</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sm bg-gradient-warning">Chưa xác thực</span>
+                                        }
+                                    </p>
+                                    <p class="text-sm">
+                                        <strong>Trạng thái tài khoản:</strong>
+                                        @if (Model.IsActive)
+                                        {
+                                            <span class="badge badge-sm bg-gradient-success">Hoạt động</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sm bg-gradient-danger">Bị khóa</span>
+                                        }
+                                    </p>
+                                    <p class="text-sm">
+                                        <strong>Ngày tạo:</strong> 
+                                        @(Model.CreatedDate?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="horizontal dark my-4">
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" asp-for="Id" />
+                        @Html.AntiForgeryToken()
+                        
+                        <div class="d-flex justify-content-end">
+                            <a asp-action="Index" class="btn btn-light me-2">
+                                <i class="fas fa-times me-2"></i>Hủy
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Xác nhận xóa
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

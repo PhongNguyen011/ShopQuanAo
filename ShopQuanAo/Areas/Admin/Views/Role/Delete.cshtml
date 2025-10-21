@@ -1,0 +1,39 @@
+@model Microsoft.AspNetCore.Identity.IdentityRole
+@{
+    ViewData["Title"] = "Xóa Vai Trò";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header pb-0 bg-danger">
+                <h6 class="text-white">Xóa Vai Trò</h6>
+            </div>
+            <div class="card-body">
+                <h5 class="text-danger">Bạn có chắc chắn muốn xóa vai trò này?</h5>
+                
+                <div class="mb-3">
+                    <strong>Tên Vai Trò:</strong> @Model.Name
+                </div>
+                <div class="mb-3">
+                    <strong>ID:</strong> @Model.Id
+                </div>
+
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Hủy
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fa fa-trash"></i> Xóa Vai Trò
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

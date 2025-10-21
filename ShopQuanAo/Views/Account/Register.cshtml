@@ -1,0 +1,154 @@
+@model ShopQuanAo.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng Ký";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - Shop Quần Áo</title>
+    
+    <!-- Fonts and icons -->
+    <link rel="stylesheet" href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" />
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/argon-dashboard.min.css" />
+</head>
+<body class="bg-gray-100">
+    <div class="container position-sticky z-index-sticky top-0">
+        <div class="row">
+            <div class="col-12">
+                <!-- Navbar -->
+                <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+                    <div class="container-fluid">
+                        <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fa fa-shopping-bag me-2"></i>Shop Quần Áo
+                        </a>
+                        <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon mt-2">
+                                <span class="navbar-toggler-bar bar1"></span>
+                                <span class="navbar-toggler-bar bar2"></span>
+                                <span class="navbar-toggler-bar bar3"></span>
+                            </span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navigation">
+                            <ul class="navbar-nav mx-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link me-2" asp-area="" asp-controller="Home" asp-action="Index">
+                                        <i class="fa fa-home opacity-6 me-1"></i> Trang Chủ
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link me-2" asp-area="" asp-controller="Shop" asp-action="Index">
+                                        <i class="fa fa-shopping-bag opacity-6 me-1"></i> Sản Phẩm
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link me-2" asp-area="" asp-controller="Home" asp-action="Contact">
+                                        <i class="fa fa-envelope opacity-6 me-1"></i> Liên Hệ
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav d-lg-block d-none">
+                                <li class="nav-item">
+                                    <a class="btn btn-sm btn-outline-primary mb-0 me-1" asp-action="Login">Đăng nhập</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    
+    <main class="main-content mt-0">
+        <section>
+            <div class="page-header min-vh-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
+                            <div class="card card-plain">
+                                <div class="card-header pb-0 text-start">
+                                    <h4 class="font-weight-bolder">Đăng Ký</h4>
+                                    <p class="mb-0">Tạo tài khoản mới để mua sắm</p>
+                                </div>
+                                <div class="card-body">
+                                    <form asp-action="Register" method="post" role="form" class="text-start">
+                                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                                        <div class="input-group input-group-outline my-3">
+                                            <label asp-for="FullName" class="form-label">Họ và Tên</label>
+                                            <input asp-for="FullName" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="FullName" class="text-danger text-xs"></span>
+
+                                        <div class="input-group input-group-outline my-3">
+                                            <label asp-for="Email" class="form-label">Email</label>
+                                            <input asp-for="Email" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger text-xs"></span>
+
+                                        <div class="input-group input-group-outline my-3">
+                                            <label asp-for="PhoneNumber" class="form-label">Số Điện Thoại</label>
+                                            <input asp-for="PhoneNumber" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="PhoneNumber" class="text-danger text-xs"></span>
+
+                                        <div class="input-group input-group-outline my-3">
+                                            <label asp-for="Password" class="form-label">Mật Khẩu</label>
+                                            <input asp-for="Password" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="Password" class="text-danger text-xs"></span>
+                                        <div class="text-xs text-muted mb-3">
+                                            <i class="fa fa-info-circle me-1"></i>
+                                            Mật khẩu phải có ít nhất 6 ký tự, bao gồm chữ hoa, chữ thường và số
+                                        </div>
+
+                                        <div class="input-group input-group-outline my-3">
+                                            <label asp-for="ConfirmPassword" class="form-label">Xác Nhận Mật Khẩu</label>
+                                            <input asp-for="ConfirmPassword" class="form-control" />
+                                        </div>
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger text-xs"></span>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 my-4 mb-2">
+                                                <i class="fa fa-user-plus me-2"></i>Đăng Ký
+                                            </button>
+                                        </div>
+                                        
+                                        <p class="mt-4 text-sm text-center">
+                                            Đã có tài khoản?
+                                            <a asp-action="Login" class="text-primary text-gradient font-weight-bold">Đăng nhập</a>
+                                        </p>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
+                            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" 
+                                 style="background-image: url('https://images.unsplash.com/photo-1558769132-cb1aea1f9eb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover;">
+                                <span class="mask bg-gradient-primary opacity-6"></span>
+                                <h4 class="mt-5 text-white font-weight-bolder position-relative">Tham gia cùng chúng tôi!</h4>
+                                <p class="text-white position-relative">Tạo tài khoản để trải nghiệm mua sắm tuyệt vời tại Shop Quần Áo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Core JS Files -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/argon-dashboard.min.js"></script>
+    
+    <!-- Validation Scripts -->
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+</html>

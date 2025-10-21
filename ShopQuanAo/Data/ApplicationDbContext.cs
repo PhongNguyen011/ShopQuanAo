@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopQuanAo.Models;
 
 namespace ShopQuanAo.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,6 +17,57 @@ namespace ShopQuanAo.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Seed Roles
+            var adminRoleId = "1";
+            var userRoleId = "2";
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = adminRoleId,
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = userRoleId,
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            );
+
+            // Seed Admin User
+            var hasher = new PasswordHasher<ApplicationUser>();
+            var adminUserId = "admin-001";
+
+            var adminUser = new ApplicationUser
+            {
+                Id = adminUserId,
+                UserName = "admin@shopquanao.com",
+                NormalizedUserName = "ADMIN@SHOPQUANAO.COM",
+                Email = "admin@shopquanao.com",
+                NormalizedEmail = "ADMIN@SHOPQUANAO.COM",
+                EmailConfirmed = true,
+                FullName = "Administrator",
+                PhoneNumber = "0123456789",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                CreatedDate = DateTime.Now,
+                IsActive = true
+            };
+
+            adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@123");
+
+            modelBuilder.Entity<ApplicationUser>().HasData(adminUser);
+
+            // Assign Admin role to Admin user
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string>
+                {
+                    RoleId = adminRoleId,
+                    UserId = adminUserId
+                }
+            );
 
             // Seed some sample data
             modelBuilder.Entity<Product>().HasData(

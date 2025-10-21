@@ -1,3 +1,7 @@
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ShopQuanAo.Models.ApplicationUser> UserManager
+@inject SignInManager<ShopQuanAo.Models.ApplicationUser> SignInManager
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -28,9 +32,21 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">
                         <i class="fa fa-shopping-bag text-warning text-sm opacity-10"></i>
                         <span class="nav-link-text ms-1">Sản Phẩm</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="User" asp-action="Index">
+                        <i class="fa fa-users text-info text-sm opacity-10"></i>
+                        <span class="nav-link-text ms-1">Người Dùng</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="Admin" asp-controller="Role" asp-action="Index">
+                        <i class="fa fa-shield text-success text-sm opacity-10"></i>
+                        <span class="nav-link-text ms-1">Vai Trò</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -53,6 +69,107 @@
                         <li class="breadcrumb-item text-sm text-dark active" aria-current="page">@ViewData["Title"]</li>
                     </ol>
                 </nav>
+                
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var currentUser = await UserManager.GetUserAsync(User);
+                    var userRoles = await UserManager.GetRolesAsync(currentUser!);
+                    
+                    <div class="ms-auto">
+                        <ul class="navbar-nav justify-content-end">
+                            <li class="nav-item dropdown pe-2">
+                                <a class="nav-link text-body p-0" href="#" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar avatar-sm bg-gradient-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                            <span class="text-white text-sm font-weight-bold">
+                                                @(currentUser?.FullName?.Substring(0, 1).ToUpper() ?? "A")
+                                            </span>
+                                        </div>
+                                        <div class="d-none d-sm-block text-start">
+                                            <p class="text-xs font-weight-bold mb-0">@currentUser?.FullName</p>
+                                            <p class="text-xs text-secondary mb-0">
+                                                @if (userRoles.Any())
+                                                {
+                                                    @string.Join(", ", userRoles)
+                                                }
+                                            </p>
+                                        </div>
+                                        <i class="fa fa-chevron-down text-xs ms-2"></i>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton" style="min-width: 300px;">
+                                    <li class="mb-2">
+                                        <div class="dropdown-header text-start p-0 mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar avatar-md bg-gradient-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
+                                                    <span class="text-white font-weight-bold">
+                                                        @(currentUser?.FullName?.Substring(0, 1).ToUpper() ?? "A")
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <h6 class="text-sm font-weight-bold mb-0">@currentUser?.FullName</h6>
+                                                    <p class="text-xs text-secondary mb-0">@currentUser?.Email</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <hr class="horizontal dark mt-0 mb-2">
+                                    </li>
+                                    <li class="mb-1">
+                                        <div class="dropdown-item border-radius-md px-3 py-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="icon icon-shape icon-sm bg-gradient-info shadow text-center border-radius-md me-2">
+                                                    <i class="fa fa-shield text-white opacity-10"></i>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="text-xs font-weight-bold mb-0">Vai trò</h6>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        @if (userRoles.Any())
+                                                        {
+                                                            @foreach (var role in userRoles)
+                                                            {
+                                                                <span class="badge badge-sm bg-gradient-@(role == "Admin" ? "danger" : "info") me-1">@role</span>
+                                                            }
+                                                        }
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    @if (!string.IsNullOrEmpty(currentUser?.PhoneNumber))
+                                    {
+                                        <li class="mb-1">
+                                            <div class="dropdown-item border-radius-md px-3 py-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="icon icon-shape icon-sm bg-gradient-success shadow text-center border-radius-md me-2">
+                                                        <i class="fa fa-phone text-white opacity-10"></i>
+                                                    </div>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="text-xs font-weight-bold mb-0">Số điện thoại</h6>
+                                                        <p class="text-xs text-secondary mb-0">@currentUser.PhoneNumber</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                    <li>
+                                        <hr class="horizontal dark mt-2 mb-2">
+                                    </li>
+                                    <li>
+                                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="dropdown-item border-radius-md text-danger d-flex align-items-center justify-content-center py-2">
+                                                <i class="fa fa-sign-out me-2"></i>
+                                                <span class="font-weight-bold">Đăng Xuất</span>
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
         </nav>
 

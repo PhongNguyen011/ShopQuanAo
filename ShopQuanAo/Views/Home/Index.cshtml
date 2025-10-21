@@ -50,8 +50,8 @@
 											<i class="fa fa-angle-down"></i>
 										</a>
 										<ul class="account_selection">
-											<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng Nhập</a></li>
-											<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Kí</a></li>
+											<li><a asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng Nhập</a></li>
+											<li><a asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
 										</ul>
 									</li>
 								</ul>
@@ -131,12 +131,12 @@
 					</li>
 					<li class="menu_item has-children">
 						<a href="#">
-							My Account
+							Tài Khoản
 							<i class="fa fa-angle-down"></i>
 						</a>
 						<ul class="menu_selection">
-							<li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-							<li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+							<li><a asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng Nhập</a></li>
+							<li><a asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
 				</ul>
 			</li>
 			<li class="menu_item"><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
