@@ -1,0 +1,95 @@
+@model IEnumerable<ShopQuanAo.Models.Product>
+
+@{
+    ViewData["Title"] = "Quản Lý Sản Phẩm";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <h6>Danh Sách Sản Phẩm</h6>
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus"></i> Thêm Sản Phẩm Mới
+                </a>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sản Phẩm</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Danh Mục</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Giá</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tồn Kho</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng Thái</th>
+                                <th class="text-secondary opacity-7"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div>
+                                                <img src="@Url.Content(item.ImageUrl ?? "~/images/product_1.png")" class="avatar avatar-sm me-3" alt="product">
+                                            </div>
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">@item.Name</h6>
+                                                <p class="text-xs text-secondary mb-0">@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">@item.Category</p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        <p class="text-xs font-weight-bold mb-0">@item.Price.ToString("N0") VNĐ</p>
+                                        @if (item.OldPrice.HasValue)
+                                        {
+                                            <p class="text-xs text-secondary mb-0"><del>@item.OldPrice.Value.ToString("N0") VNĐ</del></p>
+                                        }
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <span class="text-secondary text-xs font-weight-bold">@item.StockQuantity</span>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        @if (item.IsAvailable)
+                                        {
+                                            <span class="badge badge-sm bg-gradient-success">Có Sẵn</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sm bg-gradient-secondary">Hết Hàng</span>
+                                        }
+                                        @if (item.IsFeatured)
+                                        {
+                                            <span class="badge badge-sm bg-gradient-info">Nổi Bật</span>
+                                        }
+                                        @if (item.IsOnSale)
+                                        {
+                                            <span class="badge badge-sm bg-gradient-danger">Sale</span>
+                                        }
+                                    </td>
+                                    <td class="align-middle">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-link text-info text-gradient px-2 mb-0" title="Chi tiết">
+                                            <i class="fa fa-eye text-info me-2"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-link text-dark px-2 mb-0" title="Sửa">
+                                            <i class="fa fa-pencil text-dark me-2"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-link text-danger text-gradient px-2 mb-0" title="Xóa">
+                                            <i class="fa fa-trash text-danger me-2"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

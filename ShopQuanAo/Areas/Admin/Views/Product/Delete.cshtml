@@ -1,0 +1,73 @@
+@model ShopQuanAo.Models.Product
+
+@{
+    ViewData["Title"] = "Xóa Sản Phẩm";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <h6 class="text-danger">Xóa Sản Phẩm</h6>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning" role="alert">
+                    <strong>Cảnh báo!</strong> Bạn có chắc chắn muốn xóa sản phẩm này không?
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Name" class="img-fluid rounded" />
+                        }
+                    </div>
+                    <div class="col-md-9">
+                        <dl class="row">
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Category)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.Category)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Price)</dt>
+                            <dd class="col-sm-9">@Model.Price.ToString("N0") VNĐ</dd>
+
+                            @if (Model.OldPrice.HasValue)
+                            {
+                                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.OldPrice)</dt>
+                                <dd class="col-sm-9">@Model.OldPrice.Value.ToString("N0") VNĐ</dd>
+                            }
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.StockQuantity)</dt>
+                            <dd class="col-sm-9">@Html.DisplayFor(model => model.StockQuantity)</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsAvailable)</dt>
+                            <dd class="col-sm-9">@(Model.IsAvailable ? "Có" : "Không")</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsFeatured)</dt>
+                            <dd class="col-sm-9">@(Model.IsFeatured ? "Có" : "Không")</dd>
+
+                            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsOnSale)</dt>
+                            <dd class="col-sm-9">@(Model.IsOnSale ? "Có" : "Không")</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <form asp-action="Delete" method="post" class="mt-4">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash"></i> Xác Nhận Xóa
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Hủy Bỏ
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

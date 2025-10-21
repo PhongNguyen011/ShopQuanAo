@@ -1,0 +1,111 @@
+@model ShopQuanAo.Models.Product
+
+@{
+    ViewData["Title"] = "Chi Tiết Sản Phẩm";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <h6>Chi Tiết Sản Phẩm</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                        {
+                            <img src="@Url.Content(Model.ImageUrl)" alt="@Model.Name" class="img-fluid rounded" />
+                        }
+                        else
+                        {
+                            <img src="~/images/product_1.png" alt="No image" class="img-fluid rounded" />
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Name)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Name)</dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Description)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Category)</dt>
+                            <dd class="col-sm-8">
+                                @switch (Model.Category)
+                                {
+                                    case "men":
+                                        <span class="badge bg-primary">Nam</span>
+                                        break;
+                                    case "women":
+                                        <span class="badge bg-danger">Nữ</span>
+                                        break;
+                                    case "accessories":
+                                        <span class="badge bg-warning">Phụ Kiện</span>
+                                        break;
+                                    default:
+                                        <span>@Model.Category</span>
+                                        break;
+                                }
+                            </dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Price)</dt>
+                            <dd class="col-sm-8"><strong class="text-success">@Model.Price.ToString("N0") VNĐ</strong></dd>
+
+                            @if (Model.OldPrice.HasValue)
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OldPrice)</dt>
+                                <dd class="col-sm-8"><del class="text-muted">@Model.OldPrice.Value.ToString("N0") VNĐ</del></dd>
+                            }
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.StockQuantity)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.StockQuantity) sản phẩm</dd>
+
+                            <dt class="col-sm-4">Trạng Thái</dt>
+                            <dd class="col-sm-8">
+                                @if (Model.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Có Sẵn</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Hết Hàng</span>
+                                }
+                                @if (Model.IsFeatured)
+                                {
+                                    <span class="badge bg-info">Nổi Bật</span>
+                                }
+                                @if (Model.IsOnSale)
+                                {
+                                    <span class="badge bg-danger">Giảm Giá</span>
+                                }
+                            </dd>
+
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CreatedDate)</dt>
+                            <dd class="col-sm-8">@Model.CreatedDate.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                            @if (Model.UpdatedDate.HasValue)
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UpdatedDate)</dt>
+                                <dd class="col-sm-8">@Model.UpdatedDate.Value.ToString("dd/MM/yyyy HH:mm")</dd>
+                            }
+                        </dl>
+
+                        <div class="mt-4">
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                                <i class="fa fa-pencil"></i> Sửa
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">
+                                <i class="fa fa-trash"></i> Xóa
+                            </a>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"></i> Quay Lại
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
