@@ -24,6 +24,7 @@ wwwroot\fonts\nucleo.eot
 wwwroot\fonts\nucleo.ttf
 wwwroot\fonts\nucleo.woff
 wwwroot\fonts\nucleo.woff2
+wwwroot\images\3f4ccf6d-f3a6-48e1-bdcf-d275f77d6b38_AnhCD2.jpg
 wwwroot\images\banner_1.jpg
 wwwroot\images\banner_2.jpg
 wwwroot\images\banner_3.jpg

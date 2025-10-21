@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Admin\\source\\repos\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {}
+    "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Admin\\source\\repos\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {
+    "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Admin\\source\\repos\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
+        "projectUniqueName": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
         "projectName": "ShopQuanAo",
-        "projectPath": "C:\\Users\\Admin\\source\\repos\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Admin\\source\\repos\\ShopQuanAo\\ShopQuanAo\\obj\\",
+        "projectPath": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
+        "packagesPath": "C:\\Users\\TAI\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\TAI\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -81,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
