@@ -1,0 +1,56 @@
+﻿@model ShopQuanAo.Models.Post
+@{
+    ViewData["Title"] = "Thêm Bài Viết";
+}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header pb-0"><h6>@ViewData["Title"]</h6></div>
+            <div class="card-body">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <!-- 👈 cần enctype -->
+                    <div class="mb-3">
+                        <label class="form-label">Tiêu đề</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span class="text-danger" asp-validation-for="Title"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Nội dung</label>
+                        <textarea asp-for="Content" rows="8" class="form-control"></textarea>
+                        <span class="text-danger" asp-validation-for="Content"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Ảnh đại diện (jpg, jpeg, png, webp, ≤ 2MB)</label>
+                        <input asp-for="ImageUpload" type="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                        <span class="text-danger" asp-validation-for="ImageUpload"></span>
+                        <div class="mt-2">
+                            <img id="preview" style="max-width: 240px; display:none; border-radius:8px;" />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Lưu</button>
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+    <script>
+        const input = document.querySelector('input[name="ImageUpload"]');
+        const preview = document.getElementById('preview');
+        if (input) {
+            input.addEventListener('change', e => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) { preview.style.display = 'none'; return; }
+                const url = URL.createObjectURL(file);
+                preview.src = url;
+                preview.style.display = 'block';
+            });
+        }
+    </script>
+}

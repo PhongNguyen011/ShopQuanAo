@@ -13,6 +13,7 @@ namespace ShopQuanAo.Data
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,6 +69,11 @@ namespace ShopQuanAo.Data
                     UserId = adminUserId
                 }
             );
+
+            // Optional: Slug unique Post
+            modelBuilder.Entity<Post>()
+                .HasIndex(p => p.Slug)
+                .IsUnique(false);
 
             // Seed some sample data
             modelBuilder.Entity<Product>().HasData(

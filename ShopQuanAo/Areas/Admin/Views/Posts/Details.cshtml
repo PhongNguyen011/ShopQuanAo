@@ -1,0 +1,23 @@
+﻿@model ShopQuanAo.Models.Post
+@{
+    ViewData["Title"] = "Chi tiết bài viết";
+}
+<div class="card">
+    <div class="card-header pb-0 d-flex justify-content-between">
+        <h6>@Model.Title</h6>
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning btn-sm">Sửa</a>
+            <a asp-action="Index" class="btn btn-secondary btn-sm">Quay lại</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="mb-2"><strong>Slug:</strong> @Model.Slug</div>
+        <div class="mb-2"><strong>Ngày tạo:</strong> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
+        @if (Model.UpdatedAt.HasValue)
+        {
+            <div class="mb-2"><strong>Ngày cập nhật:</strong> @Model.UpdatedAt.Value.ToString("dd/MM/yyyy HH:mm")</div>
+        }
+        <hr />
+        <div>@Html.Raw(Model.Content.Replace("\n", "<br/>"))</div>
+    </div>
+</div>

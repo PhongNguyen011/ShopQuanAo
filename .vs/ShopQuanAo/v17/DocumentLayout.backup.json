@@ -1,82 +1,58 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\",
+  "WorkspaceRootPath": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\controllers\\shopcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\controllers\\shopcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\migrations\\20251021033510_initialidentitysetup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\migrations\\20251021033510_initialidentitysetup.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\areas\\admin\\views\\product\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\product\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\areas\\admin\\views\\role\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\role\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\areas\\admin\\views\\role\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\role\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\areas\\admin\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\product\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\areas\\admin\\controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\areas\\admin\\views\\posts\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\posts\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\views\\shop\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\shop\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\home\\contact.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\shopquanao.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\shopquanao.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\account\\forgotpasswordconfirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\forgotpasswordconfirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\views\\shared\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\shared\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\account\\forgotpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\forgotpassword.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\admin\\documents\\github\\shopquanao\\shopquanao\\views\\shop\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\shop\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\account\\confirmemail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\confirmemail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|c:\\users\\tai\\appdata\\local\\githubdesktop\\app-3.5.2\\shopquanao\\shopquanao\\views\\account\\accessdenied.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\accessdenied.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -86,242 +62,210 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 1,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Product\\Index.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Product\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Product\\Index.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Product\\Index.cshtml",
-              "ViewState": "AgIAAF0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T03:20:49.865Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAIcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAQwIEAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T01:41:30.398Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "ShopQuanAo\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T01:30:02.669Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Home\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAAEwAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-20T07:55:04.893Z",
+              "WhenOpened": "2025-10-22T04:52:27.863Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\appsettings.json",
-              "RelativeDocumentMoniker": "ShopQuanAo\\appsettings.json",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\appsettings.json",
-              "RelativeToolTip": "ShopQuanAo\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-21T01:29:51.689Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "20251021033510_InitialIdentitySetup.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Migrations\\20251021033510_InitialIdentitySetup.cs",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Migrations\\20251021033510_InitialIdentitySetup.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Migrations\\20251021033510_InitialIdentitySetup.cs",
-              "RelativeToolTip": "ShopQuanAo\\Migrations\\20251021033510_InitialIdentitySetup.cs",
-              "ViewState": "AgIAALIAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T04:11:53.191Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Role\\Create.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Role\\Create.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Role\\Create.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Role\\Create.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T04:02:13.525Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Delete.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Role\\Delete.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Role\\Delete.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Role\\Delete.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Role\\Delete.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T04:02:16.388Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Program.cs",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Program.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Program.cs",
-              "RelativeToolTip": "ShopQuanAo\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T01:29:49.214Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
               "Title": "_AdminLayout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
               "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACkAAABZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T03:21:07.78Z"
+              "WhenOpened": "2025-10-22T04:50:42.107Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "ShopQuanAo\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "ShopQuanAo\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAkwEQAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T04:01:35.637Z",
+              "WhenOpened": "2025-10-22T04:45:26.015Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "ShopController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Controllers\\ShopController.cs",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Controllers\\ShopController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Controllers\\ShopController.cs",
-              "RelativeToolTip": "ShopQuanAo\\Controllers\\ShopController.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Posts\\Index.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Posts\\Index.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Posts\\Index.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Posts\\Index.cshtml",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwC8AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:43:35.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PostsController.cs",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Controllers\\PostsController.cs",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Controllers\\PostsController.cs",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Controllers\\PostsController.cs",
+              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Controllers\\PostsController.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAawBoAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T04:02:06.645Z",
+              "WhenOpened": "2025-10-22T04:42:36.104Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T03:58:41.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAAwIEAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:04:16.969Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\Register.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAABUAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:02:37.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ForgotPasswordConfirmation.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\ForgotPasswordConfirmation.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\ForgotPasswordConfirmation.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\ForgotPasswordConfirmation.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Account\\ForgotPasswordConfirmation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:02:36.454Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ForgotPassword.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\ForgotPassword.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\ForgotPassword.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\ForgotPassword.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Account\\ForgotPassword.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:02:35.886Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Product\\Create.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Product\\Create.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Product\\Create.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Product\\Create.cshtml",
-              "ViewState": "AgIAADYAAAAAAAAAAAAAAF8AAAAxAAAAAAAAAA==",
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAALwAAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T04:02:29.548Z"
+              "WhenOpened": "2025-10-22T04:02:30.719Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{004be353-6879-467c-9d1e-9ac23cdf6d49}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Contact.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Home\\Contact.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Home\\Contact.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Home\\Contact.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Views\\Home\\Contact.cshtml",
-              "ViewState": "AgIAADEBAAAAAAAAAAAAAEoBAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T01:23:20.821Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shop\\Index.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shop\\Index.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shop\\Index.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Views\\Shop\\Index.cshtml",
-              "ViewState": "AgIAAIwAAAAAAAAAAAAQwOgAAABEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T01:11:13.863Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAABMAAAAAAAAAAAAAAF4AAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T01:11:46.814Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "ShopQuanAo.csproj",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
-              "RelativeDocumentMoniker": "ShopQuanAo\\ShopQuanAo.csproj",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
-              "RelativeToolTip": "ShopQuanAo\\ShopQuanAo.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-10-21T01:30:17.645Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "Detail.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shop\\Detail.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shop\\Detail.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shop\\Detail.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Views\\Shop\\Detail.cshtml",
-              "ViewState": "AgIAAAwBAAAAAAAAAAAAAAwBAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T01:11:35.221Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Error.cshtml",
-              "DocumentMoniker": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\Error.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shared\\Error.cshtml",
-              "ToolTip": "C:\\Users\\Admin\\Documents\\GitHub\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\Error.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Views\\Shared\\Error.cshtml",
+              "DocumentIndex": 11,
+              "Title": "ConfirmEmail.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\ConfirmEmail.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\ConfirmEmail.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\ConfirmEmail.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Account\\ConfirmEmail.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-21T01:27:09.428Z"
+              "WhenOpened": "2025-10-22T04:02:35.31Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AccessDenied.cshtml",
+              "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\AccessDenied.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\AccessDenied.cshtml",
+              "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\AccessDenied.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Views\\Account\\AccessDenied.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:02:34.764Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
             }
           ]
         }

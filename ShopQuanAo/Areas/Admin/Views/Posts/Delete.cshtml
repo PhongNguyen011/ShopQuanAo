@@ -1,0 +1,25 @@
+﻿@model ShopQuanAo.Models.Post
+@{
+    ViewData["Title"] = "Xoá Bài Viết";
+}
+
+<div class="card">
+    <div class="card-header pb-0"><h6>@ViewData["Title"]</h6></div>
+    <div class="card-body">
+        <p>Bạn có chắc muốn xoá bài viết: <strong>@Model.Title</strong>?</p>
+
+        @* Hiển thị ảnh nếu có *@
+        @if (!string.IsNullOrEmpty(Model.Thumbnail))
+        {
+            <div class="mb-3">
+                <img src="~/images/posts/@Model.Thumbnail" style="max-width:240px;border-radius:8px;" />
+            </div>
+        }
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button class="btn btn-danger" type="submit">Xoá</button>
+            <a asp-action="Index" class="btn btn-secondary">Huỷ</a>
+        </form>
+    </div>
+</div>
