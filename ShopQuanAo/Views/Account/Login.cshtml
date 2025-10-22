@@ -10,181 +10,183 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewData["Title"] - Shop Quần Áo</title>
-    
+
     <!-- Fonts and icons -->
     <link rel="stylesheet" href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" />
-    
-    <!-- CSS Files -->
+
+    <!-- Bootstrap & Argon -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/argon-dashboard.min.css" />
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .login-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            background-color: #fff;
+        }
+
+        .login-left {
+            background-image: url('https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px 0 0 15px;
+            position: relative;
+        }
+
+            .login-left::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.4);
+                border-radius: 15px 0 0 15px;
+            }
+
+        .login-left-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .navbar {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+       
+            display: none;
+        }
+
+        .login-card {
+            border-radius: 15px;
+        }
+
+        }
+
+        .form-control {
+            border-radius: 10px;
+        }
+
+        .btn-primary {
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .alert {
+            border-radius: 10px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container position-sticky z-index-sticky top-0">
-        <div class="row">
-            <div class="col-12">
-                <!-- Navbar -->
-                <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-                    <div class="container-fluid">
-                        <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="fa fa-shopping-bag me-2"></i>Shop Quần Áo
-                        </a>
-                        <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon mt-2">
-                                <span class="navbar-toggler-bar bar1"></span>
-                                <span class="navbar-toggler-bar bar2"></span>
-                                <span class="navbar-toggler-bar bar3"></span>
-                            </span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navigation">
-                            <ul class="navbar-nav mx-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" asp-area="" asp-controller="Home" asp-action="Index">
-                                        <i class="fa fa-home opacity-6 me-1"></i> Trang Chủ
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" asp-area="" asp-controller="Shop" asp-action="Index">
-                                        <i class="fa fa-shopping-bag opacity-6 me-1"></i> Sản Phẩm
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" asp-area="" asp-controller="Home" asp-action="Contact">
-                                        <i class="fa fa-envelope opacity-6 me-1"></i> Liên Hệ
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="navbar-nav d-lg-block d-none">
-                                <li class="nav-item">
-                                    <a class="btn btn-sm btn-outline-primary mb-0 me-1" asp-action="Register">Đăng ký</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" asp-area="" asp-controller="Home" asp-action="Index">
+                <i class="fa fa-shopping-bag me-2"></i>Shop Quần Áo
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Shop" asp-action="Index">Sản Phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Contact">Liên Hệ</a></li>
+                    
+                </ul>
             </div>
         </div>
-    </div>
-    
-    <main class="main-content mt-0">
-        <section>
-            <div class="page-header min-vh-100">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                            <div class="card card-plain">
-                                <div class="card-header pb-0 text-start">
-                                    <h4 class="font-weight-bolder">Đăng Nhập</h4>
-                                    <p class="mb-0">Nhập email và mật khẩu để đăng nhập</p>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="d-flex align-items-center justify-content-center min-vh-100 mt-5 pt-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-9 col-xl-8">
+                    <div class="card login-card overflow-hidden">
+                        <div class="row g-0">
+                            <!-- Left image -->
+                            <div class="col-lg-6 login-left d-flex align-items-center justify-content-center text-center text-white">
+                                <div class="login-left-text px-4">
+                                    <h3 class="fw-bold mb-3">Chào mừng bạn quay lại!</h3>
+                                    <p>Đăng nhập để tiếp tục mua sắm những món đồ thời trang yêu thích của bạn.</p>
                                 </div>
-                                <div class="card-body">
-                                    @if (TempData["Success"] != null)
-                                    {
-                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                            <span class="alert-icon"><i class="fa fa-check"></i></span>
-                                            <span class="alert-text">@TempData["Success"]</span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    }
-                                    
-                                    @if (TempData["Warning"] != null)
-                                    {
-                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                            <span class="alert-icon"><i class="fa fa-exclamation-triangle"></i></span>
-                                            <span class="alert-text"><strong>@TempData["Warning"]</strong></span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    }
-                                    
-                                    @if (TempData["Error"] != null)
-                                    {
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <span class="alert-icon"><i class="fa fa-exclamation-circle"></i></span>
-                                            <span class="alert-text"><strong>@TempData["Error"]</strong></span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    }
-                                    
-                                    @if (TempData["ConfirmLink"] != null)
-                                    {
-                                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                            <span class="alert-icon"><i class="fa fa-link"></i></span>
-                                            <div class="alert-text">
-                                                <strong>Click để xác nhận tài khoản:</strong><br />
-                                                <a href="@TempData["ConfirmLink"]" class="btn btn-sm btn-success mt-2">
-                                                    <i class="fa fa-check-circle"></i> Xác nhận ngay
-                                                </a>
-                                            </div>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                    }
+                            </div>
 
-                                    <form asp-action="Login" method="post" role="form" class="text-start">
-                                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                                        
-                                        <div class="input-group input-group-outline my-3">
-                                            <label asp-for="Email" class="form-label">Email</label>
-                                            <input asp-for="Email" class="form-control" />
-                                        </div>
-                                        <span asp-validation-for="Email" class="text-danger text-xs"></span>
+                            <!-- Right form -->
+                            <div class="col-lg-6 p-5">
+                                <h4 class="fw-bold mb-3 text-center text-primary">Đăng Nhập</h4>
+                                <p class="text-muted text-center mb-4">Nhập email và mật khẩu để truy cập tài khoản</p>
 
-                                        <div class="input-group input-group-outline my-3">
-                                            <label asp-for="Password" class="form-label">Mật Khẩu</label>
-                                            <input asp-for="Password" class="form-control" />
-                                        </div>
-                                        <span asp-validation-for="Password" class="text-danger text-xs"></span>
+                                <!-- Thông báo -->
+                                @if (TempData["Success"] != null)
+                                {
+                                    <div class="alert alert-success alert-dismissible fade show">
+                                        <i class="fa fa-check me-2"></i>@TempData["Success"]
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                }
+                                @if (TempData["Error"] != null)
+                                {
+                                    <div class="alert alert-danger alert-dismissible fade show">
+                                        <i class="fa fa-exclamation-circle me-2"></i>@TempData["Error"]
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                }
 
-                                        <div class="form-check form-switch">
-                                            <input asp-for="RememberMe" class="form-check-input" />
-                                            <label asp-for="RememberMe" class="form-check-label">Ghi nhớ đăng nhập</label>
-                                        </div>
+                                <form asp-action="Login" method="post">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 my-4 mb-2">
-                                                <i class="fa fa-sign-in me-2"></i>Đăng Nhập
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="text-center">
-                                            <a asp-action="ForgotPassword" class="text-sm text-primary">Quên mật khẩu?</a>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                                    <p class="mb-4 text-sm mx-auto">
+                                    <div class="mb-3">
+                                        <label asp-for="Email" class="form-label">Email</label>
+                                        <input asp-for="Email" class="form-control" placeholder="Nhập email..." />
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label asp-for="Password" class="form-label">Mật Khẩu</label>
+                                        <input asp-for="Password" type="password" class="form-control" placeholder="Nhập mật khẩu..." />
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-check form-switch mb-3">
+                                        <input asp-for="RememberMe" class="form-check-input" />
+                                        <label asp-for="RememberMe" class="form-check-label">Ghi nhớ đăng nhập</label>
+                                    </div>
+
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-sign-in me-2"></i>Đăng Nhập
+                                        </button>
+                                    </div>
+
+                                    <div class="text-center mt-3">
+                                        <a asp-action="ForgotPassword" class="text-decoration-none text-primary">Quên mật khẩu?</a>
+                                    </div>
+                                </form>
+
+                                <div class="text-center mt-4">
+                                    <p>
                                         Chưa có tài khoản?
-                                        <a asp-action="Register" class="text-primary text-gradient font-weight-bold">Đăng ký ngay</a>
+                                        <a asp-action="Register" class="fw-bold text-primary text-gradient">Đăng ký ngay</a>
                                     </p>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                            <div class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" 
-                                 style="background-image: url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover;">
-                                <span class="mask bg-gradient-primary opacity-6"></span>
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">Chào mừng trở lại!</h4>
-                                <p class="text-white position-relative">Đăng nhập để trải nghiệm mua sắm tốt nhất tại Shop Quần Áo.</p>
-                            </div>
+                            </div> <!-- /col -->
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
-    <!-- Core JS Files -->
+    <!-- JS -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/argon-dashboard.min.js"></script>
-    
-    <!-- Validation Scripts -->
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 </body>
