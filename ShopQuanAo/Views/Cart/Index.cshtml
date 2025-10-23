@@ -1,0 +1,120 @@
+﻿@model List<ShopQuanAo.Models.CartItem>
+@using System.Globalization
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    var vn = CultureInfo.GetCultureInfo("vi-VN");
+    decimal subtotal = ViewBag.Subtotal ?? (Model?.Sum(x => x.LineTotal) ?? 0M);
+    string message = ViewBag.Message as string;
+
+    // Stock map từ controller
+    var stockMap = ViewBag.StockMap as Dictionary<int, int> ?? new Dictionary<int, int>();
+
+    string VnMoney(decimal v) => string.Format(vn, "{0:N0} ₫", v);
+}
+<div class="container my-4">
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="alert alert-success">@message</div>
+    }
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="alert alert-info">Giỏ hàng trống.</div>
+        <a asp-controller="Shop" asp-action="Index" class="btn btn-primary">Tiếp tục mua sắm</a>
+    }
+    else
+    {
+        <form id="cart-anti" method="post">@Html.AntiForgeryToken()</form> @* để lấy token AJAX *@
+
+        <div class="table-responsive">
+            <table class="table align-middle" id="cart-table">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width:10%">Ảnh</th>
+                        <th style="width:25%">Sản phẩm</th>
+                        <th style="width:15%">Đơn giá</th>
+                        <th style="width:25%" class="text-center">Số lượng</th>
+                        <th style="width:20%">Thành tiền</th>
+                        <th style="width:5%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var img = (item.Image ?? "").Trim();
+                        var src = string.IsNullOrEmpty(img)
+                        ? Url.Content("~/images/_placeholder.png")
+                        : Url.Content($"{img}");
+                        var stock = stockMap.TryGetValue(item.ProductId, out var s) ? s : int.MaxValue;
+
+
+                        <tr id="row-@item.ProductId" data-id="@item.ProductId" data-stock="@stock">
+                            <td>
+                                <img src="@src" alt="@item.Name"
+                                     style="width:70px;height:70px;object-fit:cover;border-radius:8px;" />
+                            </td>
+                            <td>
+                                <div class="fw-semibold">@item.Name</div>
+                                <div class="text-muted small">Tồn kho: <span id="stock-@item.ProductId">@stock</span></div>
+                            </td>
+                            <td id="price-@item.ProductId">@VnMoney(item.Price)</td>
+                            <td>
+                                <div class="d-flex justify-content-center align-items-stretch gap-2" style="width:160px;margin:0 auto;">
+                                    <input type="text"
+                                           class="form-control form-control-sm text-center qty-input"
+                                           id="qty-@item.ProductId"
+                                           value="@item.Quantity"
+                                           readonly
+                                           style="width:70px;height:100%;" />
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center btn-plus"
+                                            data-id="@item.ProductId"
+                                            style="width:40px;">
+                                        +
+                                    </button>
+
+                                    <button type="button"
+                                            class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center btn-minus"
+                                            data-id="@item.ProductId"
+                                            style="width:40px;">
+                                        −
+                                    </button>
+                                </div>
+                            </td>
+
+
+                            <td class="fw-semibold" id="line-@item.ProductId">@VnMoney(item.LineTotal)</td>
+                            <td>
+                                <form asp-action="Remove" method="post">
+                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                    <button class="btn btn-danger btn-sm" type="submit">Xoá</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-end">Tạm tính</th>
+                        <th class="text-end" id="subtotal">@VnMoney(subtotal)</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+            <form asp-action="Clear" method="post">
+                <button class="btn btn-outline-danger" type="submit">Xoá tất cả</button>
+            </form>
+            <a asp-controller="Shop" asp-action="Index" class="btn btn-outline-secondary">Tiếp tục mua sắm</a>
+            <a asp-controller="Checkout" asp-action="Index" class="btn btn-primary">Thanh toán</a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/cart.js"></script>
+}

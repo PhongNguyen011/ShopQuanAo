@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopQuanAo.Data;
 using ShopQuanAo.Models;
@@ -57,6 +57,18 @@ builder.Services.ConfigureApplicationCookie(options =>
 // Add Email Service
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+// 🔹 Session + Cart service
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(o =>
+{
+    o.Cookie.Name = ".ShopQuanAo.Session";
+    o.IdleTimeout = TimeSpan.FromHours(12);
+    o.Cookie.HttpOnly = true;
+    o.Cookie.IsEssential = true;
+});
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICartService, CartService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -71,6 +83,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

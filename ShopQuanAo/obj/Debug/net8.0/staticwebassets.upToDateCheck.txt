@@ -25,6 +25,7 @@ wwwroot\fonts\nucleo.ttf
 wwwroot\fonts\nucleo.woff
 wwwroot\fonts\nucleo.woff2
 wwwroot\images\3f4ccf6d-f3a6-48e1-bdcf-d275f77d6b38_AnhCD2.jpg
+wwwroot\images\a28501f9-a87d-48bd-8501-d6a330f12468_Screenshot 2025-10-18 100642.png
 wwwroot\images\banner_1.jpg
 wwwroot\images\banner_2.jpg
 wwwroot\images\banner_3.jpg
@@ -57,6 +58,7 @@ wwwroot\js\argon-dashboard.js
 wwwroot\js\argon-dashboard.js.map
 wwwroot\js\argon-dashboard.min.js
 wwwroot\js\bootstrap-notify.js
+wwwroot\js\cart.js
 wwwroot\js\categories_custom.js
 wwwroot\js\Chart.extension.js
 wwwroot\js\chartjs.min.js
