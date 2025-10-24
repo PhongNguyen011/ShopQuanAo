@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "D:\\DoAn\\shopping\\ShopQuanAo\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\models\\slidemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\models\\slidemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -49,10 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\migrations\\20251024031603_addslidetable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\migrations\\20251024031603_addslidetable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\views\\_viewimports.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -102,10 +106,6 @@
       "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|d:\\doan\\shopping\\shopquanao\\shopquanao\\areas\\admin\\controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FB9A1D23-1432-4B39-861F-0452E779D4CC}|ShopQuanAo\\ShopQuanAo.csproj|solutionrelative:shopquanao\\areas\\admin\\controllers\\postscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -137,11 +137,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "SlideModel.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Models\\SlideModel.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Models\\SlideModel.cs",
@@ -155,30 +155,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
-              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAABCAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-24T01:39:42.996Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
-              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-24T01:49:29.03Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "SlideController.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Controllers\\SlideController.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Controllers\\SlideController.cs",
@@ -190,7 +166,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\Shop\\Index.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shop\\Index.cshtml",
@@ -202,7 +178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shared\\_Layout.cshtml",
@@ -214,7 +190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "CartItem.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Models\\CartItem.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Models\\CartItem.cs",
@@ -226,7 +202,57 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAB4AAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:50:42.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAwwIoAAABFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-22T04:52:27.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
+              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Edit.cshtml",
+              "ViewState": "AgIAACEAAAAAAAAAAAAAACwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-24T01:49:29.03Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
+              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
+              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
+              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Index.cshtml",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAABkAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-24T01:39:42.996Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Create.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Create.cshtml",
@@ -238,7 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "Delete.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Delete.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Slide\\Delete.cshtml",
@@ -250,7 +276,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Product\\Index.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Product\\Index.cshtml",
@@ -262,7 +288,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\User\\Index.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\User\\Index.cshtml",
@@ -274,7 +300,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "20251024031603_AddSlideTable.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Migrations\\20251024031603_AddSlideTable.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Migrations\\20251024031603_AddSlideTable.cs",
@@ -286,19 +312,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "_AdminLayout.cshtml",
-              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
-              "ViewState": "AgIAADwAAAAAAAAAAAAAADIAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-22T04:50:42.107Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "_ViewImports.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\_ViewImports.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\_ViewImports.cshtml",
@@ -310,7 +324,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Error.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\Shared\\Error.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Shared\\Error.cshtml",
@@ -322,7 +336,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Data\\ApplicationDbContext.cs",
@@ -334,7 +348,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "SessionExtensions.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Data\\Common\\SessionExtensions.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Data\\Common\\SessionExtensions.cs",
@@ -346,7 +360,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "CartController.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Controllers\\CartController.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Controllers\\CartController.cs",
@@ -358,7 +372,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\Cart\\Index.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Cart\\Index.cshtml",
@@ -370,7 +384,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "CartService.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Services\\CartService.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Services\\CartService.cs",
@@ -382,7 +396,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "cart.js",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\wwwroot\\js\\cart.js",
               "RelativeDocumentMoniker": "ShopQuanAo\\wwwroot\\js\\cart.js",
@@ -394,7 +408,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Program.cs",
               "RelativeDocumentMoniker": "ShopQuanAo\\Program.cs",
@@ -406,7 +420,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "FileExtensionAttribute.cs",
               "DocumentMoniker": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\Shopping_Tutorial\\Shopping_Tutorial_00\\Repository\\Validation\\FileExtensionAttribute.cs",
               "ToolTip": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\Shopping_Tutorial\\Shopping_Tutorial_00\\Repository\\Validation\\FileExtensionAttribute.cs",
@@ -440,7 +454,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "Login.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\Login.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\Login.cshtml",
@@ -452,7 +466,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "Register.cshtml",
               "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Views\\Account\\Register.cshtml",
               "RelativeDocumentMoniker": "ShopQuanAo\\Views\\Account\\Register.cshtml",
@@ -461,18 +475,6 @@
               "ViewState": "AgIAABUAAAAAAAAAAAAAABUAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-22T04:02:37.285Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "RelativeDocumentMoniker": "ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ToolTip": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "RelativeToolTip": "ShopQuanAo\\Areas\\Admin\\Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAHEAAAAAAAAAAAAQwIEAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-22T04:52:27.863Z"
             },
             {
               "$type": "Document",
