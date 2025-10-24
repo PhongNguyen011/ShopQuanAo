@@ -6,29 +6,29 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopQuanAo.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSlideTable : Migration
+    public partial class AddSlides : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Cho phép cột ImageUrl có thể null (nếu chưa có hình)
-            migrationBuilder.AlterColumn<string>(
-                name: "ImageUrl",
-                table: "Slides",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.CreateTable(
+                name: "Slides",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Slides", x => x.Id);
+                });
 
-            // ✅ Thêm cột CreatedAt
-            migrationBuilder.AddColumn<DateTime>(
-                name: "CreatedAt",
-                table: "Slides",
-                type: "datetime2",
-                nullable: false,
-                defaultValueSql: "GETDATE()");
-
-            // Cập nhật lại dữ liệu mẫu (nếu có seed data)
+            // ✅ Cập nhật dữ liệu mặc định nếu có seed user admin
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
@@ -46,21 +46,22 @@ namespace ShopQuanAo.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // Xóa cột CreatedAt khi rollback
-            migrationBuilder.DropColumn(
-                name: "CreatedAt",
-                table: "Slides");
+            migrationBuilder.DropTable(
+                name: "Slides");
 
-            // Đặt lại ImageUrl là NOT NULL
-            migrationBuilder.AlterColumn<string>(
-                name: "ImageUrl",
-                table: "Slides",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+            // ✅ Khôi phục lại dữ liệu gốc (nếu rollback)
+            migrationBuilder.UpdateData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "admin-001",
+                columns: new[] { "ConcurrencyStamp", "CreatedDate", "PasswordHash", "SecurityStamp" },
+                values: new object[]
+                {
+                    "00000000-0000-0000-0000-000000000000",
+                    DateTime.Now,
+                    "AQAAAAIAAYagAAAAEIoAnEE1BAx222gM/Of6YuxHDNxGUdqLCDzvIYLyafJN1pS+xRFD9AishgdcZVIPmQ==",
+                    "00000000-0000-0000-0000-000000000000"
+                });
         }
     }
 }
