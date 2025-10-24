@@ -1,0 +1,54 @@
+﻿@model ShopQuanAo.Models.SlideModel
+@{
+    ViewData["Title"] = "Thêm Slide";
+}
+
+<div class="row">
+    <div class="col-12 col-md-8 mx-auto">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 text-uppercase">Thêm Slide Mới</h6>
+                <a asp-action="Index" class="btn btn-secondary btn-sm">
+                    <i class="fa fa-arrow-left"></i> Quay Lại
+                </a>
+            </div>
+
+            <div class="card-body pt-3">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tiêu Đề</label>
+                        <input asp-for="Title" class="form-control border border-1 border-secondary" placeholder="Nhập tiêu đề..." />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Mô Tả</label>
+                        <textarea asp-for="Description" rows="3" class="form-control border border-1 border-secondary" placeholder="Nhập mô tả..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Hình Ảnh</label>
+                        <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                        <small class="text-muted fst-italic">Chọn ảnh cho slide (jpg, png, gif...)</small>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save me-1"></i> Lưu
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="fa fa-times me-1"></i> Hủy
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

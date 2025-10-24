@@ -1,0 +1,80 @@
+﻿@model IEnumerable<ShopQuanAo.Models.SlideModel>
+
+@{
+    ViewData["Title"] = "Quản Lý Slide";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <h6>Danh Sách Slide</h6>
+                <a asp-action="Create" class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus"></i> Thêm Slide Mới
+                </a>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Hình Ảnh</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tiêu Đề</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Mô Tả</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng Thái</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày Tạo</th>
+                                <th class="text-secondary opacity-7"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var slide in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div>
+                                                <img src="@Url.Content(slide.ImageUrl ?? "~/images/no-image.png")"
+                                                     class="avatar avatar-sm me-3" alt="slide">
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">@slide.Title</h6>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs text-secondary mb-0">
+                                            @(slide.Description?.Length > 50 ? slide.Description.Substring(0, 50) + "..." : slide.Description)
+                                        </p>
+                                    </td>
+                                    <td class="align-middle text-center text-sm">
+                                        @if (slide.IsActive)
+                                        {
+                                            <span class="badge badge-sm bg-gradient-success">Hiển Thị</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-sm bg-gradient-secondary">Ẩn</span>
+                                        }
+                                    </td>
+                                    <td class="align-middle text-center text-xs text-secondary">
+                                        @(slide.CreatedAt.ToString("dd/MM/yyyy") ?? "N/A")
+                                    </td>
+                                    <td class="align-middle">
+                                        <a asp-action="Edit" asp-route-id="@slide.Id" class="btn btn-link text-dark px-2 mb-0" title="Sửa">
+                                            <i class="fa fa-pencil text-dark me-2"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@slide.Id" class="btn btn-link text-danger text-gradient px-2 mb-0" title="Xóa">
+                                            <i class="fa fa-trash text-danger me-2"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

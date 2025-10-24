@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {}
+    "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {
+    "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
+        "projectUniqueName": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
         "projectName": "ShopQuanAo",
-        "projectPath": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
-        "packagesPath": "C:\\Users\\TAI\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\TAI\\AppData\\Local\\GitHubDesktop\\app-3.5.2\\ShopQuanAo\\ShopQuanAo\\obj\\",
+        "projectPath": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\ShopQuanAo.csproj",
+        "packagesPath": "C:\\Users\\Hoang\\.nuget\\packages\\",
+        "outputPath": "D:\\DoAn\\shopping\\ShopQuanAo\\ShopQuanAo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\TAI\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Hoang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

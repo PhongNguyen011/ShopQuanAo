@@ -150,19 +150,32 @@
 		</div>
 
 		<!-- Slider -->
+		@inject ShopQuanAo.Data.ApplicationDbContext _context
 
-		<div class="main_slider" style="background-image:url(images/slider_1.jpg)">
-			<div class="container fill_height">
-				<div class="row align-items-center fill_height">
-					<div class="col">
-						<div class="main_slider_content">
-							<h6>Spring / Summer Collection 2017</h6>
-							<h1>Get up to 30% Off New Arrivals</h1>
-							<div class="red_button shop_now_button"><a href="#">shop now</a></div>
+		<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+			<div class="carousel-inner">
+				@{
+					var slides = _context.Slides.Where(s => s.IsActive).ToList();
+					bool first = true;
+					foreach (var slide in slides)
+					{
+						<div class="carousel-item @(first ? "active" : "")">
+							<img src="@slide.ImageUrl" class="d-block w-100" alt="@slide.Title">
+							<div class="carousel-caption d-none d-md-block">
+								<h5>@slide.Title</h5>
+								<p>@slide.Description</p>
+							</div>
 						</div>
-					</div>
-				</div>
+						first = false;
+					}
+				}
 			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon"></span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+				<span class="carousel-control-next-icon"></span>
+			</button>
 		</div>
 
 		<!-- Banner -->

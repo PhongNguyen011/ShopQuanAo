@@ -14,7 +14,7 @@ namespace ShopQuanAo.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Post> Posts { get; set; }
-
+        public DbSet<SlideModel> Slides { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -37,6 +37,7 @@ wwwroot\images\desc_1.jpg
 wwwroot\images\desc_2.jpg
 wwwroot\images\desc_3.jpg
 wwwroot\images\map_marker.png
+wwwroot\images\posts\blog_3-8c177e44db984e328b6866b8df54cdf5.jpg
 wwwroot\images\product_1.png
 wwwroot\images\product_10.png
 wwwroot\images\product_2.png
@@ -54,6 +55,9 @@ wwwroot\images\single_2_thumb.jpg
 wwwroot\images\single_3.jpg
 wwwroot\images\single_3_thumb.jpg
 wwwroot\images\slider_1.jpg
+wwwroot\images\slides\b6ee8892-b953-4afc-af59-c8f3c41a9003.jpg
+wwwroot\images\slides\banner_1.jpg
+wwwroot\images\slides\c6f8a27f-03b2-441c-a139-764258d75f9a.jpg
 wwwroot\js\argon-dashboard.js
 wwwroot\js\argon-dashboard.js.map
 wwwroot\js\argon-dashboard.min.js
