@@ -1,0 +1,32 @@
+# ===== Visual Studio =====
+.vs/
+*.vsidx
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ===== Build outputs =====
+bin/
+obj/
+**/bin/
+**/obj/
+Debug/
+Release/
+
+# ===== Packages =====
+packages/
+*.nupkg
+*.snupkg
+*.nuspec
+
+# ===== Logs & cache =====
+*.log
+*.tlog
+*.cache
+*.tmp
+
+# ===== Secrets / config local =====
+.env
+appsettings.json
+appsettings.*.json
