@@ -4,11 +4,11 @@ using ShopQuanAo.Data;
 
 namespace ShopQuanAo.Controllers
 {
-    public class ShopController : Controller
+    public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ShopController(ApplicationDbContext context)
+        public ProductController(ApplicationDbContext context)
         {
             _context = context;
         }

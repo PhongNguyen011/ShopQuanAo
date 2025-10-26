@@ -1,0 +1,177 @@
+﻿@model IEnumerable<ShopQuanAo.Models.Product>
+@{
+    ViewData["Title"] = "Sản Phẩm";
+    var selectedCategory = ViewBag.SelectedCategory as string;
+}
+
+
+@section Styles {
+    <link href="~/bootstrap4/bootstrap.min.css">
+    <link href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet">
+    <link href="~/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet">
+    <link href="~/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <link href="~/css/categories_styles.css" rel="stylesheet">
+    <link href="~/css/categories_responsive.css" rel="stylesheet">
+}
+
+
+
+<div class="container product_section_container">
+    <div class="row">
+        <div class="col product_section clearfix">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Sản Phẩm</a></li>
+                </ul>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar_section">
+                    <div class="sidebar_title">
+                        <h5>Danh Mục</h5>
+                    </div>
+                    <ul class="sidebar_categories">
+                        <li class="@(string.IsNullOrEmpty(selectedCategory) ? "active" : "")">
+                            <a asp-action="Index">Tất Cả</a>
+                        </li>
+                        <li class="@(selectedCategory == "men" ? "active" : "")">
+                            <a asp-action="Index" asp-route-category="men">Nam</a>
+                        </li>
+                        <li class="@(selectedCategory == "women" ? "active" : "")">
+                            <a asp-action="Index" asp-route-category="women">Nữ</a>
+                        </li>
+                        <li class="@(selectedCategory == "accessories" ? "active" : "")">
+                            <a asp-action="Index" asp-route-category="accessories">Phụ Kiện</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main_content">
+                <!-- Products -->
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Product Sorting -->
+                            <div class="product_sorting_container product_sorting_container_top">
+                                <ul class="product_sorting">
+                                    <li>
+                                        <span class="type_sorting_text">Sắp Xếp Theo</span>
+                                        <i class="fa fa-angle-down"></i>
+                                        <ul class="sorting_type">
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc Định</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span>Hiển Thị</span>
+                                        <span class="num_sorting_text">@Model.Count()</span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Product Grid -->
+                            <div class="product-grid">
+                                @if (Model.Any())
+                                {
+                                    @foreach (var product in Model)
+                                    {
+                                        <div class="product-item @product.Category">
+                                            <div class="product @(product.IsOnSale ? "discount" : "")">
+                                                <div class="product_image">
+                                                    <img src="@Url.Content(product.ImageUrl ?? "~/images/product_1.png")" alt="@product.Name">
+                                                </div>
+                                                <div class="favorite favorite_left"></div>
+                                                @if (product.IsOnSale && product.OldPrice.HasValue)
+                                                {
+                                                    var discount = ((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100);
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                                        <span>-@discount.ToString("0")%</span>
+                                                    </div>
+                                                }
+                                                else if (product.IsFeatured)
+                                                {
+                                                    <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center">
+                                                        <span>new</span>
+                                                    </div>
+                                                }
+                                                <div class="product_info">
+                                                    <h6 class="product_name">
+                                                        <a asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
+                                                    </h6>
+                                                    <div class="product_price">
+                                                        @product.Price.ToString("N0")đ
+                                                        @if (product.OldPrice.HasValue)
+                                                        {
+                                                            <span>@product.OldPrice.Value.ToString("N0")đ</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="red_button add_to_cart_button"><a asp-controller="Cart" asp-action="Add" asp-route-Id="@product.Id">Thêm Vào Giỏ</a></div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-12 text-center py-5">
+                                        <h4>Không tìm thấy sản phẩm nào</h4>
+                                        <p>Vui lòng thử lại sau hoặc chọn danh mục khác.</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/styles/bootstrap4/popper.js"></script>
+    <script src="~/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="~/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="~/plugins/easing/easing.js"></script>
+    <script src="~/js/custom.js"></script>
+
+    <!-- Khởi tạo filter & carousel (nếu custom.js chưa làm) -->
+    <script>
+        // Isotope filter (nếu dùng ở Product/Index)
+        var $grid = $('.product-grid').isotope({
+            itemSelector: '.product-item',
+            layoutMode: 'fitRows'
+        });
+
+        $('.filters-button-group').on('click', 'li', function () {
+            var filterValue = $(this).attr('data-filter');
+            $grid.isotope({ filter: filterValue });
+            $('.filters-button-group li').removeClass('is-checked');
+            $(this).addClass('is-checked');
+        });
+
+        // Owl carousel cho Best Sellers (nếu có)
+        $('.product_slider').owlCarousel({
+            loop: true,
+            margin: 30,
+            autoplay: true,
+            smartSpeed: 600,
+            responsive: {0:{items:1},576:{items:2},992:{items:3},1200:{items:4}}
+        });
+
+        $('.product_slider_nav_left').on('click', function(){ $('.product_slider').trigger('prev.owl.carousel'); });
+        $('.product_slider_nav_right').on('click', function(){ $('.product_slider').trigger('next.owl.carousel'); });
+    </script>
+}
+
+

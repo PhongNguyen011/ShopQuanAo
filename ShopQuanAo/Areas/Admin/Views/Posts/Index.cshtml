@@ -18,7 +18,6 @@
                             <tr>
                                 <th style="width:15%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ảnh</th>
                                 <th style="width:30%" class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tiêu đề</th>
-                                <th style="width:30%" class="text-uppercase text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Slug</th>
                                 <th style="width:20%" class="text-uppercase text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày tạo</th>
                                 <th style="width:10%" class="text-uppercase text-secondary opacity-7"></th>
                             </tr>
@@ -35,7 +34,6 @@
                                         }
                                     </td>
                                     <td>@p.Title</td>
-                                    <td>@p.Slug</td>
                                     <td>@p.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
                                     <td class="text-end">
                                         <a asp-action="Details" asp-route-id="@p.Id" class="btn btn-info btn-sm">Chi tiết</a>

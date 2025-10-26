@@ -28,5 +28,5 @@ packages/
 
 # ===== Secrets / config local =====
 .env
-appsettings.json
-appsettings.*.json
+# Giữ lại appsettings.json để commit
+# Nếu chỉ muốn bỏ qua file cấu hình riêng như appsettings.Development.json thì giữ dòng sau: appsettings.Development.json

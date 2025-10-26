@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Liên Hệ";
+}
+
+@section Styles {
+    <!-- Chỉ thêm các CSS đặc thù cho trang liên hệ -->
+    <link rel="stylesheet" href="~/plugins/OwlCarousel2-2.2.1/owl.carousel.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/plugins/OwlCarousel2-2.2.1/animate.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/plugins/jquery-ui-1.12.1.custom/jquery-ui.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/contact_styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/contact_responsive.css" asp-append-version="true" />
+}
+
+<div class="container contact_container">
+    <div class="row">
+        <div class="col">
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+                    <li class="active">
+                        <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Liên Hệ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="map_container" style="height: 420px;">
+                <!-- Dùng iframe cho nhanh (không cần API key). Thay src nếu bạn có địa chỉ riêng -->
+                <iframe width="100%" height="100%" style="border:0;"
+                        loading="lazy" allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.434532814373!2d106.700423!3d10.776889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f3a9b3c7b7f%3A0xaaaaaaaaaaaaaa!2sDistrict%201%2C%20Ho%20Chi%20Minh!5e0!3m2!1svi!2svi!4v0000000000000">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="row">
+        <div class="col-lg-6 contact_col">
+            <div class="contact_contents">
+                <h1>Contact Us</h1>
+                <p>There are many ways to contact us. Drop us a line, give us a call or send an email.</p>
+                <div><p>(800) 686-6688</p><p>info.deercreative@gmail.com</p></div>
+                <div><p>Open hours: 8.00–18.00 Mon–Fri</p><p>Sunday: Closed</p></div>
+            </div>
+
+            <div class="follow_us_contents">
+                <h1>Follow Us</h1>
+                <ul class="social d-flex flex-row">
+                    <li><a href="#" style="background-color:#3a61c9"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#" style="background-color:#41a1f6"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#" style="background-color:#fb4343"><i class="fa fa-google-plus"></i></a></li>
+                    <li><a href="#" style="background-color:#8f6247"><i class="fa fa-instagram"></i></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-6 get_in_touch_col">
+            <div class="get_in_touch_contents">
+                <h1>Get In Touch With Us!</h1>
+                <p>Fill out the form below to receive a free and confidential message.</p>
+                <form method="post">
+                    <div>
+                        <input id="input_name" class="form_input input_name input_ph" type="text" name="name" placeholder="Name" required>
+                        <input id="input_email" class="form_input input_email input_ph" type="email" name="email" placeholder="Email" required>
+                        <input id="input_website" class="form_input input_website input_ph" type="url" name="website" placeholder="Website">
+                        <textarea id="input_message" class="input_ph input_message" name="message" placeholder="Message" rows="3" required></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="red_button message_submit_btn trans_300">Send message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Chỉ nạp các plugin cần riêng cho trang liên hệ -->
+    <script src="~/plugins/Isotope/isotope.pkgd.min.js" asp-append-version="true"></script>
+    <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js" asp-append-version="true"></script>
+    <script src="~/plugins/easing/easing.js" asp-append-version="true"></script>
+    <script src="~/plugins/jquery-ui-1.12.1.custom/jquery-ui.js" asp-append-version="true"></script>
+
+    <!-- Nếu muốn dùng Google Maps JS thay vì iframe:
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap"></script>
+    <script>
+        function initMap() {
+            const pos = { lat: 10.776889, lng: 106.700423 };
+            const map = new google.maps.Map(document.getElementById('map'), { zoom: 14, center: pos });
+            new google.maps.Marker({ position: pos, map });
+        }
+    </script>
+    -->
+    <script src="~/js/contact_custom.js" asp-append-version="true"></script>
+}
