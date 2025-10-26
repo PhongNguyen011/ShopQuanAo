@@ -31,7 +31,7 @@ namespace ShopQuanAo.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(SlideModel slide, IFormFile imageFile)
+        public IActionResult Create(Slide slide, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace ShopQuanAo.Areas.Admin.Controllers
             return View(slide);
         }
         [HttpPost]
-        public IActionResult Edit(SlideModel slide, IFormFile? imageFile)
+        public IActionResult Edit(Slide slide, IFormFile? imageFile)
         {
             // Nếu không có file mới, bỏ validation cho ImageUrl
             if (imageFile == null || imageFile.Length == 0)

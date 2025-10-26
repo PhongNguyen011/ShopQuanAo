@@ -2,7 +2,7 @@
 
 namespace ShopQuanAo.Models
 {
-    public class SlideModel
+    public class Slide
     {
         [Key]
         public int Id { get; set; }
