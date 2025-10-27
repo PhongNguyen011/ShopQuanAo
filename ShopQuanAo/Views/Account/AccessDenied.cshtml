@@ -9,132 +9,132 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewData["Title"] - Shop Quần Áo</title>
-    
-    <!-- Fonts and icons -->
+
+    <!-- Fonts & Icons -->
     <link rel="stylesheet" href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" />
-    
-    <!-- CSS Files -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/argon-dashboard.min.css" />
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            color: #333;
+            height: 100vh;
+        }
+
+        .card {
+            border-radius: 1.25rem !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-primary {
+            background-color: #5e72e4;
+            border: none;
+            font-weight: 600;
+        }
+
+            .btn-primary:hover {
+                background-color: #4c63d8;
+            }
+
+        .btn-outline-primary {
+            color: #5e72e4;
+            border-color: #5e72e4;
+            font-weight: 600;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #5e72e4;
+                color: #fff;
+            }
+
+        .page-header {
+            background: transparent;
+        }
+
+        .mask {
+            background: rgba(94, 114, 228, 0.5);
+        }
+
+        .access-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease;
+        }
+
+            .access-card i {
+                font-size: 4rem;
+            }
+
+        @@keyframes fadeInUp {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <div class="container position-sticky z-index-sticky top-0">
-        <div class="row">
-            <div class="col-12">
-                <!-- Navbar -->
-                <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-                    <div class="container-fluid">
-                        <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3" asp-area="" asp-controller="Home" asp-action="Index">
-                            <i class="fa fa-shopping-bag me-2"></i>Shop Quần Áo
-                        </a>
-                        <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon mt-2">
-                                <span class="navbar-toggler-bar bar1"></span>
-                                <span class="navbar-toggler-bar bar2"></span>
-                                <span class="navbar-toggler-bar bar3"></span>
-                            </span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navigation">
-                            <ul class="navbar-nav mx-auto">
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" asp-area="" asp-controller="Home" asp-action="Index">
-                                        <i class="fa fa-home opacity-6 me-1"></i> Trang Chủ
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" asp-area="" asp-controller="Shop" asp-action="Index">
-                                        <i class="fa fa-shopping-bag opacity-6 me-1"></i> Sản Phẩm
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" asp-area="" asp-controller="Home" asp-action="Contact">
-                                        <i class="fa fa-envelope opacity-6 me-1"></i> Liên Hệ
-                                    </a>
-                                </li>
-                            </ul>
-                            <ul class="navbar-nav d-lg-block d-none">
-                                <li class="nav-item">
-                                    <a class="btn btn-sm btn-outline-primary mb-0 me-1" asp-controller="Account" asp-action="Login">Đăng nhập</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-sm btn-primary mb-0 me-1" asp-controller="Account" asp-action="Register">Đăng ký</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-    
+<body>
     <main class="main-content mt-0">
         <section>
             <div class="page-header min-vh-100">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column mx-lg-0 mx-auto">
-                            <div class="card card-plain">
-                                <div class="card-header pb-0 text-start">
-                                    <div class="text-center mb-4">
-                                        <i class="fa fa-ban text-danger" style="font-size: 4rem;"></i>
-                                    </div>
-                                    <h4 class="font-weight-bolder text-danger">Từ Chối Truy Cập</h4>
-                                    <p class="mb-0">Bạn không có quyền truy cập vào trang này</p>
+                <div class="container d-flex align-items-center justify-content-center">
+                    <div class="row w-100 justify-content-center">
+                        <div class="col-lg-5 col-md-7">
+                            <div class="access-card">
+                                <div class="mb-3">
+                                    <i class="fa fa-ban text-danger"></i>
                                 </div>
-                                <div class="card-body">
-                                    <div class="alert alert-danger" role="alert">
-                                        <div class="d-flex align-items-center">
-                                            <i class="fa fa-exclamation-triangle me-3"></i>
-                                            <div>
-                                                <h6 class="alert-heading mb-1">Lỗi 403 - Forbidden</h6>
-                                                <p class="mb-0">Tài khoản của bạn không có quyền truy cập vào khu vực Admin.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <h4 class="fw-bold text-danger mb-2">Từ Chối Truy Cập</h4>
+                                <p class="text-muted mb-4">
+                                    Bạn không có quyền truy cập vào trang này.<br />
+                                    (Lỗi 403 - Truy cập bị hạn chế)
+                                </p>
 
-                                    <div class="text-center">
-                                        <h6 class="text-muted mb-3">Bạn có thể:</h6>
-                                        
-                                        <div class="d-grid gap-2">
-                                            <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg">
-                                                <i class="fa fa-home me-2"></i>Về Trang Chủ
-                                            </a>
-                                            
-                                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary btn-lg">
-                                                <i class="fa fa-sign-in me-2"></i>Đăng Nhập Khác
-                                            </a>
-                                            
-                                            <a asp-controller="Account" asp-action="Register" class="btn btn-outline-secondary btn-lg">
-                                                <i class="fa fa-user-plus me-2"></i>Tạo Tài Khoản Mới
-                                            </a>
-                                        </div>
-                                    </div>
+                                <div class="d-grid gap-2 mb-4">
+                                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                                        <i class="fa fa-home me-2"></i>Về Trang Chủ
+                                    </a>
+                                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">
+                                        <i class="fa fa-sign-in me-2"></i>Đăng Nhập Khác
+                                    </a>
+                                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary">
+                                        <i class="fa fa-user-plus me-2"></i>Tạo Tài Khoản Mới
+                                    </a>
+                                </div>
 
-                                    <div class="mt-4">
-                                        <div class="card bg-gradient-light">
-                                            <div class="card-body p-3">
-                                                <h6 class="text-dark mb-2">
-                                                    <i class="fa fa-info-circle text-info me-2"></i>
-                                                    Cần hỗ trợ?
-                                                </h6>
-                                                <p class="text-sm text-muted mb-2">
-                                                    Nếu bạn nghĩ đây là lỗi, vui lòng liên hệ quản trị viên.
-                                                </p>
-                                                <a asp-controller="Home" asp-action="Contact" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-envelope me-1"></i>Liên Hệ Hỗ Trợ
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="text-center">
+                                    <small class="text-muted">
+                                        <i class="fa fa-info-circle text-info me-1"></i>
+                                        Nếu bạn nghĩ đây là lỗi, vui lòng liên hệ quản trị viên.
+                                    </small><br />
+                                    <a asp-controller="Home" asp-action="Contact" class="btn btn-sm btn-info mt-2">
+                                        <i class="fa fa-envelope me-1"></i>Liên Hệ Hỗ Trợ
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-                            <div class="position-relative bg-gradient-danger h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" 
-                                 style="background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover;">
-                                <span class="mask bg-gradient-danger opacity-6"></span>
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">Truy Cập Bị Từ Chối</h4>
-                                <p class="text-white position-relative">Khu vực này chỉ dành cho quản trị viên. Vui lòng liên hệ admin để được cấp quyền.</p>
+
+                        <!-- Ảnh nền bên phải -->
+                        <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center">
+                            <div class="position-relative border-radius-lg overflow-hidden w-100 h-100"
+                                 style="background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;">
+                                <span class="mask"></span>
+                                <div class="text-center position-relative text-white p-5">
+                                    <h3 class="fw-bold">Truy Cập Bị Từ Chối</h3>
+                                    <p class="mb-0">Khu vực này chỉ dành cho quản trị viên.<br />Vui lòng liên hệ admin để được cấp quyền.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -143,9 +143,7 @@
         </section>
     </main>
 
-    <!-- Core JS Files -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/argon-dashboard.min.js"></script>
 </body>
 </html>
