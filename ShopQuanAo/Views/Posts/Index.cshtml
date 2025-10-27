@@ -11,8 +11,15 @@
     string Img(string? f) => Url.Content(string.IsNullOrEmpty(f) ? "~/images/_placeholder.png" : $"~/images/posts/{f}");
 }
 
-<div class="container my-4">
-    <h3 class="mb-3">Bài viết</h3>
+
+<div class="container product_section_container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs d-flex flex-row align-items-center">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+        </ul>
+    </div>
 
     @if (Model == null || Model.Count == 0)
     {

@@ -3,6 +3,7 @@
     var title = ViewData["Title"] as string ?? "PNT Shop";
     var bodyClass = ViewData["BodyClass"] as string ?? "";
 }
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -19,6 +20,7 @@
 
     <!-- CSS chung của app -->
     <link href="~/css/site.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/breadcrumbs_styles.css" asp-append-version="true" />
 
     @RenderSection("Styles", required: false)
 </head>
@@ -56,7 +58,47 @@
                             <span class="badge-cart">0</span>
                         </a>
                     </li>
-                    <li><a class="icon-btn" asp-controller="Account" asp-action="Login"><i class="fa fa-user-o"></i></a></li>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <!-- ✅ Nếu CHƯA đăng nhập -->
+                        <li>
+                            <a class="icon-btn" asp-controller="Account" asp-action="Login">
+                                <i class="fa fa-sign-in"></i>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <!-- ✅ Nếu ĐÃ đăng nhập -->
+                        <li class="nav-item user-menu">
+                            <a class="icon-btn">
+                                <i class="fa fa-user-o"></i>
+                            </a>
+                            <div class="user-dropdown">
+                                <div class="user-info">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <a><i class="fa fa-user-circle fa-3x me-2"></i></a>
+                                        <div class="d-flex flex-column justify-content-center align-items-sm-center">
+                                            <small class="text-dark fw-bold">Thành viên</small>
+                                            <div class="fw-bold brand-name">
+                                                <i class="fa fa-anchor me-1" aria-hidden="true"></i>
+                                                <span>PNT</span>
+                                                <span class="text-danger">SHOP</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="fw-semibold">
+                                        <span>@User.Identity.Name</span>
+                                    </div>
+                                </div>
+
+                                <hr class="my-2" />
+                                <form asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-dark w-100">Đăng xuất</button>
+                                </form>
+                            </div>
+                        </li>
+                    }
                 </ul>
 
                 <!-- Nút mở menu mobile (ẩn trên màn lớn) -->

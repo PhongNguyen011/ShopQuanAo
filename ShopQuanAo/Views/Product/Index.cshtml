@@ -12,6 +12,7 @@
     <link href="~/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet">
     <link href="~/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet">
     <link href="~/css/responsive.css" rel="stylesheet">
+    <link href="~/css/main_styles.css" rel="stylesheet">
     <link href="~/css/categories_styles.css" rel="stylesheet">
     <link href="~/css/categories_responsive.css" rel="stylesheet">
 }
@@ -25,7 +26,7 @@
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
-                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>Sản Phẩm</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
                 </ul>
             </div>
 
