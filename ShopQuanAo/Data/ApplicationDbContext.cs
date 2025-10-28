@@ -16,6 +16,8 @@ namespace ShopQuanAo.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Slide> Slides { get; set; }
         public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -63,6 +65,23 @@ namespace ShopQuanAo.Data
                 e.HasIndex(x => x.Code).IsUnique(); // Code duy nhất
                 e.Property(x => x.DiscountValue).HasColumnType("decimal(18,2)");
                 e.Property(x => x.MinOrderAmount).HasColumnType("decimal(18,2)");
+            });
+
+            // ===== Order config =====
+            modelBuilder.Entity<Order>(e =>
+            {
+                e.HasIndex(x => x.OrderCode).IsUnique(); // OrderCode duy nhất
+                e.Property(x => x.Subtotal).HasColumnType("decimal(18,2)");
+                e.Property(x => x.Discount).HasColumnType("decimal(18,2)");
+                e.Property(x => x.Total).HasColumnType("decimal(18,2)");
+                e.HasMany(x => x.OrderItems).WithOne(x => x.Order).HasForeignKey(x => x.OrderId).OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ===== OrderItem config =====
+            modelBuilder.Entity<OrderItem>(e =>
+            {
+                e.Property(x => x.Price).HasColumnType("decimal(18,2)");
+                e.Property(x => x.LineTotal).HasColumnType("decimal(18,2)");
             });
             adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@123");
 
