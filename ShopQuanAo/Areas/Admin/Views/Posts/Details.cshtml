@@ -1,8 +1,11 @@
 ﻿@model ShopQuanAo.Models.Post
 @{
-    ViewData["Title"] = "Chi tiết bài viết";
+    ViewData["Title"] = "Quản Lý Bài Viết";
+    ViewData["Card"] = "Chi tiết bài viết";
 }
 <div class="card">
+    <div class="card-header pb-0"><h6>@ViewData["Card"]</h6></div>
+    <hr />
     <div class="card-header pb-0 d-flex justify-content-between">
         <h6>@Model.Title</h6>
         <div>

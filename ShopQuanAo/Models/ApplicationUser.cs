@@ -26,6 +26,9 @@ namespace ShopQuanAo.Models
 
         [Display(Name = "Trạng Thái")]
         public bool IsActive { get; set; } = true;
+
+        [StringLength(255)]
+        public string? AvatarFileName { get; set; }
     }
 }
 

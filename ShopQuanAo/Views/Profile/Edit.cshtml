@@ -1,0 +1,119 @@
+﻿@model ShopQuanAo.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Chỉnh sửa hồ sơ";
+    string avatar = !string.IsNullOrEmpty(Model.AvatarFileName)
+        ? Url.Content($"~/images/account/{Model.AvatarFileName}")
+        : Url.Content("~/images/account/_default.png");
+}
+<div class="container my-4">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs d-flex flex-row align-items-center">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+            <li class="active"><a><i class="fa fa-angle-right" aria-hidden="true"></i> Tài khoản</a></li>
+            <li class="active"><a asp-controller="Profile" asp-action="Index"><i class="fa fa-angle-right" aria-hidden="true"></i> Hồ sơ của tôi</a></li>
+            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+        </ul>
+    </div>
+
+    <!-- ✅ BỌC TOÀN BỘ NỘI DUNG TRONG FORM -->
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" id="userProfileForm">
+        <div class="row g-4">
+            <!-- Cột trái: ảnh + họ tên + ngày sinh -->
+            <div class="col-md-3">
+                <div class="card shadow-sm border border-2">
+                    <div class="card-body">
+                        <div class="text-center mb-3 position-relative">
+                            <img id="avatarPreview" src="@avatar"
+                                 class="rounded-circle border"
+                                 style="width:140px;height:140px;object-fit:cover;cursor:pointer;"
+                                 alt="Avatar"
+                                 title="Nhấn để chọn ảnh mới" />
+                            <input type="file" name="AvatarFile" id="avatarInput" accept="image/*"
+                                   class="d-none" />
+                            <small class="text-muted d-block mt-2">Nhấn vào ảnh để chọn ảnh mới (≤ 2MB)</small>
+                            <span class="text-danger" asp-validation-for="AvatarFileName"></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                    <button type="submit" class="btn btn-primary w-100">Lưu</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary w-100">Hủy</a>
+                </div>
+            </div>
+
+            <!-- Cột phải: username/email + sđt + địa chỉ + nút lưu -->
+            <div class="col-md-9">
+                <div class="card shadow-sm border border-2">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="form-label">Họ và Tên</label>
+                            <input asp-for="FullName" class="form-control" />
+                            <span class="text-danger" asp-validation-for="FullName"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <input asp-for="UserName" class="form-control" disabled />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input asp-for="Email" class="form-control" disabled />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ngày sinh</label>
+                            <input asp-for="DateOfBirth" type="date" class="form-control" />
+                            <span class="text-danger" asp-validation-for="DateOfBirth"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại</label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Địa chỉ</label>
+                            <input asp-for="Address" class="form-control" />
+                            <span class="text-danger" asp-validation-for="Address"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const avatar = document.getElementById('avatarPreview');
+        const input = document.getElementById('avatarInput');
+
+        // Khi click vào ảnh -> mở hộp chọn file
+        avatar.addEventListener('click', () => input.click());
+
+        // Khi chọn file mới
+        input.addEventListener('change', e => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            // kiểm tra kích thước
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Ảnh vượt quá 2MB!");
+                input.value = "";
+                return;
+            }
+
+            // hiển thị preview ngay
+            const reader = new FileReader();
+            reader.onload = ev => avatar.src = ev.target.result;
+            reader.readAsDataURL(file);
+        });
+    </script>
+}
+

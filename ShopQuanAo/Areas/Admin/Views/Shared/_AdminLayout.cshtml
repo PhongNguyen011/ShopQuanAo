@@ -1,3 +1,8 @@
+@{
+    var title = ViewData["Title"]?.ToString();
+    var card = ViewData["Card"]?.ToString();
+}
+
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ShopQuanAo.Models.ApplicationUser> UserManager
 @inject SignInManager<ShopQuanAo.Models.ApplicationUser> SignInManager
@@ -7,7 +12,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Admin Panel</title>
+    <title>PNT Shop - @ViewData["Title"]</title>
+
+    <!-- Font Awesome 4.7 (CDN) -> hợp với class 'fa fa-...' bạn đang dùng -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/argon-dashboard.min.css" />
     <link rel="stylesheet" href="~/css/nucleo-icons.css" />
@@ -78,7 +87,19 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
                         <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="#">Admin</a></li>
-                        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">@ViewData["Title"]</li>
+                        @if (string.IsNullOrEmpty(card))
+                        {
+                            <!-- ✅ Chỉ có 2 cấp -->
+                            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">@title</li>
+                        }
+                        else
+                        {
+                            <!-- ✅ Có 3 cấp -->
+                            <li class="breadcrumb-item text-sm">
+                                <a class="text-dark" href="#">@title</a>
+                            </li>
+                            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">@card</li>
+                        }
                     </ol>
                 </nav>
                 
@@ -114,9 +135,9 @@
                                         <div class="dropdown-header text-start p-0 mb-2">
                                             <div class="d-flex align-items-center">
                                                 <div class="avatar avatar-md bg-gradient-primary rounded-circle me-2 d-flex align-items-center justify-content-center">
-                                                    <span class="text-white font-weight-bold">
+                                                    <a asp-controller="Profile" asp-action="Index" class="text-white font-weight-bold">
                                                         @(currentUser?.FullName?.Substring(0, 1).ToUpper() ?? "A")
-                                                    </span>
+                                                    </a>
                                                 </div>
                                                 <div>
                                                     <h6 class="text-sm font-weight-bold mb-0">@currentUser?.FullName</h6>

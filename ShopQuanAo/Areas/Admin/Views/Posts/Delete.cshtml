@@ -1,10 +1,12 @@
 ﻿@model ShopQuanAo.Models.Post
 @{
-    ViewData["Title"] = "Xoá Bài Viết";
+    ViewData["Title"] = "Quản Lý Bài Viết";
+    ViewData["Card"] = "Xoá Bài Viết";
 }
 
 <div class="card">
-    <div class="card-header pb-0"><h6>@ViewData["Title"]</h6></div>
+    <div class="card-header pb-0"><h6>@ViewData["Card"]</h6></div>
+    <hr />
     <div class="card-body">
         <p>Bạn có chắc muốn xoá bài viết: <strong>@Model.Title</strong>?</p>
 

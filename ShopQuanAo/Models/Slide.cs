@@ -19,6 +19,6 @@ namespace ShopQuanAo.Models
         public bool IsActive { get; set; } = true;
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now; // ✅ tAdd-Migration AddSlideTablehêm dòng này
+        public DateTime CreatedAt { get; set; } = DateTime.Now; 
     }
 }

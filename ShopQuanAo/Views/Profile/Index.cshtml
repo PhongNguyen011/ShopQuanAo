@@ -1,0 +1,84 @@
+﻿@model ShopQuanAo.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Hồ sơ của tôi";
+    string avatar = !string.IsNullOrEmpty(Model.AvatarFileName)
+        ? Url.Content($"~/images/account/{Model.AvatarFileName}")
+        : Url.Content("~/images/account/_default.png");
+}
+<div class="container my-4">
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs d-flex flex-row align-items-center">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> Tài khoản</a></li>
+            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+        </ul>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <form>
+        <div class="row g-4">
+            <!-- Cột trái: ảnh + họ tên + ngày sinh -->
+            <div class="col-md-3">
+                <div class="card shadow-sm border border-2">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <img src="@avatar"
+                                 class="rounded-circle border"
+                                 style="width:140px;height:140px;object-fit:cover;" />
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <a asp-action="Edit" class="btn btn-outline-primary w-100">Sửa hồ sơ</a>
+                </div>
+            </div>
+
+            <!-- Cột phải: username, email, phone, address -->
+            <div class="col-md-9">
+                <div class="card shadow-sm border border-2">
+                    <div class="card-body">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Họ và Tên</label>
+                            <input asp-for="FullName" class="form-control" disabled
+                                   value="@(string.IsNullOrEmpty(Model.FullName) ? "Chưa cập nhật" : Model.FullName)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Tên đăng nhập</label>
+                            <input class="form-control" disabled value="@Model.UserName" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input class="form-control" disabled value="@Model.Email" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Ngày sinh</label>
+                            <input class="form-control" type="text" disabled
+                                   value="@(Model.DateOfBirth.HasValue? Model.DateOfBirth.Value.ToString("dd/MM/yyyy") : "Chưa cập nhật")" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Số điện thoại</label>
+                            <input class="form-control" disabled
+                                   value="@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Chưa cập nhật" : Model.PhoneNumber)" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Địa chỉ</label>
+                            <textarea class="form-control" rows="2" disabled>@(string.IsNullOrEmpty(Model.Address) ? "Chưa cập nhật" : Model.Address)</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

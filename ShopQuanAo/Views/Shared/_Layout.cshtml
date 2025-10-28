@@ -1,14 +1,8 @@
-﻿@{
-    Layout = null;
-    var title = ViewData["Title"] as string ?? "PNT Shop";
-    var bodyClass = ViewData["BodyClass"] as string ?? "";
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
-    <title>@title</title>
+    <title>PNT Shop - @ViewData["Title"]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Bootstrap 5 CSS (CDN) -->
@@ -24,7 +18,7 @@
 
     @RenderSection("Styles", required: false)
 </head>
-<body class="@bodyClass">
+<body class="d-flex flex-column min-vh-100">
     <!-- Top bar -->
     <div class="topbar">
         <div class="container"><span>HỆ THỐNG CỬA HÀNG OLD SAILOR</span></div>
@@ -77,7 +71,7 @@
                             <div class="user-dropdown">
                                 <div class="user-info">
                                     <div class="d-flex align-items-center mb-1">
-                                        <a><i class="fa fa-user-circle fa-3x me-2"></i></a>
+                                        <a asp-controller="Profile" asp-action="Index"><i class="fa fa-user-circle fa-3x me-2"></i></a>
                                         <div class="d-flex flex-column justify-content-center align-items-sm-center">
                                             <small class="text-dark fw-bold">Thành viên</small>
                                             <div class="fw-bold brand-name">
@@ -147,14 +141,35 @@
                 <li class="menu_item"><a href="#">Cửa Hàng</a></li>
                 <li class="menu_item"><a asp-area="" asp-controller="Posts" asp-action="Index">Bài Viết</a></li>
                 <li class="menu_item"><a asp-area="" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
-                <li class="menu_item has-children">
-                    <a href="#">
-                        Tài Khoản
-                        <i class="fa fa-angle-down"></i>
+                <li class="menu_item has-children account-dd">
+                    <a href="#" class="account-toggle" aria-expanded="false" aria-haspopup="true">
+                        Tài Khoản <i class="fa fa-angle-down ms-1"></i>
                     </a>
-                    <ul class="menu_selection">
-                        <li><a asp-controller="Account" asp-action="Login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng Nhập</a></li>
-                        <li><a asp-controller="Account" asp-action="Register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng Ký</a></li>
+
+                    <ul class="menu_selection" role="menu" aria-label="Tài khoản">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li role="none">
+                                <a role="menuitem" asp-controller="Account" asp-action="Login">
+                                    <i class="fa fa-sign-in me-2" aria-hidden="true"></i>Đăng Nhập
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li role="none">
+                                <a role="menuitem" asp-controller="Profile" asp-action="Index">
+                                    <i class="fa fa-user-o me-2" aria-hidden="true"></i>Hồ sơ
+                                </a>
+                            </li>
+                            <li role="none">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="m-0 p-0">
+                                    <button type="submit" class="btn btn-sm btn-outline-dark w-100 fw-bold" role="menuitem">
+                                        <i class="fa fa-sign-out me-2" aria-hidden="true"></i>Đăng xuất
+                                    </button>
+                                </form>
+                            </li>
+                        }
                     </ul>
                 </li>
             </ul>
@@ -163,7 +178,7 @@
 
 
 
-    <main role="main">
+    <main role="main" class="flex-grow-1">
         @RenderBody()
     </main>
 

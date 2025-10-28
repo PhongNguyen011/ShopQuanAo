@@ -1,0 +1,117 @@
+﻿@model ShopQuanAo.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Hồ sơ Admin";
+    ViewData["Card"] = "Sửa hồ sơ Admin";
+    string avatar = !string.IsNullOrEmpty(Model.AvatarFileName)
+        ? Url.Content($"~/images/account/{Model.AvatarFileName}")
+        : Url.Content("~/images/account/_default.png");
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card p-3 mb-4">
+            <div class="card-header py-3">
+                <h6>Sửa Thông tin: @Model.FullName</h6>
+            </div>
+
+            <!-- ✅ BỌC TOÀN BỘ NỘI DUNG TRONG FORM -->
+            <form asp-action="Edit" method="post" enctype="multipart/form-data" id="adminProfileForm">
+                <div class="row g-4">
+                    <!-- Trái -->
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border border-2">
+                            <div class="card-body">
+                                <div class="text-center mb-3 position-relative">
+                                    <img id="avatarPreview" src="@avatar"
+                                            class="rounded-circle border"
+                                            style="width:140px;height:140px;object-fit:cover;cursor:pointer;"
+                                            alt="Avatar"
+                                            title="Nhấn để chọn ảnh mới" />
+                                    <input type="file" name="AvatarFile" id="avatarInput" accept="image/*"
+                                            class="d-none" />
+                                    <small class="text-muted d-block mt-2">Nhấn vào ảnh để chọn ảnh mới (≤ 2MB)</small>
+                                    <span class="text-danger" asp-validation-for="AvatarFileName"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <button type="submit" class="btn btn-primary w-100">Lưu</button>
+                            <a asp-action="Index" class="btn btn-outline-secondary w-100">Hủy</a>
+                        </div>
+                    </div>
+
+                    <!-- Phải -->
+                    <div class="col-md-8">
+                        <div class="card shadow-sm border border-2">
+                            <div class="card-body">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Họ và Tên</label>
+                                    <input asp-for="FullName" class="form-control" />
+                                    <span class="text-danger" asp-validation-for="FullName"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Tên đăng nhập</label>
+                                    <input asp-for="UserName" class="form-control" disabled />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input asp-for="Email" class="form-control" disabled />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày sinh</label>
+                                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                    <span class="text-danger" asp-validation-for="DateOfBirth"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Địa chỉ</label>
+                                    <input asp-for="Address" class="form-control" />
+                                    <span class="text-danger" asp-validation-for="Address"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const avatar = document.getElementById('avatarPreview');
+        const input = document.getElementById('avatarInput');
+
+        // Khi click vào ảnh -> mở hộp chọn file
+        avatar.addEventListener('click', () => input.click());
+
+        // Khi chọn file mới
+        input.addEventListener('change', e => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+
+            // kiểm tra kích thước
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Ảnh vượt quá 2MB!");
+                input.value = "";
+                return;
+            }
+
+            // hiển thị preview ngay
+            const reader = new FileReader();
+            reader.onload = ev => avatar.src = ev.target.result;
+            reader.readAsDataURL(file);
+        });
+    </script>
+}
