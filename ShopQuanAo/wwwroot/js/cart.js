@@ -4,6 +4,7 @@
     const token = document.querySelector('#cart-anti input[name="__RequestVerificationToken"]')?.value;
 
     const fmtMoney = (n) => (n || 0).toLocaleString('vi-VN') + ' ₫';
+    
 
     // Cập nhật số lượng và thành tiền cho 1 dòng
     function updateRowUI(id, qty, lineTotal, stock) {

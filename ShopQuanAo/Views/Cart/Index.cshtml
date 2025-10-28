@@ -11,10 +11,18 @@
 
     string VnMoney(decimal v) => string.Format(vn, "{0:N0} ₫", v);
 
-    // 👇 Thông tin mã giảm giá
-    var appliedCoupon = ViewBag.AppliedCoupon; // CartController đặt qua ViewBag
+    // Thông tin mã giảm giá
+    var appliedCoupon = ViewBag.AppliedCoupon; // CartController đặt qua ViewBag (dynamic)
     decimal discount = ViewBag.Discount ?? 0M;
     decimal total = ViewBag.Total ?? (subtotal - discount);
+
+    // Lấy chuỗi danh mục safe
+    string allowedCats = "";
+    if (appliedCoupon != null)
+    {
+        // dùng "as string" để tránh InvalidCast
+        allowedCats = (appliedCoupon.AllowedCategoriesCsv as string) ?? "";
+    }
 }
 
 <div class="container my-4 mt-5">
@@ -39,6 +47,7 @@
     }
     else
     {
+        <!-- form ẩn chỉ để lấy AntiForgery cho AJAX -->
         <form id="cart-anti" method="post">@Html.AntiForgeryToken()</form>
 
         <div class="table-responsive">
@@ -86,7 +95,7 @@
                             </td>
                             <td class="fw-semibold" id="line-@item.ProductId">@VnMoney(item.LineTotal)</td>
                             <td>
-                                <form asp-action="Remove" method="post">
+                                <form asp-action="Remove" method="post" class="m-0">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.ProductId" />
                                     <button class="btn btn-danger btn-sm" type="submit">Xoá</button>
@@ -136,7 +145,7 @@
                                     <button class="btn btn-primary">Áp dụng</button>
                                 </div>
                                 <div class="form-text mt-2">
-                                    Mã không phân biệt hoa/thường. Một số mã có điều kiện về danh mục hoặc giá trị đơn hàng.
+                                    Có thể nhập nhiều mã, cách nhau dấu phẩy — hệ thống sẽ chọn mã tốt nhất.
                                 </div>
                             </form>
                         }
@@ -152,7 +161,7 @@
                                         —
                                         @(appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
                                                                         ? $"Giảm {appliedCoupon.DiscountValue}%"
-                                                                        : $"Giảm {VnMoney(appliedCoupon.DiscountValue)}")
+                                                                        : $"Giảm {VnMoney((decimal)appliedCoupon.DiscountValue)}")
                             </span>
                         </div>
                         <form asp-action="RemoveCoupon" method="post" class="m-0">
@@ -168,10 +177,9 @@
                                 {
                                     <div>• Đơn tối thiểu: <strong>@VnMoney((decimal)appliedCoupon.MinOrderAmount)</strong></div>
                                 }
-                                @if (appliedCoupon.Scope == ShopQuanAo.Models.CouponScope.CategoryOnly
-                                                        && !string.IsNullOrWhiteSpace((string)appliedCoupon.AllowedCategoriesCsv))
+                                @if (appliedCoupon.Scope == ShopQuanAo.Models.CouponScope.CategoryOnly && !string.IsNullOrWhiteSpace(allowedCats))
                                 {
-                                    <div>• Phạm vi: chỉ áp dụng cho <strong>@appliedCoupon.AllowedCategoriesCsv</strong></div>
+                                    <div>• Phạm vi: chỉ áp dụng cho <strong>@allowedCats</strong></div>
                                 }
                                 <div>• Trạng thái: @(appliedCoupon.IsActive ? "Kích hoạt" : "Đã tắt")</div>
                             </div>
@@ -179,11 +187,12 @@
                             <hr class="my-3" />
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="text-muted">Tiền giảm</div>
-                                <div class="fw-semibold" id="discount">@VnMoney(discount)</div>
+                                <!-- dùng id khác để tránh trùng với footer -->
+                                <div class="fw-semibold" id="discount-card">@VnMoney(discount)</div>
                             </div>
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="text-muted">Tổng sau giảm</div>
-                                <div class="fw-bold" id="total">@VnMoney(total)</div>
+                                <div class="fw-bold" id="total-card">@VnMoney(total)</div>
                             </div>
                         }
                     </div>
@@ -194,7 +203,7 @@
             <div class="col-lg-6 d-flex flex-wrap justify-content-end align-items-center gap-2">
                 <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info">Tiếp tục mua sắm</a>
                 <a asp-controller="Checkout" asp-action="Index" class="btn btn-dark">Thanh toán</a>
-                <form asp-action="Clear" method="post">
+                <form asp-action="Clear" method="post" class="m-0">
                     @Html.AntiForgeryToken()
                     <button class="btn btn-outline-danger" type="submit">Xoá tất cả</button>
                 </form>
@@ -227,4 +236,16 @@
 
 @section Scripts {
     <script src="~/js/cart.js"></script>
+    <script>
+        // Nếu bạn muốn đồng bộ số ở card voucher sau khi AJAX ChangeQty chạy và cập nhật footer:
+        // Chỉ cần copy giá trị footer sang card nếu tồn tại.
+        document.addEventListener('cart:totals-updated', function (e) {
+            var d = document.getElementById('discount');
+            var t = document.getElementById('total');
+            var dc = document.getElementById('discount-card');
+            var tc = document.getElementById('total-card');
+            if (d && dc) dc.textContent = d.textContent;
+            if (t && tc) tc.textContent = t.textContent;
+        });
+    </script>
 }
