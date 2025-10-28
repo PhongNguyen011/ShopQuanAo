@@ -28,6 +28,17 @@ namespace ShopQuanAo.Controllers
             public string Code { get; set; } = "";
             public decimal Discount { get; set; }
             public string Message { get; set; } = "";
+
+            public ShopQuanAo.Models.DiscountType DiscountType { get; set; }
+            public decimal DiscountValue { get; set; }
+            public decimal? MinOrderAmount { get; set; }
+            public ShopQuanAo.Models.CouponScope Scope { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime? EndDate { get; set; }
+            public bool IsActive { get; set; }
+
+            // 👇 THÊM DÒNG NÀY VÀO
+            public string? AllowedCategoriesCsv { get; set; }
         }
 
         private AppliedCouponInfo? GetAppliedCoupon()
@@ -182,8 +193,6 @@ namespace ShopQuanAo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ================== COUPON ==================
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApplyCoupon(string code)
@@ -204,23 +213,26 @@ namespace ShopQuanAo.Controllers
             }
             else
             {
+                var c = result.coupon!; // entity Coupon lấy từ DB
+
                 SetAppliedCoupon(new AppliedCouponInfo
                 {
-                    Code = result.coupon!.Code,
+                    Code = c.Code,
                     Discount = result.discount,
-                    Message = result.message
+                    Message = result.message,
+
+                    // ===== GÁN THÊM CÁC TRƯỜNG MỚI =====
+                    DiscountType = c.DiscountType,
+                    DiscountValue = c.DiscountValue,
+                    MinOrderAmount = c.MinOrderAmount,
+                    Scope = c.Scope,
+                    StartDate = c.StartDate,
+                    EndDate = c.EndDate,
+                    IsActive = c.IsActive,
+                    AllowedCategoriesCsv = c.AllowedCategoriesCsv
                 });
                 TempData["CartMessage"] = result.message;
             }
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RemoveCoupon()
-        {
-            SetAppliedCoupon(null);
-            TempData["CartMessage"] = "Đã bỏ mã giảm giá.";
             return RedirectToAction(nameof(Index));
         }
     }
