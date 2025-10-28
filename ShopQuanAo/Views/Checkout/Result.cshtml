@@ -1,0 +1,29 @@
+@{
+    ViewData["Title"] = "Kết quả thanh toán";
+    var status = (string)(ViewBag.Status ?? "failed");
+    var code = (string)(ViewBag.Code ?? "");
+    var message = (string)(ViewBag.Message ?? "");
+}
+
+<div class="container my-5">
+    <div class="text-center">
+        @if (status == "success")
+        {
+            <div class="alert alert-success">
+                <h5 class="mb-1">Thanh toán thành công</h5>
+                <div>Mã đơn/Tham chiếu: <strong>@code</strong></div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger">
+                <h5 class="mb-1">Thanh toán thất bại</h5>
+                <div>@message</div>
+            </div>
+        }
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Về trang chủ</a>
+    </div>
+</div>
+
+

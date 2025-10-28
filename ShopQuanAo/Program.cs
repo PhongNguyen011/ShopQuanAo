@@ -71,6 +71,7 @@ builder.Services.AddSession(o =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 var app = builder.Build();
 
