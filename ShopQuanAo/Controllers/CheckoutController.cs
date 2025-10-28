@@ -209,7 +209,17 @@ namespace ShopQuanAo.Controllers
         [HttpGet]
         public IActionResult VnPayReturn()
         {
+            // Log tất cả query parameters để debug
+            var queryParams = HttpContext.Request.Query;
+            var logMessage = $"VNPay Return - Query params: {string.Join(", ", queryParams.Select(x => $"{x.Key}={x.Value}"))}";
+            
+            // Log vào console hoặc file log
+            Console.WriteLine(logMessage);
+            
             var result = _vnPayService.PaymentExecute(HttpContext.Request.Query);
+            
+            // Log kết quả xử lý
+            Console.WriteLine($"VNPay Return - Success: {result.Success}, OrderId: {result.OrderId}, ResponseCode: {result.VnPayResponseCode}");
             
             if (result.Success)
             {
@@ -219,7 +229,7 @@ namespace ShopQuanAo.Controllers
             }
             else
             {
-                TempData["Error"] = "Thanh toán VNPay thất bại.";
+                TempData["Error"] = $"Thanh toán VNPay thất bại. Mã lỗi: {result.VnPayResponseCode}";
                 return RedirectToAction(nameof(Result), new { code = result.OrderId, status = "failed", message = result.VnPayResponseCode });
             }
         }
