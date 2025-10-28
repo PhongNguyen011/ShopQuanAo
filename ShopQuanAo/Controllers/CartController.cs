@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ShopQuanAo.Data;
 using ShopQuanAo.Models;
 using ShopQuanAo.Services;
+using ShopQuanAo.Utils; // <- để dùng SessionExtensions (SetObject/GetObject)
+using System.Linq;
 
 namespace ShopQuanAo.Controllers
 {
@@ -10,17 +12,38 @@ namespace ShopQuanAo.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly ICartService _cart;
+        private readonly ICouponService _coupon; // <- thêm
 
-        public CartController(ApplicationDbContext db, ICartService cart)
+        public CartController(ApplicationDbContext db, ICartService cart, ICouponService coupon)
         {
             _db = db;
             _cart = cart;
+            _coupon = coupon;
+        }
+
+        private const string COUPON_KEY = "CART_COUPON";
+
+        public class AppliedCouponInfo
+        {
+            public string Code { get; set; } = "";
+            public decimal Discount { get; set; }
+            public string Message { get; set; } = "";
+        }
+
+        private AppliedCouponInfo? GetAppliedCoupon()
+            => HttpContext.Session.GetObject<AppliedCouponInfo>(COUPON_KEY);
+
+        private void SetAppliedCoupon(AppliedCouponInfo? info)
+        {
+            if (info == null) HttpContext.Session.Remove(COUPON_KEY);
+            else HttpContext.Session.SetObject(COUPON_KEY, info);
         }
 
         // GET /Cart
         public IActionResult Index()
         {
             var items = _cart.GetCart();
+
             // Lấy tồn kho cho các sản phẩm trong giỏ
             var ids = items.Select(x => x.ProductId).ToList();
             var stockMap = _db.Products
@@ -28,9 +51,19 @@ namespace ShopQuanAo.Controllers
                               .Select(p => new { p.Id, p.StockQuantity })
                               .ToDictionary(x => x.Id, x => x.StockQuantity);
 
+            var subtotal = items.Sum(x => x.LineTotal);
+            var applied = GetAppliedCoupon();
+            var discount = applied?.Discount ?? 0m;
+            if (discount > subtotal) discount = subtotal;
+            var total = subtotal - discount;
+
             ViewBag.StockMap = stockMap;
-            ViewBag.Subtotal = items.Sum(x => x.LineTotal);
+            ViewBag.Subtotal = subtotal;
+            ViewBag.Discount = discount;
+            ViewBag.Total = total;
+            ViewBag.AppliedCoupon = applied;
             ViewBag.Message = TempData["CartMessage"];
+
             return View(items);
         }
 
@@ -72,6 +105,10 @@ namespace ShopQuanAo.Controllers
             }
 
             _cart.SaveCart(cart);
+
+            // khi thay đổi giỏ, nếu mã đang áp vượt subtotal mới thì vẫn để đó,
+            // Index() sẽ tự clamp discount <= subtotal
+
             TempData["CartMessage"] = $"Đã thêm “{p.Name}” vào giỏ.";
             return RedirectToAction(nameof(Index));
         }
@@ -113,6 +150,8 @@ namespace ShopQuanAo.Controllers
             line.Quantity = newQty;
             _cart.SaveCart(cart);
 
+            // Không cần xử lý lại coupon ở đây, Index() sẽ clamp
+
             return Json(new
             {
                 ok = true,
@@ -139,6 +178,49 @@ namespace ShopQuanAo.Controllers
         public IActionResult Clear()
         {
             _cart.SaveCart(new List<CartItem>());
+            SetAppliedCoupon(null); // xoá luôn mã nếu dọn giỏ
+            return RedirectToAction(nameof(Index));
+        }
+
+        // ================== COUPON ==================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApplyCoupon(string code)
+        {
+            var cart = _cart.GetCart();
+            if (cart.Count == 0)
+            {
+                SetAppliedCoupon(null);
+                TempData["CartMessage"] = "Giỏ hàng trống.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = await _coupon.TryApplyAsync(code, cart);
+            if (!result.ok)
+            {
+                SetAppliedCoupon(null);
+                TempData["CartMessage"] = result.message;
+            }
+            else
+            {
+                SetAppliedCoupon(new AppliedCouponInfo
+                {
+                    Code = result.coupon!.Code,
+                    Discount = result.discount,
+                    Message = result.message
+                });
+                TempData["CartMessage"] = result.message;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RemoveCoupon()
+        {
+            SetAppliedCoupon(null);
+            TempData["CartMessage"] = "Đã bỏ mã giảm giá.";
             return RedirectToAction(nameof(Index));
         }
     }

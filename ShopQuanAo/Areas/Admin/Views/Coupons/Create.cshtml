@@ -1,0 +1,112 @@
+﻿@model ShopQuanAo.Models.Coupon
+
+@{
+    ViewData["Title"] = "Tạo mã giảm giá";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <h6>@ViewData["Title"]</h6>
+            </div>
+
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row g-3">
+                        <!-- CODE -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Mã giảm giá</label>
+                            <input asp-for="Code" class="form-control" placeholder="VD: SALE50" />
+                            <div class="form-text">Nhập mã ngắn gọn, dễ nhớ để người dùng nhập khi thanh toán.</div>
+                            <span asp-validation-for="Code" class="text-danger"></span>
+                        </div>
+
+                        <!-- LOẠI -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Loại giảm</label>
+                            <select asp-for="DiscountType" class="form-select"
+                                    asp-items="Html.GetEnumSelectList<ShopQuanAo.Models.DiscountType>()">
+                            </select>
+                            <div class="form-text">Chọn <strong>Percentage</strong> nếu giảm theo %, hoặc <strong>FixedAmount</strong> nếu giảm theo tiền.</div>
+                        </div>
+
+                        <!-- GIÁ TRỊ -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Giá trị giảm</label>
+                            <input asp-for="DiscountValue" class="form-control" placeholder="VD: 10 hoặc 50000" />
+                            <div class="form-text">Nếu chọn giảm theo %, chỉ nhập số phần trăm. Nếu giảm theo tiền, nhập số tiền VNĐ.</div>
+                            <span asp-validation-for="DiscountValue" class="text-danger"></span>
+                        </div>
+
+                        <!-- TỐI THIỂU -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Giá trị đơn tối thiểu</label>
+                            <input asp-for="MinOrderAmount" class="form-control" placeholder="VD: 200000" />
+                            <div class="form-text">Đơn hàng phải đạt ít nhất số tiền này mới được áp dụng mã.</div>
+                        </div>
+
+                        <!-- NGÀY BẮT ĐẦU -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Bắt đầu hiệu lực</label>
+                            <input asp-for="StartDate" type="datetime-local" class="form-control"
+                                   value="@(Model?.StartDate.ToString("yyyy-MM-ddTHH:mm") ?? String.Empty)" />
+                            <div class="form-text">Thời điểm mã giảm giá bắt đầu có hiệu lực.</div>
+                        </div>
+
+                        <!-- NGÀY KẾT THÚC -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Kết thúc hiệu lực</label>
+                            <input asp-for="EndDate" type="datetime-local" class="form-control"
+                                   value="@(Model?.EndDate.HasValue == true ? Model.EndDate.Value.ToString("yyyy-MM-ddTHH:mm") : String.Empty)" />
+                            <div class="form-text">Để trống nếu mã giảm giá không có hạn.</div>
+                        </div>
+
+                        <!-- PHẠM VI -->
+                        <div class="col-md-3">
+                            <label class="form-control-label">Phạm vi áp dụng</label>
+                            <select asp-for="Scope" class="form-select"
+                                    asp-items="Html.GetEnumSelectList<ShopQuanAo.Models.CouponScope>()">
+                            </select>
+                            <div class="form-text">Chọn toàn bộ cửa hàng, theo danh mục, hoặc sản phẩm cụ thể.</div>
+                        </div>
+
+                        <!-- DANH MỤC ÁP DỤNG -->
+                        <div class="col-md-6">
+                            <label class="form-control-label">Danh mục áp dụng (CSV)</label>
+                            <input asp-for="AllowedCategoriesCsv" class="form-control" placeholder="VD: men,women,accessories" />
+                            <div class="form-text">Chỉ nhập khi chọn Scope = CategoryOnly. Phân tách nhiều danh mục bằng dấu phẩy (,).</div>
+                        </div>
+
+                        <!-- TRẠNG THÁI -->
+                        <div class="col-md-3 d-flex align-items-center">
+                            <div class="form-check form-switch mt-3">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" checked />
+                                <label asp-for="IsActive" class="form-check-label">Kích hoạt ngay</label>
+                                <div class="form-text">Bật nếu muốn mã hoạt động ngay sau khi tạo.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÚT -->
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Lưu
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Quay Lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

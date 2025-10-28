@@ -53,6 +53,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Fix for development
     options.Cookie.SameSite = SameSiteMode.Lax; // Fix for development
 });
+// Add Coupon Service
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddSession();
 
 // Add Email Service
 builder.Services.AddTransient<IEmailService, EmailService>();

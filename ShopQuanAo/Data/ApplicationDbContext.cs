@@ -15,6 +15,7 @@ namespace ShopQuanAo.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Slide> Slides { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -56,7 +57,13 @@ namespace ShopQuanAo.Data
                 CreatedDate = DateTime.Now,
                 IsActive = true
             };
-
+            // ===== Coupon config =====
+            modelBuilder.Entity<Coupon>(e =>
+            {
+                e.HasIndex(x => x.Code).IsUnique(); // Code duy nhất
+                e.Property(x => x.DiscountValue).HasColumnType("decimal(18,2)");
+                e.Property(x => x.MinOrderAmount).HasColumnType("decimal(18,2)");
+            });
             adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@123");
 
             modelBuilder.Entity<ApplicationUser>().HasData(adminUser);

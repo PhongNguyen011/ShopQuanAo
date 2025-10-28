@@ -10,8 +10,12 @@
     var stockMap = ViewBag.StockMap as Dictionary<int, int> ?? new Dictionary<int, int>();
 
     string VnMoney(decimal v) => string.Format(vn, "{0:N0} ₫", v);
-}
 
+    // 👇 Thông tin mã giảm giá
+    var appliedCoupon = ViewBag.AppliedCoupon; // CartController đặt qua ViewBag
+    decimal discount = ViewBag.Discount ?? 0M;
+    decimal total = ViewBag.Total ?? (subtotal - discount);
+}
 
 <div class="container my-4 mt-5">
 
@@ -35,7 +39,7 @@
     }
     else
     {
-        <form id="cart-anti" method="post">@Html.AntiForgeryToken()</form> @* để lấy token AJAX *@
+        <form id="cart-anti" method="post">@Html.AntiForgeryToken()</form>
 
         <div class="table-responsive">
             <table class="table align-middle" id="cart-table">
@@ -58,7 +62,6 @@
                         : Url.Content($"{img}");
                         var stock = stockMap.TryGetValue(item.ProductId, out var s) ? s : int.MaxValue;
 
-
                         <tr id="row-@item.ProductId" data-id="@item.ProductId" data-stock="@stock">
                             <td>
                                 <img src="@src" alt="@item.Name"
@@ -77,27 +80,14 @@
                                            value="@item.Quantity"
                                            readonly
                                            style="width:70px;height:100%;" />
-
-                                    <button type="button"
-                                            class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center btn-plus"
-                                            data-id="@item.ProductId"
-                                            style="width:40px;">
-                                        +
-                                    </button>
-
-                                    <button type="button"
-                                            class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center btn-minus"
-                                            data-id="@item.ProductId"
-                                            style="width:40px;">
-                                        −
-                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-plus" data-id="@item.ProductId">+</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-minus" data-id="@item.ProductId">−</button>
                                 </div>
                             </td>
-
-
                             <td class="fw-semibold" id="line-@item.ProductId">@VnMoney(item.LineTotal)</td>
                             <td>
                                 <form asp-action="Remove" method="post">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@item.ProductId" />
                                     <button class="btn btn-danger btn-sm" type="submit">Xoá</button>
                                 </form>
@@ -111,20 +101,129 @@
                         <th class="text-end" id="subtotal">@VnMoney(subtotal)</th>
                         <th></th>
                     </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">Giảm</th>
+                        <th class="text-end" id="discount">@VnMoney(discount)</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4" class="text-end">Tổng</th>
+                        <th class="text-end fw-bold" id="total">@VnMoney(total)</th>
+                        <th></th>
+                    </tr>
                 </tfoot>
             </table>
         </div>
 
-        <div class="d-flex flex-wrap justify-content-end align-items-center gap-2">
-            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info">Tiếp tục mua sắm</a>
-            <a asp-controller="Checkout" asp-action="Index" class="btn btn-outline-dark">Thanh toán</a>
-            <form asp-action="Clear" method="post">
-                <button class="btn btn-outline-danger" type="submit">Xoá tất cả</button>
-            </form>
+        <div class="row g-3 align-items-start mt-3">
+            <!-- Khối mã giảm giá -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white pb-2">
+                        <h6 class="mb-0 d-flex align-items-center gap-2">
+                            <i class="fa fa-ticket"></i> Mã giảm giá
+                        </h6>
+                    </div>
+
+                    <div class="card-body">
+                        @if (appliedCoupon == null)
+                        {
+                            <form asp-action="ApplyCoupon" method="post" class="coupon-form">
+                                @Html.AntiForgeryToken()
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fa fa-tag"></i></span>
+                                    <input type="text" name="code" class="form-control coupon-input" placeholder="NHẬP MÃ (VD: SALE10)" autocomplete="off" />
+                                    <button class="btn btn-primary">Áp dụng</button>
+                                </div>
+                                <div class="form-text mt-2">
+                                    Mã không phân biệt hoa/thường. Một số mã có điều kiện về danh mục hoặc giá trị đơn hàng.
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <span class="badge rounded-pill bg-success px-3 py-2">
+                                        <i class="fa fa-check-circle me-1"></i> Đã áp dụng
+                                    </span>
+                                    <span class="code-chip">@appliedCoupon.Code</span>
+                                    <span class="text-muted small">
+                                        —
+                                        @(appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
+                                                                        ? $"Giảm {appliedCoupon.DiscountValue}%"
+                                                                        : $"Giảm {VnMoney(appliedCoupon.DiscountValue)}")
+                            </span>
+                        </div>
+                        <form asp-action="RemoveCoupon" method="post" class="m-0">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-outline-danger btn-sm">
+                                <i class="fa fa-times me-1"></i> Bỏ mã
+                            </button>
+                        </form>
+                    </div>
+
+                            <div class="mt-2 small text-muted">
+                        @if (appliedCoupon.MinOrderAmount != null)
+                                {
+                                    <div>• Đơn tối thiểu: <strong>@VnMoney((decimal)appliedCoupon.MinOrderAmount)</strong></div>
+                                }
+                                @if (appliedCoupon.Scope == ShopQuanAo.Models.CouponScope.CategoryOnly
+                                                        && !string.IsNullOrWhiteSpace((string)appliedCoupon.AllowedCategoriesCsv))
+                                {
+                                    <div>• Phạm vi: chỉ áp dụng cho <strong>@appliedCoupon.AllowedCategoriesCsv</strong></div>
+                                }
+                                <div>• Trạng thái: @(appliedCoupon.IsActive ? "Kích hoạt" : "Đã tắt")</div>
+                            </div>
+
+                            <hr class="my-3" />
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="text-muted">Tiền giảm</div>
+                                <div class="fw-semibold" id="discount">@VnMoney(discount)</div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="text-muted">Tổng sau giảm</div>
+                                <div class="fw-bold" id="total">@VnMoney(total)</div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút thao tác -->
+            <div class="col-lg-6 d-flex flex-wrap justify-content-end align-items-center gap-2">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info">Tiếp tục mua sắm</a>
+                <a asp-controller="Checkout" asp-action="Index" class="btn btn-dark">Thanh toán</a>
+                <form asp-action="Clear" method="post">
+                    @Html.AntiForgeryToken()
+                    <button class="btn btn-outline-danger" type="submit">Xoá tất cả</button>
+                </form>
+            </div>
         </div>
     }
 </div>
 
+<style>
+    .coupon-input {
+        text-transform: uppercase;
+        letter-spacing: .5px;
+    }
+
+    .code-chip {
+        display: inline-flex;
+        align-items: center;
+        padding: .25rem .6rem;
+        border: 1px dashed #ced4da;
+        border-radius: 999px;
+        font-weight: 600;
+        background: #f8f9fa;
+    }
+
+    .coupon-form .input-group .form-control:focus {
+        box-shadow: none;
+        border-color: #86b7fe;
+    }
+</style>
 
 @section Scripts {
     <script src="~/js/cart.js"></script>
