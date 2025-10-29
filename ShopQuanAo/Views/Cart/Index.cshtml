@@ -20,12 +20,15 @@
     string allowedCats = "";
     if (appliedCoupon != null)
     {
-        // dùng "as string" để tránh InvalidCast
         allowedCats = (appliedCoupon.AllowedCategoriesCsv as string) ?? "";
     }
 }
 
-<div class="container my-4 mt-5">
+@section Styles {
+    <link href="~/css/cart.css" rel="stylesheet">
+}
+
+<div class="container my-4">
 
     <!-- Breadcrumbs -->
     <div class="breadcrumbs d-flex flex-row align-items-center">
@@ -42,106 +45,152 @@
 
     @if (Model == null || Model.Count == 0)
     {
-        <div class="alert alert-info">Giỏ hàng trống.</div>
-        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Tiếp tục mua sắm</a>
+        <div class="empty-cart text-center py-5 bg-light border-1 rounded-4">
+            <div class="display-6 mb-2">🧺</div>
+            <p class="mb-3 text-muted">Giỏ hàng của bạn đang trống.</p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary px-4">Đi mua sắm</a>
+        </div>
     }
     else
     {
         <!-- form ẩn chỉ để lấy AntiForgery cho AJAX -->
         <form id="cart-anti" method="post">@Html.AntiForgeryToken()</form>
 
-        <div class="table-responsive">
-            <table class="table align-middle" id="cart-table">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width:10%">Ảnh</th>
-                        <th style="width:25%">Sản phẩm</th>
-                        <th style="width:15%">Đơn giá</th>
-                        <th style="width:25%" class="text-center">Số lượng</th>
-                        <th style="width:20%">Thành tiền</th>
-                        <th style="width:5%"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        var img = (item.Image ?? "").Trim();
-                        var src = string.IsNullOrEmpty(img)
-                        ? Url.Content("~/images/_placeholder.png")
-                        : Url.Content($"{img}");
-                        var stock = stockMap.TryGetValue(item.ProductId, out var s) ? s : int.MaxValue;
-
-                        <tr id="row-@item.ProductId" data-id="@item.ProductId" data-stock="@stock">
-                            <td>
-                                <img src="@src" alt="@item.Name"
-                                     style="width:70px;height:70px;object-fit:cover;border-radius:8px;" />
-                            </td>
-                            <td>
-                                <div class="fw-semibold">@item.Name</div>
-                                <div class="text-muted small">Tồn kho: <span id="stock-@item.ProductId">@stock</span></div>
-                            </td>
-                            <td id="price-@item.ProductId">@VnMoney(item.Price)</td>
-                            <td>
-                                <div class="d-flex justify-content-center align-items-stretch gap-2" style="width:160px;margin:0 auto;">
-                                    <input type="text"
-                                           class="form-control form-control-sm text-center qty-input"
-                                           id="qty-@item.ProductId"
-                                           value="@item.Quantity"
-                                           readonly
-                                           style="width:70px;height:100%;" />
-                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-plus" data-id="@item.ProductId">+</button>
-                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-minus" data-id="@item.ProductId">−</button>
-                                </div>
-                            </td>
-                            <td class="fw-semibold" id="line-@item.ProductId">@VnMoney(item.LineTotal)</td>
-                            <td>
-                                <form asp-action="Remove" method="post" class="m-0">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="@item.ProductId" />
-                                    <button class="btn btn-danger btn-sm" type="submit">Xoá</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="4" class="text-end">Tạm tính</th>
-                        <th class="text-end" id="subtotal">@VnMoney(subtotal)</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-end">Giảm</th>
-                        <th class="text-end" id="discount">@VnMoney(discount)</th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th colspan="4" class="text-end">Tổng</th>
-                        <th class="text-end fw-bold" id="total">@VnMoney(total)</th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-
-        <div class="row g-3 align-items-start mt-3">
-            <!-- Khối mã giảm giá -->
-            <div class="col-lg-6">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white pb-2">
+        <div class="row g-4">
+            <!-- LEFT: Cart items -->
+            <div class="col-lg-8">
+                <div class="card border-1 shadow-sm">
+                    <div class="card-header bg-white py-3">
                         <h6 class="mb-0 d-flex align-items-center gap-2">
-                            <i class="fa fa-ticket"></i> Mã giảm giá
+                            <i class="fa fa-shopping-cart"></i>
+                            Có 
+                            <span class="badge bg-dark rounded-pill">@Model.Count</span>
+                            sản phẩm trong giỏ
+                        </h6>
+                    </div>
+
+                    <div class="card-body p-0">
+                        <div class="table-responsive cart-table">
+                            <table class="table align-middle mb-0" id="cart-table">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width:10%">Ảnh</th>
+                                        <th style="width:25%">Sản phẩm</th>
+                                        <th style="width:15%" class="text-end d-none d-md-table-cell">Đơn giá</th>
+                                        <th style="width:25%" class="text-center">Số lượng</th>
+                                        <th style="width:20%" class="text-end d-none d-md-table-cell">Thành tiền</th>
+                                        <th style="width:5%"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        var img = (item.Image ?? "").Trim();
+                                        var src = string.IsNullOrEmpty(img)
+                                        ? Url.Content("~/images/_placeholder.png")
+                                        : Url.Content($"{img}");
+                                        var stock = stockMap.TryGetValue(item.ProductId, out var s) ? s : int.MaxValue;
+
+                                        <tr id="row-@item.ProductId" data-id="@item.ProductId" data-stock="@stock">
+                                            <td data-label="Ảnh">
+                                                <img src="@src" alt="@item.Name"
+                                                     style="width:70px;height:70px;object-fit:cover;border-radius:8px;" />
+                                            </td>
+                                            <td data-label="Sản phẩm">
+                                                <div class="fw-semibold">@item.Name</div>
+                                                <div class="small text-muted">
+                                                    Tồn kho:
+                                                    <span class="badge bg-@(stock == 0 ? "danger" : stock <= 5 ? "warning text-success" : "primary")">
+                                                        <span id="stock-@item.ProductId">@stock</span>
+                                                    </span>
+                                                </div>
+                                                <div class="d-md-none mt-1 small">
+                                                    <span class="text-muted me-2">Đơn giá:</span>
+                                                    <strong id="price-@item.ProductId">@VnMoney(item.Price)</strong>
+                                                </div>
+                                                <div class="d-md-none small">
+                                                    <span class="text-muted me-2">Thành tiền:</span>
+                                                    <strong id="line-@item.ProductId">@VnMoney(item.LineTotal)</strong>
+                                                </div>
+                                            </td>
+                                            <td class="text-end d-none d-md-table-cell" id="price-@item.ProductId">@VnMoney(item.Price)</td>
+                                            <td data-label="Số lượng">
+                                                <div class="d-flex justify-content-center align-items-stretch gap-2" style="width:180px;margin:0 auto;">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-minus" data-id="@item.ProductId" aria-label="Giảm">−</button>
+                                                    <input type="text"
+                                                           class="form-control form-control-sm text-center qty-input"
+                                                           id="qty-@item.ProductId"
+                                                           value="@item.Quantity"
+                                                           readonly
+                                                           inputmode="numeric"
+                                                           style="width:80px;height:100%;" />
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm btn-plus" data-id="@item.ProductId" aria-label="Tăng">+</button>
+                                                </div>
+                                            </td>
+                                            <td class="fw-semibold text-end d-none d-md-table-cell" id="line-@item.ProductId">@VnMoney(item.LineTotal)</td>
+                                            <td data-label="Xoá">
+                                                <form asp-action="Remove" method="post" class="m-0">
+                                                    @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="id" value="@item.ProductId" />
+                                                    <button class="btn btn-danger btn-sm rounded" type="submit" title="Xoá">
+                                                        <i class="fa fa-trash fs-5"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" class="text-end">Tạm tính</th>
+                                        <th class="text-end" id="subtotal">@VnMoney(subtotal)</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4" class="text-end">Giảm</th>
+                                        <th class="text-end" id="discount">@VnMoney(discount)</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4" class="text-end">Tổng</th>
+                                        <th class="text-end fw-bold" id="total">@VnMoney(total)</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white d-flex flex-wrap justify-content-between gap-2 py-3">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info rounded-pill">
+                            <i class="fa fa-arrow-left me-1"></i>Tiếp tục mua sắm
+                        </a>
+                        <form asp-action="Clear" method="post" class="m-0">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-outline-danger rounded-pill" type="submit">Xoá tất cả </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Summary -->
+            <aside class="col-lg-4">
+                <div class="card border-1 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h6 class="mb-0 d-flex align-items-center gap-2">
+                            <i class="fa fa-receipt"></i> Tóm tắt & Mã giảm giá
                         </h6>
                     </div>
 
                     <div class="card-body">
+                        <!-- KHỐI COUPON GIỮ NGUYÊN LOGIC -->
                         @if (appliedCoupon == null)
                         {
-                            <form asp-action="ApplyCoupon" method="post" class="coupon-form">
+                            <form asp-action="ApplyCoupon" method="post" class="coupon-form" autocomplete="off">
                                 @Html.AntiForgeryToken()
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-tag"></i></span>
-                                    <input type="text" name="code" class="form-control coupon-input" placeholder="NHẬP MÃ (VD: SALE10)" autocomplete="off" />
+                                    <input type="text" name="code" class="form-control coupon-input" placeholder="NHẬP MÃ (VD: SALE10)" />
                                     <button class="btn btn-primary">Áp dụng</button>
                                 </div>
                                 <div class="form-text mt-2">
@@ -158,8 +207,7 @@
                                     </span>
                                     <span class="code-chip">@appliedCoupon.Code</span>
                                     <span class="text-muted small">
-                                        —
-                                        @(appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
+                                        — @(appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
                                                                         ? $"Giảm {appliedCoupon.DiscountValue}%"
                                                                         : $"Giảm {VnMoney((decimal)appliedCoupon.DiscountValue)}")
                             </span>
@@ -183,69 +231,34 @@
                                 }
                                 <div>• Trạng thái: @(appliedCoupon.IsActive ? "Kích hoạt" : "Đã tắt")</div>
                             </div>
-
-                            <hr class="my-3" />
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="text-muted">Tiền giảm</div>
-                                <!-- dùng id khác để tránh trùng với footer -->
-                                <div class="fw-semibold" id="discount-card">@VnMoney(discount)</div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <div class="text-muted">Tổng sau giảm</div>
-                                <div class="fw-bold" id="total-card">@VnMoney(total)</div>
-                            </div>
                         }
+
+                        <!-- Totals (đồng bộ với tfoot qua event) -->
+                        <ul class="list-group list-group-flush my-3">
+                            <li class="list-group-item d-flex justify-content-between px-0">
+                                <span class="text-muted">Tạm tính</span>
+                                <span id="subtotal-card">@VnMoney(subtotal)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between px-0">
+                                <span class="text-muted">Giảm</span>
+                                <span class="fw-semibold" id="discount-card">@VnMoney(discount)</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between px-0">
+                                <span class="fw-semibold">Tổng thanh toán</span>
+                                <span class="fw-bold fs-5" id="total-card">@VnMoney(total)</span>
+                            </li>
+                        </ul>
+
+                        <div class="d-grid gap-2">
+                            <a asp-controller="Checkout" asp-action="Index" class="btn btn-dark btn-lg">Thanh toán</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Nút thao tác -->
-            <div class="col-lg-6 d-flex flex-wrap justify-content-end align-items-center gap-2">
-                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info">Tiếp tục mua sắm</a>
-                <a asp-controller="Checkout" asp-action="Index" class="btn btn-dark">Thanh toán</a>
-                <form asp-action="Clear" method="post" class="m-0">
-                    @Html.AntiForgeryToken()
-                    <button class="btn btn-outline-danger" type="submit">Xoá tất cả</button>
-                </form>
-            </div>
+            </aside>
         </div>
     }
 </div>
 
-<style>
-    .coupon-input {
-        text-transform: uppercase;
-        letter-spacing: .5px;
-    }
-
-    .code-chip {
-        display: inline-flex;
-        align-items: center;
-        padding: .25rem .6rem;
-        border: 1px dashed #ced4da;
-        border-radius: 999px;
-        font-weight: 600;
-        background: #f8f9fa;
-    }
-
-    .coupon-form .input-group .form-control:focus {
-        box-shadow: none;
-        border-color: #86b7fe;
-    }
-</style>
-
 @section Scripts {
     <script src="~/js/cart.js"></script>
-    <script>
-        // Nếu bạn muốn đồng bộ số ở card voucher sau khi AJAX ChangeQty chạy và cập nhật footer:
-        // Chỉ cần copy giá trị footer sang card nếu tồn tại.
-        document.addEventListener('cart:totals-updated', function (e) {
-            var d = document.getElementById('discount');
-            var t = document.getElementById('total');
-            var dc = document.getElementById('discount-card');
-            var tc = document.getElementById('total-card');
-            if (d && dc) dc.textContent = d.textContent;
-            if (t && tc) tc.textContent = t.textContent;
-        });
-    </script>
 }

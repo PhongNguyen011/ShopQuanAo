@@ -1,9 +1,9 @@
 ﻿@model ShopQuanAo.Models.Product
-
 @{
     ViewData["Title"] = Model.Name;
-    var relatedProducts = ViewBag.RelatedProducts as List<ShopQuanAo.Models.Product>;
+    var relatedProducts = ViewBag.RelatedProducts as List<ShopQuanAo.Models.Product> ?? new();
 }
+
 @section Styles {
     <link href="~/bootstrap4/bootstrap.min.css">
     <link href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -11,149 +11,190 @@
     <link href="~/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet">
     <link href="~/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet">
     <link href="~/css/responsive.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/single_styles.css">
-    <link rel="stylesheet" href="~/css/single_responsive.css">
+    <link href="~/css/main_styles.css" rel="stylesheet">
+    <link href="~/css/categories_styles.css" rel="stylesheet">  <!-- dùng lại style card --> 
+    <link href="~/css/categories_responsive.css" rel="stylesheet">
 }
 
-
-<div class="container single_product_container">
+<div class="container my-4">
     <div class="row">
-        <div class="col">
+        <div class="col product_section clearfix">
+
             <!-- Breadcrumbs -->
             <div class="breadcrumbs d-flex flex-row align-items-center">
                 <ul>
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
-                    <li><a asp-area="" asp-controller="Shop" asp-action="Index"><i class="fa fa-angle-right" aria-hidden="true"></i>Sản Phẩm</a></li>
-                    <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.Name</a></li>
+                    <li><a asp-area="" asp-controller="Shop" asp-action="Index"><i class="fa fa-angle-right"></i> Sản Phẩm</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right"></i> @Model.Name</a></li>
                 </ul>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-7">
-            <div class="single_product_pics">
-                <div class="row">
-                    <div class="col-lg-12 image_col order-lg-2 order-1">
-                        <div class="single_product_image">
-                            <div class="single_product_image_background" style="background-image:url('@Url.Content(Model.ImageUrl ?? "~/images/product_1.png")')"></div>
-                        </div>
+            <!-- Chi tiết -->
+            <div class="row g-4">
+                <!-- Ảnh -->
+                <div class="col-lg-6">
+                    <div class="product_image">
+                        <img src="@Url.Content(Model.ImageUrl ?? "~/images/product_1.png")"
+                             alt="@Model.Name"
+                             style="width:100%;height:420px;object-fit:contain;background:#fff;border:1px solid #eee;border-radius:6px;">
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="product_details">
-                <div class="product_details_title">
-                    <h2>@Model.Name</h2>
-                    <p>@Model.Description</p>
-                </div>
-                <div class="product_price">
-                    @Model.Price.ToString("N0")đ
-                    @if (Model.OldPrice.HasValue)
-                    {
-                        <span>@Model.OldPrice.Value.ToString("N0")đ</span>
-                    }
-                </div>
-                <div class="product_details_color">
-                    @if (Model.StockQuantity > 0)
-                    {
-                        <span class="badge bg-success">Còn @Model.StockQuantity sản phẩm</span>
-                    }
-                    else
-                    {
-                        <span class="badge bg-danger">Hết hàng</span>
-                    }
-                    @if (Model.IsFeatured)
-                    {
-                        <span class="badge bg-info ms-2">Nổi bật</span>
-                    }
-                    @if (Model.IsOnSale)
-                    {
-                        <span class="badge bg-warning ms-2">Giảm giá</span>
-                    }
-                </div>
-                <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center mt-4">
-                    <span>Số Lượng:</span>
-                    <div class="quantity_selector">
-                        <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                        <span id="quantity_value">1</span>
-                        <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="red_button add_to_cart_button ms-3">
-                        <a href="#">Thêm Vào Giỏ</a>
-                    </div>
-                    <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Recently Viewed -->
-@if (relatedProducts != null && relatedProducts.Any())
-{
-    <div class="viewed">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="viewed_title_container">
-                        <h3 class="viewed_title">Sản Phẩm Liên Quan</h3>
-                        <div class="viewed_nav_container">
-                            <div class="viewed_nav d-flex flex-row align-items-center justify-content-start">
-                                <div class="viewed_nav_prev"><i class="fas fa-chevron-left"></i></div>
-                                <div class="viewed_nav_next"><i class="fas fa-chevron-right"></i></div>
+                <!-- Thông tin -->
+                <div class="col-lg-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start justify-content-between mb-2">
+                                <h2 class="h4 mb-0">@Model.Name</h2>
+                                <div>
+                                    @if (Model.IsFeatured)
+                                    {
+                                        <span class="badge bg-info text-dark">Nổi bật</span>
+                                    }
+                                    @if (Model.IsOnSale)
+                                    {
+                                        <span class="badge bg-warning text-dark ms-1">Giảm giá</span>
+                                    }
+                                    @if (Model.StockQuantity > 0)
+                                    {
+                                        <span class="badge bg-success ms-1">Còn @Model.StockQuantity</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger ms-1">Hết hàng</span>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="viewed_slider_container">
-                        <div class="owl-carousel owl-theme viewed_slider">
-                            @foreach (var product in relatedProducts)
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Description))
                             {
-                                <div class="owl-item">
-                                    <div class="viewed_item @(product.IsOnSale ? "discount" : "") d-flex flex-column align-items-center justify-content-center text-center">
-                                        <div class="viewed_image">
-                                            <img src="@Url.Content(product.ImageUrl ?? "~/images/product_1.png")" alt="@product.Name">
-                                        </div>
-                                        <div class="viewed_content text-center">
-                                            @if (product.IsOnSale && product.OldPrice.HasValue)
+                                <p class="text-muted mb-3">@Model.Description</p>
+                            }
+
+                            @{
+                                var hasOld = Model.OldPrice.HasValue && Model.OldPrice.Value > Model.Price;
+                                var percent = hasOld ? Math.Round((Model.OldPrice!.Value - Model.Price) / Model.OldPrice.Value * 100) : 0;
+                            }
+                            <div class="mb-3">
+                                <div class="d-flex align-items-baseline gap-3">
+                                    <span class="h3 mb-0 text-danger fw-bold">@Model.Price.ToString("N0")đ</span>
+                                    @if (hasOld)
+                                    {
+                                        <span class="text-muted text-decoration-line-through">@Model.OldPrice!.Value.ToString("N0")đ</span>
+                                        <span class="badge bg-danger">-@percent%</span>
+                                    }
+                                </div>
+                            </div>
+
+                            <hr class="text-muted">
+
+                            <!-- Số lượng + Thêm vào giỏ -->
+                            <form asp-controller="Cart" asp-action="Add" method="post" class="mt-3">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@Model.Id" />
+                                <input type="hidden" id="qtyInput" name="qty" value="1" />
+
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label class="mb-0 fw-semibold">Số lượng</label>
+                                        <small class="text-muted d-block mt-1">
+                                            @if (Model.StockQuantity > 0)
                                             {
-                                                var discount = ((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100);
-                                                <div class="viewed_price">
-                                                    @product.Price.ToString("N0")đ
-                                                    <span>@product.OldPrice.Value.ToString("N0")đ</span>
-                                                </div>
+                                                <span>Tồn kho: @Model.StockQuantity</span>
                                             }
                                             else
                                             {
-                                                <div class="viewed_price">@product.Price.ToString("N0")đ</div>
+
+                                                <span>Hết hàng</span>
                                             }
-                                            <div class="viewed_name">
-                                                <a asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
-                                            </div>
+                                        </small>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="input-group" style="width: 160px;">
+                                            <button type="button" class="btn btn-outline-secondary" id="btnMinus" aria-label="Giảm">
+                                                <i class="fa fa-minus" aria-hidden="true"></i>
+                                            </button>
+                                            <input type="text" class="form-control text-center" id="qtyDisplay" value="1" readonly>
+                                            <button type="button" class="btn btn-outline-secondary" id="btnPlus" aria-label="Tăng"
+                                                    data-max="@Model.StockQuantity">
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </button>
                                         </div>
-                                        <ul class="item_marks">
-                                            @if (product.IsFeatured)
-                                            {
-                                                <li class="item_mark item_new">new</li>
-                                            }
-                                            @if (product.IsOnSale)
-                                            {
-                                                <li class="item_mark item_discount">sale</li>
-                                            }
-                                        </ul>
+                                    </div>
+
+                                    <div class="col-12 col-md-auto">
+                                        <button type="submit"
+                                                class="btn btn-danger btn-lg px-4"
+                                                @(Model.StockQuantity <= 0 ? "disabled" : null)>
+                                            <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ
+                                        </button>
                                     </div>
                                 </div>
-                            }
+                            </form>
+
+                            <div class="mt-4 small text-muted">
+                                <i class="fa fa-undo me-1"></i> Đổi trả trong 7 ngày ·
+                                <i class="fa fa-truck ms-2 me-1"></i> Giao nhanh nội thành
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            <!-- Sản phẩm liên quan: dùng lại card Product -->
+            @if (relatedProducts.Any())
+            {
+                <div class="mt-5">
+                    <h4 class="related-title text-center mb-2">Sản Phẩm Liên Quan</h4>
+                    <div class="underline-center"></div>
+                    <div class="product-grid row">
+                        @foreach (var product in relatedProducts)
+                        {
+                            <div class="product-item @product.Category">
+                                <div class="product @(product.IsOnSale ? "discount" : "")">
+                                    <div class="product_image">
+                                        <img src="@Url.Content(product.ImageUrl ?? "~/images/product_1.png")"
+                                             alt="@product.Name" style="height:240px">
+                                    </div>
+                                    @if (product.IsOnSale && product.OldPrice.HasValue)
+                                    {
+                                        var discount = ((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100);
+                                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                            <span>-@discount.ToString("0")%</span>
+                                        </div>
+                                    }
+                                    else if (product.IsFeatured)
+                                    {
+                                        <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center">
+                                            <span>new</span>
+                                        </div>
+                                    }
+                                    <div class="product_info">
+                                        <h6 class="product_name">
+                                            <a asp-action="Detail" asp-route-id="@product.Id">@product.Name</a>
+                                        </h6>
+                                        <div class="product_price">
+                                            @product.Price.ToString("N0")đ
+                                            @if (product.OldPrice.HasValue)
+                                            {
+                                                <span>@product.OldPrice.Value.ToString("N0")đ</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="red_button add_to_cart_button">
+                                    <a asp-controller="Cart" asp-action="Add"
+                                       asp-route-id="@product.Id" asp-route-qty="1">Thêm Vào Giỏ</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         </div>
     </div>
-}
-
-
+</div>
 
 @section Scripts {
     <script src="~/js/jquery-3.2.1.min.js"></script>
@@ -162,7 +203,43 @@
     <script src="~/plugins/Isotope/isotope.pkgd.min.js"></script>
     <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/plugins/easing/easing.js"></script>
-    <script src="~/js/single_custom.js"></script>
     <script src="~/js/custom.js"></script>
+
+    <!-- +/- số lượng -->
+    <script>
+        (function () {
+            const max = parseInt(document.getElementById('btnPlus')?.dataset.max || '9999', 10);
+            const btnMinus = document.getElementById('btnMinus');
+            const btnPlus  = document.getElementById('btnPlus');
+            const qtyInput = document.getElementById('qtyInput');   // hidden gửi form
+            const qtyDisp  = document.getElementById('qtyDisplay'); // hiển thị
+            const btnSubmit = document.querySelector('form[asp-action="Add"] button[type="submit"]');
+
+            let qty = 1;
+
+            function sync() {
+                qtyInput.value = qty;
+                qtyDisp.value  = qty;
+                if (btnSubmit) btnSubmit.disabled = (max <= 0);
+                btnMinus.disabled = (qty <= 1);
+                btnPlus.disabled  = (qty >= max);
+            }
+
+            if (!btnMinus || !btnPlus || !qtyInput || !qtyDisp) return;
+
+            btnMinus.addEventListener('click', function () {
+                if (qty > 1) { qty--; sync(); }
+            });
+
+            btnPlus.addEventListener('click', function () {
+                if (qty < (isNaN(max) ? 9999 : max)) { qty++; sync(); }
+            });
+
+            // Chặn nhập tay (readonly rồi, đề phòng paste)
+            qtyDisp.addEventListener('keydown', e => e.preventDefault());
+
+            sync();
+        })();
+    </script>
 
 }

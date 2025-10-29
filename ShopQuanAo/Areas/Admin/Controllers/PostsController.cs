@@ -52,10 +52,6 @@ namespace ShopQuanAo.Areas.Admin.Controllers
             model.Slug = GenerateSlug(model.Title);
             model.CreatedAt = DateTime.Now;
 
-            // Kiểm tra trùng slug nếu bạn bật unique
-            // var exists = await _context.Posts.AnyAsync(p => p.Slug == model.Slug);
-            // if (exists) { ModelState.AddModelError("Title", "Tiêu đề tạo slug trùng."); return View(model); }
-
             if (model.ImageUpload != null)
             {
                 var saveResult = await SaveImageAsync(model.ImageUpload);

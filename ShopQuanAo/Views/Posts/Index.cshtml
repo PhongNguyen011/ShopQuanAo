@@ -2,6 +2,7 @@
 @using System.Text.RegularExpressions
 @{
     ViewData["Title"] = "Bài viết";
+
     string Excerpt(string? html, int max = 250)
     {
         var text = Regex.Replace(html ?? string.Empty, "<.*?>", string.Empty); // bỏ tag HTML
@@ -11,51 +12,183 @@
     string Img(string? f) => Url.Content(string.IsNullOrEmpty(f) ? "~/images/_placeholder.png" : $"~/images/posts/{f}");
 }
 
+@section Styles {
+    <style>
+        /* Breadcrumbs */
+        .breadcrumbs ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap
+        }
 
-<div class="container product_section_container">
+        .breadcrumbs a {
+            color: var(--bs-secondary-color);
+            text-decoration: none
+        }
+
+        .breadcrumbs .active a {
+            color: var(--bs-body-color);
+            font-weight: 600
+        }
+
+        /* Card nâng cao cho bài viết */
+        .post-card {
+            border: 1px solid rgba(0,0,0,.06);
+            border-radius: 14px;
+            padding: 14px;
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+            background: var(--bs-body-bg);
+        }
+
+            .post-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(0,0,0,.08);
+                border-color: rgba(0,0,0,.12);
+            }
+
+        /* Ảnh chuẩn tỉ lệ, bo tròn */
+        .post-thumb {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+            /* Dùng Bootstrap ratio để giữ tỉ lệ 16:9 */
+            .post-thumb img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+        /* Tiêu đề & trích dẫn */
+        .post-title {
+            margin-bottom: .25rem;
+            line-height: 1.35;
+        }
+
+            .post-title a {
+                color: var(--bs-body-color);
+                text-decoration: none;
+            }
+
+                .post-title a:hover {
+                    text-decoration: underline;
+                }
+
+        .post-meta {
+            color: var(--bs-secondary-color);
+            font-size: .9rem;
+        }
+
+        .post-excerpt {
+            margin-top: .35rem;
+            color: var(--bs-secondary-color);
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Badge “Mới” */
+        .badge-new {
+            background: #0d6efd1a;
+            color: #0d6efd;
+            border: 1px solid #0d6efd33;
+            font-weight: 600;
+        }
+
+        /* Tối ưu touch target */
+        .post-actions .btn {
+            border-radius: 999px;
+        }
+
+        /* Dark mode tinh tế */
+        @@media (prefers-color-scheme: dark) {
+            .post-card
+
+        {
+            border-color: rgba(255,255,255,.08)
+        }
+
+        .post-card:hover {
+            border-color: rgba(255,255,255,.16)
+        }
+
+        }
+    </style>
+}
+
+<div class="container my-4">
     <!-- Breadcrumbs -->
-    <div class="breadcrumbs d-flex flex-row align-items-center">
-        <ul>
+    <nav class="breadcrumbs d-flex flex-row align-items-center mb-3" aria-label="breadcrumb">
+        <ul class="mb-0">
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
-            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+            <li class="active"><a href="#" aria-current="page"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
         </ul>
-    </div>
+    </nav>
 
     @if (Model == null || Model.Count == 0)
     {
-        <div class="alert alert-info">Chưa có bài viết nào.</div>
+        <div class="alert alert-info mb-0">
+            Chưa có bài viết nào.
+        </div>
     }
     else
     {
-        <section>
+        <section class="mt-3">
             @foreach (var p in Model)
             {
-                <article class="row g-3 align-items-start border-bottom pb-3 mt-4">
+                var isNew = (DateTime.Now - p.CreatedAt).TotalDays <= 7; // hiển thị "Mới" nếu trong 7 ngày
+                <article class="post-card row g-3 align-items-stretch mt-3">
                     <!-- Ảnh bên trái -->
-                    <div class="col-md-3">
-                        <a asp-controller="Posts" asp-action="Details" asp-route-slug="@p.Slug">
-                            <img src="@Img(p.Thumbnail)" alt="@p.Title"
-                                 class="img-fluid rounded"
-                                 style="width:100%;height:300px;object-fit:cover;border-radius:8px;" />
+                    <div class="col-12 col-md-4">
+                        <a asp-controller="Posts" asp-action="Details" asp-route-slug="@p.Slug"
+                        class="d-block post-thumb ratio ratio-16x9">
+                            <img src="@Img(p.Thumbnail)"
+                                alt="@p.Title"
+                                loading="lazy"
+                                decoding="async"
+                                referrerpolicy="no-referrer" />
                         </a>
                     </div>
 
-                    <!-- Chữ bên phải -->
-                    <div class="col-md-7">
-                        <h4 class="mb-1">
-                            <a asp-controller="Posts" asp-action="Details" asp-route-slug="@p.Slug" class="text-decoration-none text-dark">
-                                @p.Title
+                    <!-- Nội dung bên phải -->
+                    <div class="col-12 col-md-8 d-flex flex-column">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <h4 class="post-title flex-grow-1 mb-0">
+                                <a asp-controller="Posts" asp-action="Details" asp-route-slug="@p.Slug">
+                                    @p.Title
+                                </a>
+                            </h4>
+                            @if (isNew)
+                            {
+                                <span class="badge badge-new ms-1">Mới</span>
+                            }
+                        </div>
+
+                        <div class="post-meta mb-2">
+                            <i class="fa fa-calendar-o me-1" aria-hidden="true"></i>
+                            @p.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                        </div>
+
+                        <p class="post-excerpt mb-3">
+                            @Excerpt(p.Content, 260)
+                        </p>
+
+                        <div class="post-actions mt-auto">
+                            <a class="btn btn-outline-primary btn-sm px-3"
+                               asp-controller="Posts"
+                               asp-action="Details"
+                               asp-route-slug="@p.Slug"
+                               aria-label="Đọc tiếp: @p.Title">
+                                Đọc tiếp
                             </a>
-                        </h4>
-                        <div class="text-muted small mb-2">@p.CreatedAt.ToString("dd/MM/yyyy HH:mm")</div>
-                        <p class="mb-2">@Excerpt(p.Content, 260)</p>
-                        <a class="btn btn-sm btn-outline-primary" asp-controller="Posts" asp-action="Details" asp-route-slug="@p.Slug">
-                            Đọc tiếp
-                        </a>
+                        </div>
                     </div>
                 </article>
             }
-
         </section>
     }
 </div>

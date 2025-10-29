@@ -1,4 +1,20 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ShopQuanAo.Models.ApplicationUser> UserManager
+@inject ShopQuanAo.Services.ICartService CartService
+
+@{
+    string? avatarPath = null;
+    var cartCount = CartService?.Count() ?? 0;
+    if (User.Identity?.IsAuthenticated ?? false)
+    {
+        var currentUser = await UserManager.GetUserAsync(User);
+        avatarPath = !string.IsNullOrEmpty(currentUser?.AvatarFileName)
+            ? Url.Content($"~/images/account/{currentUser.AvatarFileName}")
+            : Url.Content("~/images/account/_default.png");
+    }
+}
+
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
@@ -21,7 +37,7 @@
 <body class="d-flex flex-column min-vh-100">
     <!-- Top bar -->
     <div class="topbar">
-        <div class="container"><span>HỆ THỐNG CỬA HÀNG OLD SAILOR</span></div>
+        <div class="container"><span>Miễn Phí Giao Hàng Cho Đơn Từ 500.000VND !</span></div>
     </div>
 
     <!-- Header -->
@@ -37,7 +53,7 @@
                     <ul class="navbar_menu">
                         <li class="menu_item"><a asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
                         <li class="menu_item"><a asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
-                        <li class="menu_item"><a href="#">Khuyến Mãi</a></li>
+                        <li class="menu_item"><a asp-controller="Sale" asp-action="Index">Khuyến Mãi</a></li>
                         <li class="menu_item"><a href="#">Cửa Hàng</a></li>
                         <li class="menu_item"><a asp-controller="Posts" asp-action="Index">Bài Viết</a></li>
                         <li class="menu_item"><a asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
@@ -49,7 +65,7 @@
                     <li>
                         <a class="icon-btn position-relative" asp-controller="Cart" asp-action="Index">
                             <i class="fa fa-shopping-bag"></i>
-                            <span class="badge-cart">0</span>
+                            <span class="badge-cart" id="cart-count">@cartCount</span>
                         </a>
                     </li>
                     @if (!User.Identity.IsAuthenticated)
@@ -70,8 +86,12 @@
                             </a>
                             <div class="user-dropdown">
                                 <div class="user-info">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <a asp-controller="Profile" asp-action="Index"><i class="fa fa-user-circle fa-3x me-2"></i></a>
+                                    <div class="d-flex align-items-center">
+                                        <a asp-controller="Profile" asp-action="Index">
+                                            <img src="@avatarPath" alt="Avatar"
+                                                 class="rounded-circle border me-3"
+                                                 style="width:45px;height:45px;object-fit:cover;" />
+                                        </a>
                                         <div class="d-flex flex-column justify-content-center align-items-sm-center">
                                             <small class="text-dark fw-bold">Thành viên</small>
                                             <div class="fw-bold brand-name">
@@ -87,8 +107,11 @@
                                 </div>
 
                                 <hr class="my-2" />
+                                <form asp-controller="" asp-action="" method="post">
+                                    <button type="submit" class="btn btn-sm btn-outline-dark fw-bold w-100">Đổi mật khẩu</button>
+                                </form>
                                 <form asp-controller="Account" asp-action="Logout" method="post">
-                                    <button type="submit" class="btn btn-sm btn-outline-dark w-100">Đăng xuất</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-dark fw-bold w-100 mt-1">Đăng xuất</button>
                                 </form>
                             </div>
                         </li>
@@ -178,56 +201,64 @@
 
 
 
-    <main role="main" class="flex-grow-1">
+    <main role="main" class="flex-grow-1 mb-5">
         @RenderBody()
     </main>
 
 
 
-    <footer class="site-footer">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6">
-                    <h5>Về Old Sailor</h5>
-                    <p class="footer-text">Old Sailor – Thời trang nam Bigsize.</p>
-                    <div class="d-flex gap-3">
-                        <a href="#"><i class="fa fa-facebook-square"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                        <a href="#"><i class="fa fa-tiktok"></i></a>
+    @if (IsSectionDefined("Footer"))
+    {
+        @RenderSection("Footer")
+    }
+    else
+    {
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Về Old Sailor</h5>
+                        <p class="footer-text">PNT SHOP – Thời trang World.</p>
+                        <div class="d-flex gap-3">
+                            <a href="#"><i class="fa fa-facebook-square"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="#"><i class="fa fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Liên hệ hợp tác</h5>
+                        <ul class="footer-list">
+                            <li><strong>Địa chỉ:</strong> 26/20B/9 Lê Văn Duyệt, Bình Thạnh, HCM</li>
+                            <li><strong>Điện thoại:</strong> 0936 611 611</li>
+                            <li><strong>Email:</strong> hienpham@oldsailor.com.vn</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Hỗ trợ – chính sách</h5>
+                        <ul class="footer-list">
+                            <li><a href="#">Giới thiệu</a></li>
+                            <li><a href="#">Liên hệ</a></li>
+                            <li><a href="#">Hệ thống cửa hàng</a></li>
+                            <li><a href="#">Thanh toán</a></li>
+                            <li><a href="#">Giao hàng</a></li>
+                            <li><a href="#">Đổi trả</a></li>
+                            <li><a href="#">Bảo mật</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5>Đăng ký nhận tin</h5>
+                        <form class="footer-subscribe" action="#">
+                            <input type="email" placeholder="Nhập email của bạn" required />
+                            <button class="btn btn-dark w-100" type="submit">Đăng ký</button>
+                        </form>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Liên hệ hợp tác</h5>
-                    <ul class="footer-list">
-                        <li><strong>Địa chỉ:</strong> 26/20B/9 Lê Văn Duyệt, Bình Thạnh, HCM</li>
-                        <li><strong>Điện thoại:</strong> 0936 611 611</li>
-                        <li><strong>Email:</strong> hienpham@oldsailor.com.vn</li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Hỗ trợ – chính sách</h5>
-                    <ul class="footer-list">
-                        <li><a href="#">Giới thiệu</a></li>
-                        <li><a href="#">Liên hệ</a></li>
-                        <li><a href="#">Hệ thống cửa hàng</a></li>
-                        <li><a href="#">Thanh toán</a></li>
-                        <li><a href="#">Giao hàng</a></li>
-                        <li><a href="#">Đổi trả</a></li>
-                        <li><a href="#">Bảo mật</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h5>Đăng ký nhận tin</h5>
-                    <form class="footer-subscribe" action="#">
-                        <input type="email" placeholder="Nhập email của bạn" required />
-                        <button class="btn btn-dark w-100" type="submit">Đăng ký</button>
-                    </form>
-                </div>
+                <div class="copyright text-center">© @DateTime.Now.Year OLD SAILOR. Powered by PNT.</div>
             </div>
-            <div class="copyright text-center">© @DateTime.Now.Year OLD SAILOR. Powered by PNT.</div>
-        </div>
-    </footer>
+        </footer>
+    }
+    
 
     <!-- Bootstrap 5 JS bundle (có Popper) - CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -236,6 +267,24 @@
 
     <!-- JS chung -->
     <script src="~/js/site.js"></script>
+
+    <script>
+        async function refreshCartCount() {
+          try {
+            const res = await fetch('/Cart/Count', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+            if (!res.ok) return;
+            const data = await res.json();
+            const el = document.getElementById('cart-count');
+            if (el) el.textContent = data.count ?? 0;
+          } catch (_) { /* ignore */ }
+        }
+
+        // Cập nhật khi bạn đã thay đổi số lượng/tổng (cart.js có dispatch sự kiện này)
+        document.addEventListener('cart:totals-updated', refreshCartCount);
+
+        // Optional: cập nhật sau khi trang tải xong (đảm bảo đúng số lượng)
+        document.addEventListener('DOMContentLoaded', refreshCartCount);
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

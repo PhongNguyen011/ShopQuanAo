@@ -355,5 +355,14 @@ namespace ShopQuanAo.Controllers
             var total = subtotal - discount;
             return (subtotal, discount, total);
         }
+
+
+        [HttpGet]
+        public IActionResult Count()
+        {
+            var n = _cart.Count();
+            return Json(new { count = n });
+        }
+
     }
 }

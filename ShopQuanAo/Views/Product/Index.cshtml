@@ -19,7 +19,7 @@
 
 
 
-<div class="container product_section_container">
+<div class="container my-4">
     <div class="row">
         <div class="col product_section clearfix">
             <!-- Breadcrumbs -->
@@ -88,7 +88,7 @@
                                         <div class="product-item @product.Category">
                                             <div class="product @(product.IsOnSale ? "discount" : "")">
                                                 <div class="product_image">
-                                                    <img src="@Url.Content(product.ImageUrl ?? "~/images/product_1.png")" alt="@product.Name">
+                                                    <img src="@Url.Content(product.ImageUrl ?? "~/images/product_1.png")" alt="@product.Name" style="height:240px">
                                                 </div>
                                                 <div class="favorite favorite_left"></div>
                                                 @if (product.IsOnSale && product.OldPrice.HasValue)
