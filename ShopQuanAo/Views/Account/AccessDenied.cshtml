@@ -1,15 +1,8 @@
 @{
     ViewData["Title"] = "Từ Chối Truy Cập";
-    Layout = null;
 }
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@ViewData["Title"] - Shop Quần Áo</title>
-
+@section Styles {
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -18,7 +11,7 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #5e72e4 0%, #825ee4 100%);
+            background: linear-gradient(135deg, #f3f4f6, #e2e8f0);
             color: #333;
             height: 100vh;
         }
@@ -84,15 +77,15 @@
 
         }
     </style>
-</head>
-<body>
-    <main class="main-content mt-0">
+}
+
+    <main class="main-content mt-5 mb-5 pt-4">
         <section>
             <div class="page-header min-vh-100">
                 <div class="container d-flex align-items-center justify-content-center">
                     <div class="row w-100 justify-content-center">
                         <div class="col-lg-5 col-md-7">
-                            <div class="access-card">
+                            <div class="access-card border-1">
                                 <div class="mb-3">
                                     <i class="fa fa-ban text-danger"></i>
                                 </div>
@@ -131,7 +124,7 @@
                             <div class="position-relative border-radius-lg overflow-hidden w-100 h-100"
                                  style="background: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=1350&q=80') center/cover no-repeat;">
                                 <span class="mask"></span>
-                                <div class="text-center position-relative text-white p-5">
+                                <div class="text-center position-relative  border-1 text-white p-5">
                                     <h3 class="fw-bold">Truy Cập Bị Từ Chối</h3>
                                     <p class="mb-0">Khu vực này chỉ dành cho quản trị viên.<br />Vui lòng liên hệ admin để được cấp quyền.</p>
                                 </div>
@@ -143,7 +136,9 @@
         </section>
     </main>
 
+@section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+}
+
+@section Footer { }
