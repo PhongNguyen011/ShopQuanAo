@@ -8,11 +8,11 @@ using System.Text;
 
 namespace ShopQuanAo.Services
 {
-    public class VnPayServiceNew : IVnPayService
+    public class VnPayService : IVnPayService
     {
         private readonly IConfiguration _cfg;
 
-        public VnPayServiceNew(IConfiguration cfg)
+        public VnPayService(IConfiguration cfg)
         {
             _cfg = cfg;
         }

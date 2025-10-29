@@ -18,6 +18,7 @@ namespace ShopQuanAo.Data
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<MomoTransaction> MomoTransactions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -82,6 +83,14 @@ namespace ShopQuanAo.Data
             {
                 e.Property(x => x.Price).HasColumnType("decimal(18,2)");
                 e.Property(x => x.LineTotal).HasColumnType("decimal(18,2)");
+            });
+
+            // ===== MoMo Transaction config =====
+            modelBuilder.Entity<MomoTransaction>(e =>
+            {
+                e.HasIndex(x => x.OrderId).IsUnique(false);
+                e.Property(x => x.Amount).HasColumnType("decimal(18,2)");
+                e.Property(x => x.Status).HasMaxLength(32);
             });
             adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@123");
 

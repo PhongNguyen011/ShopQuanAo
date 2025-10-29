@@ -10,14 +10,16 @@ namespace ShopQuanAo.Controllers
         private readonly ICartService _cartService;
         private readonly ICouponService _couponService;
         private readonly IVnPayService _vnPayService;
+        private readonly IMomoService _momoService;
 
         private const string COUPON_KEY = "CART_COUPON";
 
-        public CheckoutController(ICartService cartService, ICouponService couponService, IVnPayService vnPayService)
+        public CheckoutController(ICartService cartService, ICouponService couponService, IVnPayService vnPayService, IMomoService momoService)
         {
             _cartService = cartService;
             _couponService = couponService;
             _vnPayService = vnPayService;
+            _momoService = momoService;
         }
 
         // ===================== Models =====================
@@ -183,7 +185,11 @@ namespace ShopQuanAo.Controllers
 
             var (_, _, total) = await CalcTotalsAsync(cart);
 
-            switch ((req.PaymentMethod ?? "COD").ToUpperInvariant())
+            // Debug log to verify posted payment method
+            Console.WriteLine($"[Checkout.Pay] PaymentMethod posted: '{req.PaymentMethod}' | Total: {total}");
+
+            var method = (req.PaymentMethod ?? "").Trim().ToUpperInvariant();
+            switch (method)
             {
                 case "VNPAY":
                     {
@@ -198,11 +204,40 @@ namespace ShopQuanAo.Controllers
                         return Redirect(url);
                     }
 
-                default: // COD
+                case "MOMO":
+                {
+                    var orderInfo = new OrderInfoModel
+                    {
+                        FullName = req.CustomerName ?? "Khách hàng",
+                        Amount = total,
+                        OrderInfo = "Thanh toán đặt hàng qua MoMo tại ShopQuanAo"
+                    };
+
+                    var res = await _momoService.CreatePaymentAsync(orderInfo);
+                    if (!string.IsNullOrWhiteSpace(res.PayUrl))
+                    {
+                        Console.WriteLine($"[Checkout.Pay] Redirecting to MoMo payUrl: {res.PayUrl}");
+                        return Redirect(res.PayUrl);
+                    }
+
+                    TempData["Error"] = $"MoMo tạo giao dịch thất bại: {res.Message}";
+                    return RedirectToAction(nameof(Result), new { code = orderInfo.OrderId, status = "failed", message = res.Message });
+                }
+
+                case "COD":
+                {
                     var orderId = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                     _cartService.SaveCart(new List<CartItem>());
                     TempData["Success"] = "Đặt hàng COD thành công! Chúng tôi sẽ liên hệ xác nhận.";
                     return RedirectToAction(nameof(Result), new { code = orderId, status = "success" });
+                }
+
+                default:
+                {
+                    Console.WriteLine($"[Checkout.Pay] Unknown PaymentMethod: '{req.PaymentMethod}'");
+                    TempData["Error"] = "Phương thức thanh toán không hợp lệ hoặc không được gửi lên.";
+                    return RedirectToAction(nameof(Result), new { code = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString(), status = "failed", message = "INVALID_PAYMENT_METHOD" });
+                }
             }
         }
 
@@ -233,6 +268,8 @@ namespace ShopQuanAo.Controllers
                 return RedirectToAction(nameof(Result), new { code = result.OrderId, status = "failed", message = result.VnPayResponseCode });
             }
         }
+
+        // MoMo callback/IPN được định tuyến ở PaymentController
 
         [HttpGet]
         public IActionResult Result(string code, string status, string? message = null)
