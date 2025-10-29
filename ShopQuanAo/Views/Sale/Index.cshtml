@@ -1,0 +1,145 @@
+﻿@model IEnumerable<ShopQuanAo.Models.Product>
+@{
+    ViewData["Title"] = "Khuyến Mãi";
+
+    Func<string?, string> imgSrc = (u) =>
+    {
+        if (string.IsNullOrWhiteSpace(u)) return Url.Content("~/images/product_1.png");
+        var s = u.Trim();
+        if (s.StartsWith("http", StringComparison.OrdinalIgnoreCase)) return s;
+        if (s.StartsWith("~/")) return Url.Content(s);
+        if (s.StartsWith("/")) return s;
+        return Url.Content($"~/images/{s}");
+    };
+}
+
+@section Styles {
+    <link href="~/bootstrap4/bootstrap.min.css">
+    <link href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet">
+    <link href="~/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet">
+    <link href="~/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet">
+    <link href="~/css/responsive.css" rel="stylesheet">
+    <link href="~/css/main_styles.css" rel="stylesheet">
+    <link href="~/css/categories_styles.css" rel="stylesheet">
+    <link href="~/css/categories_responsive.css" rel="stylesheet">
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col product_section clearfix">
+
+            <!-- Breadcrumbs -->
+            <div class="breadcrumbs d-flex flex-row align-items-center">
+                <ul>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+                    <li class="active">
+                        <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Main Content (không cần sidebar danh mục vì đây là Sale tổng) -->
+            <div class="main_content">
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col">
+                            <!-- Product Sorting (giữ nguyên UI cho đồng bộ) -->
+                            <div class="product_sorting_container product_sorting_container_top">
+                                <ul class="product_sorting">
+                                    <li>
+                                        <span class="type_sorting_text">Sắp Xếp Theo</span>
+                                        <i class="fa fa-angle-down"></i>
+                                        <ul class="sorting_type">
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc Định</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá</span></li>
+                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên</span></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span>Hiển Thị</span>
+                                        <span class="num_sorting_text">@Model.Count()</span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Product Grid -->
+                            <div class="product-grid row g-2">
+                                @if (Model.Any())
+                                {
+                                    @foreach (var product in Model)
+                                    {
+                                        var hasOld = product.OldPrice.HasValue && product.OldPrice.Value > product.Price && product.OldPrice.Value > 0;
+                                        var discount = hasOld ? Math.Round((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100M) : 0;
+
+
+                                        <div class="product-item @product.Category">
+                                            <div class="product @(product.IsOnSale ? "discount" : "")">
+                                                <div class="product_image">
+                                                    <img src="@imgSrc(product.ImageUrl)" alt="@product.Name" style="height:240px">
+                                                </div>
+                                                <div class="favorite favorite_left"></div>
+
+                                                @if (product.IsOnSale && hasOld)
+                                                {
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                                        <span>-@discount%</span>
+                                                    </div>
+                                                }
+
+                                                <div class="product_info">
+                                                    <h6 class="product_name">
+                                                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
+                                                            @product.Name
+                                                        </a>
+                                                    </h6>
+                                                    <div class="product_price">
+                                                        @product.Price.ToString("N0")đ
+                                                        @if (hasOld)
+                                                        {
+                                                            <span>@product.OldPrice!.Value.ToString("N0")đ</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="red_button add_to_cart_button">
+                                                <a asp-controller="Cart" asp-action="Add" asp-route-Id="@product.Id">Thêm Vào Giỏ</a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="col-12 text-center py-5">
+                                        <h4>Chưa có sản phẩm giảm giá</h4>
+                                        <p>Vui lòng quay lại sau nhé!</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /products_iso -->
+            </div> <!-- /main_content -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/styles/bootstrap4/popper.js"></script>
+    <script src="~/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="~/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="~/plugins/easing/easing.js"></script>
+    <script src="~/js/custom.js"></script>
+
+    <script>
+        // Isotope (nếu cần)
+        var $grid = $('.product-grid').isotope({
+            itemSelector: '.product-item',
+            layoutMode: 'fitRows'
+        });
+    </script>
+}
