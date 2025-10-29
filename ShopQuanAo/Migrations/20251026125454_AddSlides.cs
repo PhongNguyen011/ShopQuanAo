@@ -28,6 +28,19 @@ namespace ShopQuanAo.Migrations
                     table.PrimaryKey("PK_Slides", x => x.Id);
                 });
 
+            var seedTime = new DateTime(2025, 10, 29, 12, 0, 0, DateTimeKind.Utc);
+
+            migrationBuilder.InsertData(
+                table: "Slides",
+                columns: new[] { "Id", "Title", "Description", "ImageUrl", "IsActive", "CreatedAt" },
+                values: new object[,]
+                {
+                    { 1, "Khai trương giảm sốc", "Bộ sưu tập mới ra mắt", "/images/slides/slider-1.jpg", true, seedTime },
+                    { 2, "Thu đông 2025", "Áo khoác, hoodie, sweater", "/images/slides/slider-2.jpg", true, seedTime },
+                    { 3, "Flash Sale cuối tuần", "Giảm sâu số lượng có hạn", "/images/slides/slider-3.jpg", true, seedTime }
+                }
+            );
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",

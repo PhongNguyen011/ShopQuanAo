@@ -29,6 +29,20 @@ namespace ShopQuanAo.Migrations
                     table.PrimaryKey("PK_Posts", x => x.Id);
                 });
 
+            var postTime = new DateTime(2025, 10, 29, 12, 0, 0, DateTimeKind.Utc);
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "Id", "Title", "Slug", "Content", "Thumbnail", "CreatedAt", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "Khai trương cửa hàng", "khai-truong-cua-hang", "<p>Chào mừng đến với PNT Shop!</p>", "post-1.jpg", postTime, null },
+                    { 2, "BST Thu Đông 2025", "bst-thu-dong-2025", "<p>Ra mắt BST mới.</p>", "post-2.jpg", postTime, null },
+                    { 3, "Mẹo phối đồ basic", "meo-phoi-do-basic", "<p>Gợi ý phối đồ hằng ngày.</p>", "post-3.jpg", postTime, null }
+                }
+            );
+
+
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
