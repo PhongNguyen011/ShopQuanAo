@@ -4,14 +4,14 @@
     const token = document.querySelector('#cart-anti input[name="__RequestVerificationToken"]')?.value;
 
     const fmtMoney = (n) => (n || 0).toLocaleString('vi-VN') + ' ₫';
-    
 
     // Cập nhật số lượng và thành tiền cho 1 dòng
     function updateRowUI(id, qty, lineTotal, stock) {
         const qtyInput = document.getElementById('qty-' + id);
-        const lineCell = document.getElementById('line-' + id);
         if (qtyInput) qtyInput.value = qty;
-        if (lineCell) lineCell.textContent = fmtMoney(lineTotal);
+
+        // Có thể có 2 ô "line-<id>" (desktop & mobile). Cập nhật tất cả nếu trùng id.
+        document.querySelectorAll('#line-' + id).forEach(el => el.textContent = fmtMoney(lineTotal));
 
         const row = document.getElementById('row-' + id);
         if (row && Number.isInteger(stock)) {
@@ -27,10 +27,24 @@
         if (plus) plus.disabled = Number.isInteger(stock) ? qty >= stock : false;
     }
 
-    // Cập nhật tổng tạm tính
-    function updateSubtotalUI(subtotal) {
-        const subEl = document.getElementById('subtotal');
-        if (subEl) subEl.textContent = fmtMoney(subtotal);
+    // Cập nhật toàn bộ totals (footer + card)
+    function updateTotalsUI(subtotal, discount, total) {
+        const s = document.getElementById('subtotal');
+        const d = document.getElementById('discount');
+        const t = document.getElementById('total');
+        if (s) s.textContent = fmtMoney(subtotal);
+        if (d) d.textContent = fmtMoney(discount);
+        if (t) t.textContent = fmtMoney(total);
+
+        const sc = document.getElementById('subtotal-card');
+        const dc = document.getElementById('discount-card');
+        const tc = document.getElementById('total-card');
+        if (sc) sc.textContent = fmtMoney(subtotal);
+        if (dc) dc.textContent = fmtMoney(discount);
+        if (tc) tc.textContent = fmtMoney(total);
+
+        // Phát sự kiện cho ai đó còn lắng nghe (không bắt buộc)
+        document.dispatchEvent(new Event('cart:totals-updated'));
     }
 
     // Gọi server thay đổi quantity (delta = +1 / -1)
@@ -45,14 +59,16 @@
         });
 
         if (!res.ok) return;
-
         const data = await res.json();
 
         // Nếu dòng bị xoá (hết hàng)
         if (data.removed) {
             const row = document.getElementById('row-' + id);
             if (row) row.remove();
-            updateSubtotalUI(data.subtotal || 0);
+
+            // Cập nhật đủ cả 3 số
+            updateTotalsUI(data.subtotal || 0, data.discount || 0, data.total || 0);
+
             const rowsLeft = document.querySelectorAll('#cart-table tbody tr').length;
             if (rowsLeft === 0) location.reload();
             return;
@@ -60,11 +76,12 @@
 
         if (data.ok) {
             updateRowUI(id, data.qty, data.lineTotal, data.stock);
-            updateSubtotalUI(data.subtotal || 0);
+            // Cập nhật đủ cả 3 số
+            updateTotalsUI(data.subtotal || 0, data.discount || 0, data.total || 0);
         }
     }
 
-    // Gán sự kiện click cho nút +/-
+    // Gán sự kiện click cho nút +/- (event delegation)
     document.addEventListener('click', function (e) {
         const minusBtn = e.target.closest('.btn-minus');
         const plusBtn = e.target.closest('.btn-plus');

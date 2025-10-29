@@ -1,1 +1,0 @@
-﻿document.dispatchEvent(new Event('cart:totals-updated'));
