@@ -436,6 +436,24 @@ section
 	background: #fe4c50;
 }
 
+.related-title {
+	font-size: 32px;
+	font-weight: 600;
+	color: #222;
+	position: relative;
+	text-transform: capitalize;
+	justify-content: center;
+	text-align: center;
+}
+
+.underline-center {
+	width: 100px;
+	height: 8px;
+	background: #ff4b4b; /* đỏ tươi */
+	margin: 6px auto 20px auto;
+	border-radius: 2px;
+}
+
 /*********************************
 5.2 New Arrivals Products Grid
 *********************************/

@@ -15,11 +15,11 @@
 }
 
 /* Header */
-.site-header {
+.navbar, header, .site-header {
 	background: #fff;
 	position: sticky;
 	top: 0;
-	z-index: 1000;
+	z-index: 1000 !important;
 	box-shadow: 0 2px 8px rgba(0,0,0,.06)
 }
 
@@ -106,7 +106,7 @@
 	box-shadow: 0 8px 24px rgba(0,0,0,.08);
 	padding: 10px 0;
 	display: none;
-	z-index: 1001
+	z-index: 1001;
 }
 
 .dropdown:hover > .dropdown-menu {
@@ -347,27 +347,26 @@
 
 
 /* ===== SLIDER (CAROUSEL) ===== */
-/* === SLIDER HERO === */
-#carouselExample {
-	width: 100%;
-	height: 580px; /* cố định chiều cao cho toàn bộ slider */
+/* Giữ nguyên cấu trúc của bạn */
+#homeCarousel,
+#homeCarousel .carousel-inner,
+#homeCarousel .carousel-item {
+	height: 580px; /* khung cố định, có thể chỉnh 600px nếu muốn cao hơn */
+	max-height: 600px; /* ngăn ảnh vượt quá */
 	overflow: hidden;
-	position: relative;
 }
 
-#carouselExample .carousel-item {
-	height: 100%;
-}
-
-#carouselExample .carousel-item img {
+/* Ảnh giữ tỉ lệ gốc, không bị phóng to */
+#homeCarousel .carousel-item img {
 	width: 100%;
 	height: 100%;
-	object-fit: cover; /* ảnh phủ đầy khung, không méo */
-	object-position: center; /* canh giữa khung */
+	object-fit: cover; /* giữ tỉ lệ, không crop, không zoom */
+	object-position: center; /* canh giữa */
+	background: #fff; /* nền trắng khi ảnh không đủ khung */
 }
 
-/* Làm mờ nền nhẹ để chữ dễ đọc */
-#carouselExample .carousel-item::after {
+/* Overlay làm mờ nền chữ */
+#homeCarousel .carousel-item::after {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -375,8 +374,8 @@
 	z-index: 1;
 }
 
-/* Chữ và caption trong slide */
-#carouselExample .carousel-caption {
+/* Caption nổi trên ảnh */
+#homeCarousel .carousel-caption {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -384,37 +383,42 @@
 	z-index: 2;
 	color: #fff;
 	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+	text-align: center;
 }
 
-#carouselExample .carousel-caption h5 {
+#homeCarousel .carousel-caption h5 {
 	font-size: 2rem;
 	font-weight: 700;
 }
 
-#carouselExample .carousel-caption p {
+#homeCarousel .carousel-caption p {
 	font-size: 1.1rem;
 }
 
-/* Nút mũi tên điều hướng */
+/* Icon mũi tên */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
 	filter: invert(1) brightness(150%);
 }
 
-/* Giảm chiều cao slider trên mobile */
+/* Responsive cho mobile */
 @media (max-width: 576px) {
-	#carouselExample {
-		height: 300px;
+	#homeCarousel,
+	#homeCarousel .carousel-inner,
+	#homeCarousel .carousel-item {
+		height: 320px;
+		max-height: 320px;
 	}
 
-	#carouselExample .carousel-caption h5 {
+	#homeCarousel .carousel-caption h5 {
 		font-size: 1.2rem;
 	}
 
-	#carouselExample .carousel-caption p {
+	#homeCarousel .carousel-caption p {
 		font-size: 0.9rem;
 	}
 }
+
 
 
 /* ===== 3 BANNER NHỎ ===== */

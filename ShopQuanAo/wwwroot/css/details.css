@@ -1,0 +1,122 @@
+.btn-facebook {
+    background-color: #1877f2;
+    color: #fff !important;
+    border: none;
+}
+
+.btn-facebook:hover {
+    background-color: #145dbf;
+}
+
+/* Card tổng thể */
+.post-wrap {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 16px;
+    padding: 18px;
+    background: var(--bs-body-bg);
+    transition: box-shadow .18s ease,border-color .18s ease;
+}
+
+.post-wrap:hover {
+    box-shadow: 0 10px 28px rgba(0,0,0,.08);
+    border-color: rgba(0,0,0,.12)
+}
+
+/* Ảnh chính: giữ tỉ lệ, bo góc */
+.post-thumb {
+    border-radius: 14px;
+    overflow: hidden
+}
+
+.post-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block
+}
+
+/* Title/meta */
+.post-title {
+    line-height: 1.3;
+    margin-bottom: .35rem
+}
+
+.post-meta {
+    color: var(--bs-secondary-color)
+}
+
+.badge-new {
+    background: #0d6efd1a;
+    color: #0d6efd;
+    border: 1px solid #0d6efd33;
+    font-weight: 600
+}
+
+/* Nội dung bài viết */
+.post-content :is(p,li) {
+    line-height: 1.75
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px
+}
+
+.post-content blockquote {
+    padding: .75rem 1rem;
+    border-left: 4px solid var(--bs-primary);
+    background: rgba(13,110,253,.06);
+    border-radius: 10px
+}
+
+/* Action: chia sẻ/copy */
+.post-actions .btn {
+    border-radius: 999px
+}
+
+/* Related */
+.rel-card {
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 14px;
+    overflow: hidden;
+    height: 100%;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    background: var(--bs-body-bg)
+}
+
+.rel-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    border-color: rgba(0,0,0,.12)
+}
+
+.rel-thumb {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block
+}
+
+/* 2 dòng cho tiêu đề related */
+.rel-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .post-wrap, .rel-card {
+        border-color: rgba(255,255,255,.08)
+    }
+
+    .post-wrap:hover, .rel-card:hover {
+        border-color: rgba(255,255,255,.16)
+    }
+
+    .post-content blockquote {
+        background: rgba(255,255,255,.06)
+    }
+}

@@ -81,17 +81,16 @@ p {
 	text-shadow: rgba(0,0,0,.01) 0 0 1px;
 }
 
-	p a {
-		display: inline;
-		position: relative;
-		color: inherit;
-		border-bottom: solid 2px #fde0db;
-		-webkit-transition: all 200ms ease;
-		-moz-transition: all 200ms ease;
-		-ms-transition: all 200ms ease;
-		-o-transition: all 200ms ease;
-		transition: all 200ms ease;
-	}
+p a {
+	display: inline;
+	position: relative;
+	color: inherit;
+	-webkit-transition: all 200ms ease;
+	-moz-transition: all 200ms ease;
+	-ms-transition: all 200ms ease;
+	-o-transition: all 200ms ease;
+	transition: all 200ms ease;
+}
 
 a, a:hover, a:visited, a:active, a:link {
 	text-decoration: none;
@@ -107,12 +106,11 @@ p a:active {
 
 p a:hover {
 	color: #FF6347;
-	background: #fde0db;
 }
 
-	p a:hover::after {
-		opacity: 0.2;
-	}
+p a:hover::after {
+	opacity: 0.2;
+}
 
 ::selection {
 	background: #fde0db;
@@ -279,19 +277,19 @@ section {
 	margin-bottom: 58px;
 }
 
-	.breadcrumbs ul li {
-		display: inline-block;
-		margin-right: 17px;
-	}
+.breadcrumbs ul li {
+	display: inline-block;
+	margin-right: 17px;
+}
 
-		.breadcrumbs ul li.active a {
-			color: #b9b4c7;
-		}
+.breadcrumbs ul li.active a {
+	color: #b9b4c7;
+}
 
-		.breadcrumbs ul li i {
-			margin-right: 17px;
-		}
+.breadcrumbs ul li i {
+	margin-right: 17px;
+}
 
-		.breadcrumbs ul li a {
-			color: #51545f;
-		}
+.breadcrumbs ul li a {
+	color: #51545f;
+}
