@@ -32,12 +32,16 @@ namespace ShopQuanAo.Models
         public decimal Subtotal { get; set; }
         public decimal Discount { get; set; }
         public decimal Total { get; set; }
+        public decimal ShippingFee { get; set; } = 0;
         
         [StringLength(50)]
         public string? CouponCode { get; set; }
         
+        /// <summary>
+        /// Trạng thái đơn hàng: "Pending" = Tiếp nhận, "Shipping" = Đã chuyển GHN, "Delivered" = Đã giao thành công, "Cancelled" = Đã hủy
+        /// </summary>
         [StringLength(20)]
-        public string Status { get; set; } = "Pending"; // Pending, Confirmed, Shipping, Delivered, Cancelled
+        public string Status { get; set; } = "Pending"; // Pending, Shipping, Delivered, Cancelled
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
@@ -53,6 +57,8 @@ namespace ShopQuanAo.Models
         public string? VnPayResponseCode { get; set; }
         
         public DateTime? VnPayPaidAt { get; set; }
+        
+        public string? ApplicationUserId { get; set; }
         
         // Navigation properties
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

@@ -1,0 +1,52 @@
+@model IEnumerable<ShopQuanAo.Models.Order>
+@{
+    ViewData["Title"] = "Lịch sử đơn hàng của tôi";
+    string renderStatus(string s) => s switch {
+        "Pending" => "<span class='badge bg-warning text-dark'>Tiếp nhận</span>",
+        "Shipping" => "<span class='badge bg-info text-dark'>Đã gửi GHN</span>",
+        "Delivered" => "<span class='badge bg-success'>Đã giao</span>",
+        "Cancelled" => "<span class='badge bg-danger'>Đã hủy</span>",
+        _ => s
+    };
+}
+<div class="container my-4">
+    <h3 class="mb-3">Lịch sử đơn hàng của tôi</h3>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle bg-white">
+                <thead class="table-light">
+                    <tr>
+                        <th>Mã đơn</th>
+                        <th>Ngày đặt</th>
+                        <th>Địa chỉ nhận</th>
+                        <th class="text-end">Tổng hàng</th>
+                        <th class="text-end">Phí ship</th>
+                        <th class="text-end">Thành tiền</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var o in Model)
+                {
+                    <tr>
+                        <td>@o.OrderCode</td>
+                        <td>@o.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@o.Address</td>
+                        <td class="text-end">@o.Subtotal.ToString("N0") ₫</td>
+                        <td class="text-end">@((o.ShippingFee > 0 ? o.ShippingFee.ToString("N0") : "Miễn phí"))</td>
+                        <td class="text-end">@o.Total.ToString("N0") ₫</td>
+                        <td>@Html.Raw(renderStatus(o.Status))</td>
+                        <td><a class="btn btn-outline-primary btn-sm" href="#">Chi tiết</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

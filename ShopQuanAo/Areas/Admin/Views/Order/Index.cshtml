@@ -1,0 +1,49 @@
+@model IEnumerable<ShopQuanAo.Models.Order>
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+}
+<div class="container my-4">
+    <h3 class="mb-3">Quản lý đơn hàng</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>Mã đơn</th>
+                    <th>Tên KH</th>
+                    <th>Địa chỉ</th>
+                    <th class="text-end">Phí ship</th>
+                    <th class="text-end">Tổng</th>
+                    <th>Trạng thái</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var o in Model)
+                {
+                    <tr>
+                        <td>@o.OrderCode</td>
+                        <td>@o.CustomerName</td>
+                        <td>@o.Address</td>
+                        <td class="text-end">@((o.ShippingFee > 0 ? o.ShippingFee.ToString("N0") + " ₫" : "Miễn phí"))</td>
+                        <td class="text-end">@o.Total.ToString("N0") ₫</td>
+                        <td>@o.Status</td>
+                        <td class="text-center">
+                            @if(o.Status == "Pending"){
+                                <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
+                                    <input type="hidden" name="status" value="Shipping" /><button class="btn btn-primary btn-sm" type="submit">Bàn giao GHN</button>
+                                </form>
+                                <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
+                                    <input type="hidden" name="status" value="Cancelled" /><button class="btn btn-danger btn-sm" type="submit">Hủy</button>
+                                </form>
+                            } else if(o.Status == "Shipping"){
+                                <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
+                                    <input type="hidden" name="status" value="Delivered" /><button class="btn btn-success btn-sm" type="submit">Đã giao</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

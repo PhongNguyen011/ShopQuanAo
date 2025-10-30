@@ -74,6 +74,7 @@ builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
 builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.AddHttpClient<IGhnShippingService, GhnShippingService>();
 
 var app = builder.Build();
 

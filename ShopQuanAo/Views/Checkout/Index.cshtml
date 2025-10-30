@@ -1,19 +1,22 @@
 @model List<ShopQuanAo.Models.CartItem>
 @using System.Globalization
+
 @{
     ViewData["Title"] = "Thanh toán";
     var vn = CultureInfo.GetCultureInfo("vi-VN");
+
     decimal subtotal = ViewBag.Subtotal ?? (Model?.Sum(x => x.LineTotal) ?? 0M);
     decimal discount = ViewBag.Discount ?? 0M;
     decimal total = ViewBag.Total ?? (subtotal - discount);
+
     string VnMoney(decimal v) => string.Format(vn, "{0:N0} ₫", v);
 
-    // Thông tin mã giảm giá (cast về kiểu rõ ràng để tránh RuntimeBinderException)
+    // Mã coupon đang áp dụng
     var appliedCoupon = ViewBag.AppliedCoupon as ShopQuanAo.Controllers.CheckoutController.AppliedCouponInfo;
     string allowedCats = "";
     if (appliedCoupon != null)
     {
-        allowedCats = (appliedCoupon.AllowedCategoriesCsv as string) ?? "";
+        allowedCats = appliedCoupon.AllowedCategoriesCsv ?? "";
     }
 }
 
@@ -22,13 +25,18 @@
         <ul>
             <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
             <li><a asp-controller="Cart" asp-action="Index">Giỏ hàng</a></li>
-            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+            <li class="active">
+                <a href="#">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]
+                </a>
+            </li>
         </ul>
     </div>
 
     <div class="row g-4">
+        <!-- LEFT: Mã giảm giá + Form giao hàng -->
         <div class="col-lg-7">
-            <!-- Mã giảm giá -->
+            <!-- Coupon -->
             <div class="card border-0 shadow-sm mb-3">
                 <div class="card-header bg-white pb-2">
                     <h6 class="mb-0 d-flex align-items-center gap-2">
@@ -42,7 +50,11 @@
                             @Html.AntiForgeryToken()
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fa fa-tag"></i></span>
-                                <input type="text" name="code" class="form-control coupon-input" placeholder="NHẬP MÃ (VD: SALE10)" autocomplete="off" />
+                                <input type="text"
+                                       name="code"
+                                       class="form-control coupon-input"
+                                       placeholder="NHẬP MÃ (VD: SALE10)"
+                                       autocomplete="off" />
                                 <button class="btn btn-primary">Áp dụng</button>
                             </div>
                             <div class="form-text mt-2">
@@ -59,10 +71,16 @@
                                 </span>
                                 <span class="code-chip">@appliedCoupon.Code</span>
                                 <span class="text-muted small">
-                                    —
-                                    @(appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
-                                                                        ? $"Giảm {appliedCoupon.DiscountValue}%"
-                                                                        : $"Giảm {VnMoney((decimal)appliedCoupon.DiscountValue)}")
+                                    — @{
+                                        if (appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage)
+                                        {
+                                            @($"Giảm {appliedCoupon.DiscountValue}%")
+                                        }
+                                        else
+                                        {
+                                            @($"Giảm {VnMoney((decimal)appliedCoupon.DiscountValue)}")
+                                        }
+                                    }
                                 </span>
                             </div>
                             <form asp-action="RemoveCoupon" method="post" class="m-0">
@@ -104,13 +122,44 @@
                                 <label class="form-label">Số điện thoại</label>
                                 <input class="form-control" name="Phone" required />
                             </div>
+
                             <div class="col-12">
-                                <label class="form-label">Địa chỉ</label>
-                                <input class="form-control" name="Address" required />
+                                <label class="form-label">Tỉnh/Thành phố</label>
+                                <select id="province-select" class="form-select" required>
+                                    <option value="">Chọn tỉnh/thành phố</option>
+                                </select>
+                                <input type="hidden" id="ProvinceNameInput" name="ProvinceName" />
                             </div>
+
+                            <div class="col-12 mt-2">
+                                <label class="form-label">Quận/Huyện</label>
+                                <select id="district-select" class="form-select" required disabled>
+                                    <option value="">Chọn quận/huyện</option>
+                                </select>
+                                <input type="hidden" id="DistrictNameInput" name="DistrictName" />
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <label class="form-label">Phường/Xã</label>
+                                <select id="ward-select" class="form-select" required disabled>
+                                    <option value="">Chọn phường/xã</option>
+                                </select>
+                                <input type="hidden" id="WardNameInput" name="WardName" />
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <label class="form-label">Số nhà, tên đường...</label>
+                                <input class="form-control"
+                                       name="AddressDetail"
+                                       placeholder="Số nhà, căn hộ, tên đường..."
+                                       required />
+                            </div>
+
                             <div class="col-12">
                                 <label class="form-label">Ghi chú</label>
-                                <textarea class="form-control" name="Note" rows="2"></textarea>
+                                <textarea class="form-control"
+                                          name="Note"
+                                          rows="2"></textarea>
                             </div>
                         </div>
 
@@ -119,15 +168,27 @@
                         <div class="mb-2"><strong>Phương thức thanh toán</strong></div>
                         <div class="list-group">
                             <label class="list-group-item d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="radio" name="PaymentMethod" value="COD" checked />
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="PaymentMethod"
+                                       value="COD"
+                                       checked />
                                 <span>Thanh toán khi nhận hàng (COD)</span>
                             </label>
+
                             <label class="list-group-item d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="radio" name="PaymentMethod" value="VNPAY" />
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="PaymentMethod"
+                                       value="VNPAY" />
                                 <span>VNPay (thẻ nội địa/QR)</span>
                             </label>
+
                             <label class="list-group-item d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="radio" name="PaymentMethod" value="MOMO" />
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="PaymentMethod"
+                                       value="MOMO" />
                                 <span>MoMo</span>
                             </label>
                         </div>
@@ -135,11 +196,14 @@
                         <div class="mt-4 d-flex justify-content-end">
                             <button class="btn btn-dark btn-lg" type="submit">Thanh toán</button>
                         </div>
+
+                        <input type="hidden" id="ShippingFee" name="ShippingFee" value="0" />
                     </form>
                 </div>
             </div>
         </div>
 
+        <!-- RIGHT: Tóm tắt đơn hàng -->
         <div class="col-lg-5">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-white"><strong>Đơn hàng</strong></div>
@@ -165,9 +229,17 @@
                         <span>Giảm</span>
                         <span id="ck-discount">@VnMoney(discount)</span>
                     </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Phí giao hàng</span>
+                        <span id="ck-shipping">Đang tính...</span>
+                    </div>
+                    <div id="ck-shipping-msg"
+                         class="text-success small"
+                         style="display:none"></div>
+
                     <div class="d-flex justify-content-between fw-bold fs-5 mt-2">
                         <span>Tổng cộng</span>
-                        <span id="ck-total">@VnMoney(total)</span>
+                        <span id="ck-grandtotal">@VnMoney(total)</span>
                     </div>
                 </div>
             </div>
@@ -180,7 +252,6 @@
         text-transform: uppercase;
         letter-spacing: .5px;
     }
-
     .code-chip {
         display: inline-flex;
         align-items: center;
@@ -190,11 +261,172 @@
         font-weight: 600;
         background: #f8f9fa;
     }
-
     .coupon-form .input-group .form-control:focus {
         box-shadow: none;
         border-color: #86b7fe;
     }
 </style>
 
+@section Scripts {
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // GHN master-data endpoints (proxy qua server để tránh CORS)
+    const provinces_url = '/Checkout/GhnProvinces';
+    const districts_url = pid => `/Checkout/GhnDistricts?provinceId=${pid}`;
+    const wards_url = did => `/Checkout/GhnWards?districtId=${did}`;
+    
+    const $province = document.getElementById('province-select');
+    const $district = document.getElementById('district-select');
+    const $ward = document.getElementById('ward-select');
 
+    // Tải tỉnh/thành từ GHN
+    fetch(provinces_url)
+      .then(rs=>rs.json())
+      .then(json => {
+        const data = json.data || [];
+        $province.innerHTML = `<option value=''>Chọn tỉnh/thành phố</option>\n` + data.map(p=>`<option value='${p.ProvinceID}' data-name='${p.ProvinceName}'>${p.ProvinceName}</option>`).join('\n');
+      });
+
+    // Khi chọn tỉnh -> nạp quận/huyện từ GHN
+    $province.addEventListener('change', function() {
+      $district.innerHTML = `<option value=''>Chọn quận/huyện</option>`;
+      $ward.innerHTML = `<option value=''>Chọn phường/xã</option>`;
+      $district.disabled = true;
+      $ward.disabled = true;
+      const pid = $province.value;
+      if(!pid) return;
+      fetch(districts_url(pid))
+        .then(rs=>rs.json())
+        .then(json => {
+          const districts = json.data || [];
+          $district.innerHTML = `<option value=''>Chọn quận/huyện</option>\n` + districts.map(d=>`<option value='${d.DistrictID}' data-name='${d.DistrictName}'>${d.DistrictName}</option>`).join('\n');
+          $district.disabled = false;
+          updateHiddenNameInputs();
+        });
+    });
+
+    // Khi chọn quận/huyện -> nạp phường/xã từ GHN
+    $district.addEventListener('change', function() {
+      $ward.innerHTML = `<option value=''>Chọn phường/xã</option>`;
+      $ward.disabled = true;
+      const did = $district.value;
+      if(!did) return;
+      fetch(wards_url(did))
+        .then(rs=>rs.json())
+        .then(json => {
+          const wards = json.data || [];
+          $ward.innerHTML = `<option value=''>Chọn phường/xã</option>\n` + wards.map(w=>`<option value='${w.WardCode}' data-name='${w.WardName}'>${w.WardName}</option>`).join('\n');
+          $ward.disabled = false;
+          updateHiddenNameInputs();
+        });
+    });
+});
+
+var subtotal = Number('@subtotal');
+var discount = Number('@discount');
+var total = Number('@total');
+var freeShipThreshold = 500000;
+var shippingFee = 0;
+
+const $province = document.getElementById('province-select');
+const $district = document.getElementById('district-select');
+const $ward = document.getElementById('ward-select');
+const $ckShipping = document.getElementById('ck-shipping');
+const $ckShippingMsg = document.getElementById('ck-shipping-msg');
+const $grand = document.getElementById('ck-grandtotal');
+const $shippingFeeInput = document.getElementById('ShippingFee');
+const $provinceInput = document.getElementById('ProvinceNameInput');
+const $districtInput = document.getElementById('DistrictNameInput');
+const $wardInput = document.getElementById('WardNameInput');
+
+function updateGrandTotal() {
+    let grandTotal = total;
+    if (shippingFee > 0 && total < freeShipThreshold) {
+        grandTotal += shippingFee;
+        $ckShippingMsg.style.display = 'none';
+    }
+    if (total >= freeShipThreshold) {
+        $ckShippingMsg.textContent = 'Đơn hàng trên 500.000đ - Miễn phí ship!';
+        $ckShippingMsg.style.display = 'block';
+        $ckShipping.textContent = 'Miễn phí';
+        shippingFee = 0;
+        grandTotal = total;
+    } else {
+        $ckShippingMsg.style.display = 'none';
+        $ckShipping.textContent = shippingFee > 0 ? shippingFee.toLocaleString('vi-VN') + ' ₫' : 'Đang tính...';
+    }
+    $grand.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
+    $shippingFeeInput.value = shippingFee || 0;
+}
+
+async function fetchShippingFee() {
+    let district = $district.value;      // GHN DistrictID
+    let ward = $ward.value;              // GHN WardCode
+    if (!district || !ward) {
+        $ckShipping.textContent = '┄';
+        updateGrandTotal();
+        return;
+    }
+    $ckShipping.textContent = 'Đang tính...';
+    let data = {
+        toDistrictId: parseInt(district),
+        toWardCode: ward,
+        weight: 1200,
+        length: 20,
+        width: 20,
+        height: 10,
+        insuranceValue: Math.max(total, 0)
+    };
+    try {
+        const res = await fetch('/Checkout/CalcShipFee', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const js = await res.json();
+        if(js.ok && js.shipFee && js.shipFee > 0) {
+            shippingFee = js.shipFee;
+            $ckShippingMsg.style.display = 'none';
+        } else {
+            shippingFee = 0;
+            $ckShippingMsg.textContent = js.error || 'Không tính được phí ship!';
+            $ckShippingMsg.className = 'text-danger small';
+            $ckShippingMsg.style.display = 'block';
+            console.error('GHN fee error:', js);
+        }
+    } catch (err) {
+        shippingFee = 0;
+        $ckShippingMsg.textContent = 'Không kết nối được máy chủ phí ship. Vui lòng thử lại hoặc báo admin!';
+        $ckShippingMsg.className = 'text-danger small';
+        $ckShippingMsg.style.display = 'block';
+        console.error(err);
+    }
+    updateGrandTotal();
+}
+
+function updateHiddenNameInputs() {
+  const p = $province.options[$province.selectedIndex];
+  const d = $district.options[$district.selectedIndex];
+  const w = $ward.options[$ward.selectedIndex];
+  $provinceInput.value = p && p.value ? (p.getAttribute('data-name') || p.text) : '';
+  $districtInput.value = d && d.value ? (d.getAttribute('data-name') || d.text) : '';
+  $wardInput.value = w && w.value ? (w.getAttribute('data-name') || w.text) : '';
+}
+
+function updateShippingDisplayState() {
+  if (!$district.value || !$ward.value) {
+    $ckShipping.textContent = 'Đang tính...';
+  } else if (shippingFee === 0) {
+    $ckShipping.textContent = 'Không định giá được';
+    $ckShippingMsg.textContent = 'Hãy thử lại địa chỉ khác hoặc liên hệ CSKH.';
+    $ckShippingMsg.style.display = 'block';
+    $ckShippingMsg.className = 'text-danger small';
+  }
+}
+
+$district.addEventListener('change', function() { updateHiddenNameInputs(); updateShippingDisplayState(); setTimeout(fetchShippingFee, 300); });
+$ward.addEventListener('change', function() { updateHiddenNameInputs(); updateShippingDisplayState(); fetchShippingFee(); });
+
+document.addEventListener('DOMContentLoaded', function() { updateHiddenNameInputs(); updateShippingDisplayState(); if ($district.value && $ward.value) fetchShippingFee(); });
+</script>
+}

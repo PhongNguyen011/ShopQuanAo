@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShopQuanAo.Models;
 using System.IO;
 using System.Linq;
+using ShopQuanAo.Data;
 
 namespace ShopQuanAo.Controllers
 {
@@ -12,11 +13,13 @@ namespace ShopQuanAo.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _env;
+        private readonly ApplicationDbContext _db;
 
-        public ProfileController(UserManager<ApplicationUser> userManager, IWebHostEnvironment env)
+        public ProfileController(UserManager<ApplicationUser> userManager, IWebHostEnvironment env, ApplicationDbContext db)
         {
             _userManager = userManager;
             _env = env;
+            _db = db;
         }
 
         // GET: /Profile
@@ -101,6 +104,18 @@ namespace ShopQuanAo.Controllers
 
             TempData["Success"] = "Cập nhật hồ sơ thành công!";
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyOrders()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
+            var orders = _db.Orders
+                .Where(x => x.ApplicationUserId == user.Id)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToList();
+            return View(orders);
         }
     }
 }

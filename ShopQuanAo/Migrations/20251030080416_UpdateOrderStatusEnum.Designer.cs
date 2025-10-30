@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopQuanAo.Data;
 
@@ -11,9 +12,11 @@ using ShopQuanAo.Data;
 namespace ShopQuanAo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251030080416_UpdateOrderStatusEnum")]
+    partial class UpdateOrderStatusEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,8 +273,8 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = "admin-001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "72a42b93-a5c2-401f-b31c-e9b218652160",
-                            CreatedDate = new DateTime(2025, 10, 30, 15, 6, 32, 0, DateTimeKind.Local).AddTicks(7717),
+                            ConcurrencyStamp = "734e121b-c1e9-43c6-9931-e506c9063eb6",
+                            CreatedDate = new DateTime(2025, 10, 30, 15, 4, 15, 2, DateTimeKind.Local).AddTicks(8145),
                             Email = "admin@shopquanao.com",
                             EmailConfirmed = true,
                             FullName = "Administrator",
@@ -279,10 +282,10 @@ namespace ShopQuanAo.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SHOPQUANAO.COM",
                             NormalizedUserName = "ADMIN@SHOPQUANAO.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEL5zrW1fALcJaIrZNWpim/NhL7vOcKaxFq3FRHT0/tDIN1RxwwTShBT44oy51vx4eA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEICrzfYdJQMrDKTdOJFJ9JWgWFe496WKsJ62s/TlemB2SvPpQ/zai2/Rpsyoy8wuGg==",
                             PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d9262d66-0b64-4e2d-9581-12e0dfe55ecb",
+                            SecurityStamp = "36f388b8-d284-4d9b-8c62-cb9303abf265",
                             TwoFactorEnabled = false,
                             UserName = "admin@shopquanao.com"
                         });
@@ -413,9 +416,6 @@ namespace ShopQuanAo.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CouponCode")
                         .HasMaxLength(50)
@@ -623,7 +623,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 1,
                             Category = "men",
-                            CreatedDate = new DateTime(2025, 10, 30, 15, 6, 32, 83, DateTimeKind.Local).AddTicks(6162),
+                            CreatedDate = new DateTime(2025, 10, 30, 15, 4, 15, 90, DateTimeKind.Local).AddTicks(4892),
                             Description = "Áo thun nam chất liệu cotton cao cấp, thoáng mát",
                             ImageUrl = "~/images/product_1.png",
                             IsAvailable = true,
@@ -638,7 +638,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 2,
                             Category = "women",
-                            CreatedDate = new DateTime(2025, 10, 30, 15, 6, 32, 83, DateTimeKind.Local).AddTicks(6166),
+                            CreatedDate = new DateTime(2025, 10, 30, 15, 4, 15, 90, DateTimeKind.Local).AddTicks(4896),
                             Description = "Áo sơ mi nữ công sở sang trọng",
                             ImageUrl = "~/images/product_2.png",
                             IsAvailable = true,
@@ -652,7 +652,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 3,
                             Category = "men",
-                            CreatedDate = new DateTime(2025, 10, 30, 15, 6, 32, 83, DateTimeKind.Local).AddTicks(6170),
+                            CreatedDate = new DateTime(2025, 10, 30, 15, 4, 15, 90, DateTimeKind.Local).AddTicks(4900),
                             Description = "Quần jeans nam form slim fit",
                             ImageUrl = "~/images/product_3.png",
                             IsAvailable = true,
@@ -666,7 +666,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 4,
                             Category = "women",
-                            CreatedDate = new DateTime(2025, 10, 30, 15, 6, 32, 83, DateTimeKind.Local).AddTicks(6174),
+                            CreatedDate = new DateTime(2025, 10, 30, 15, 4, 15, 90, DateTimeKind.Local).AddTicks(4904),
                             Description = "Váy đầm nữ thời trang cao cấp",
                             ImageUrl = "~/images/product_4.png",
                             IsAvailable = true,
@@ -681,7 +681,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 5,
                             Category = "men",
-                            CreatedDate = new DateTime(2025, 10, 30, 15, 6, 32, 83, DateTimeKind.Local).AddTicks(6178),
+                            CreatedDate = new DateTime(2025, 10, 30, 15, 4, 15, 90, DateTimeKind.Local).AddTicks(4907),
                             Description = "Áo khoác nam phong cách Hàn Quốc",
                             ImageUrl = "~/images/product_5.png",
                             IsAvailable = true,
