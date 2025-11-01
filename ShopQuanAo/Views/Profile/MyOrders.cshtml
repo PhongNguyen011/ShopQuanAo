@@ -1,6 +1,6 @@
 @model IEnumerable<ShopQuanAo.Models.Order>
 @{
-    ViewData["Title"] = "Lịch sử đơn hàng của tôi";
+    ViewData["Title"] = "Lịch sử đơn hàng";
     string renderStatus(string s) => s switch {
         "Pending" => "<span class='badge bg-warning text-dark'>Tiếp nhận</span>",
         "Shipping" => "<span class='badge bg-info text-dark'>Đã gửi GHN</span>",
@@ -9,8 +9,22 @@
         _ => s
     };
 }
-<div class="container my-4">
-    <h3 class="mb-3">Lịch sử đơn hàng của tôi</h3>
+<div class="container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs d-flex flex-row align-items-center">
+        <ul>
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+            </li>
+            <li class="active">
+                <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> Tài khoản</a>
+            </li>
+            <li class="active">
+                <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a>
+            </li>
+        </ul>
+    </div>
+
     @if (!Model.Any())
     {
         <div class="alert alert-info">Bạn chưa có đơn hàng nào.</div>

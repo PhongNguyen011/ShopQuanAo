@@ -5,7 +5,7 @@
         ? Url.Content($"~/images/account/{Model.AvatarFileName}")
         : Url.Content("~/images/account/_default.png");
 }
-<div class="container my-4">
+<div class="container">
     <!-- Breadcrumbs -->
     <div class="breadcrumbs d-flex flex-row align-items-center">
         <ul>
@@ -25,7 +25,7 @@
                     <div class="card-body">
                         <div class="text-center mb-3 position-relative">
                             <img id="avatarPreview" src="@avatar"
-                                 class="rounded-circle border"
+                                 class="rounded-circle border border-1"
                                  style="width:140px;height:140px;object-fit:cover;cursor:pointer;"
                                  alt="Avatar"
                                  title="Nhấn để chọn ảnh mới" />
@@ -46,6 +46,8 @@
             <!-- Cột phải: username/email + sđt + địa chỉ + nút lưu -->
             <div class="col-md-9">
                 <div class="card shadow-sm border border-2">
+                    <span class="mt-3 ms-4 fw-bold fs-6">Sửa hồ sơ</span>
+                    <hr />
                     <div class="card-body">
 
                         <div class="mb-3">
