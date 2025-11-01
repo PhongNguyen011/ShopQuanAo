@@ -1,0 +1,111 @@
+﻿@model ShopQuanAo.Models.FlashSaleItem
+
+@{
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Flash Sale";
+    ViewData["Card"] = "Thêm Flash Sale";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <!-- HEADER -->
+            <div class="card-header pb-0">
+                <h6>Thêm Flash Sale Mới</h6>
+                <p class="text-xs text-secondary mb-0">
+                    Chọn sản phẩm, giá Flash, và thời gian kết thúc. Deal sẽ hiển thị ở Flash Sale trang chủ.
+                </p>
+            </div>
+
+            <!-- BODY -->
+            <div class="card-body">
+                <form asp-area="Admin"
+                      asp-controller="FlashSaleItems"
+                      asp-action="Create"
+                      method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <!-- Hàng 1: Chọn sản phẩm -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-control-label fw-semibold" asp-for="ProductId">
+                                    Sản phẩm áp dụng
+                                </label>
+                                <select asp-for="ProductId"
+                                        asp-items="ViewBag.ProductList"
+                                        class="form-control">
+                                    <option value="">-- Chọn sản phẩm --</option>
+                                </select>
+                                <span asp-validation-for="ProductId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hàng 2: Giá Flash + Thời hạn -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FlashPrice" class="form-control-label fw-semibold"></label>
+                                <input asp-for="FlashPrice"
+                                       class="form-control"
+                                       type="number"
+                                       step="1000"
+                                       min="0" />
+                                <span asp-validation-for="FlashPrice" class="text-danger"></span>
+                                <small class="form-text text-muted">
+                                    Nên thấp hơn giá gốc để hấp dẫn.
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="EndTime" class="form-control-label fw-semibold"></label>
+                                <input asp-for="EndTime"
+                                       class="form-control"
+                                       type="datetime-local"
+                                       value="@(Model.EndTime.ToString("yyyy-MM-ddTHH:mm"))" />
+                                <span asp-validation-for="EndTime" class="text-danger"></span>
+                                <small class="form-text text-muted">
+                                    Sau thời điểm này, Flash Sale tự hết hiệu lực.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hàng 3: Bật / Tắt -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                                <label asp-for="IsActive" class="form-check-label fw-semibold"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nút -->
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Lưu
+                        </button>
+
+                        <a asp-area="Admin"
+                           asp-controller="FlashSaleItems"
+                           asp-action="Index"
+                           class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Quay Lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,195 @@
+﻿@model List<ShopQuanAo.Models.FlashSaleItem>
+
+@functions {
+    string Img(string? u)
+    {
+        if (string.IsNullOrWhiteSpace(u))
+            return Url.Content("~/images/product_1.png");
+
+        if (u.StartsWith("~/") || u.StartsWith("/"))
+            return Url.Content(u);
+
+        // nếu chỉ lưu tên file trong DB
+        return Url.Content($"~/images/products/{u}");
+    }
+
+    int? DiscountPct(decimal originalPrice, decimal flashPrice)
+    {
+        if (originalPrice <= 0 || flashPrice >= originalPrice) return null;
+        var diff = originalPrice - flashPrice;
+        var pct = (diff / originalPrice) * 100m;
+        return (int)Math.Round(pct);
+    }
+}
+
+@if (Model == null || !Model.Any())
+{
+    <!-- phòng hờ, thường không vào đây vì VC đã return _FlashSaleUserEmpty rồi -->
+    <section style="display:none;"></section>
+}
+else
+{
+    <section class="deal_ofthe_week" style="background:#f7f7f7;">
+        <div class="container py-4">
+
+            <div id="flashSaleCarousel"
+                 class="carousel slide"
+                 data-bs-ride="carousel"
+                 data-bs-interval="5000"> @* auto chuyển mỗi 5s *@
+
+                <div class="carousel-inner">
+
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var deal = Model[i];
+                        var p = deal.Product!;
+                        var pct = DiscountPct(p.Price, deal.FlashPrice);
+
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <div class="row align-items-center">
+
+                                <!-- Cột ảnh -->
+                                <div class="col-lg-6">
+                                    <div class="deal_ofthe_week_img text-center p-4">
+                                        <a asp-controller="Product"
+                                           asp-action="Detail"
+                                           asp-route-id="@p.Id">
+                                            <img src="@Img(p.ImageUrl)"
+                                                 alt="@p.Name"
+                                                 style="max-width:100%; max-height:420px;
+                                                        object-fit:contain;
+                                                        background:#fff;
+                                                        border:1px solid #eee;
+                                                        border-radius:6px;" />
+                                        </a>
+
+                                        @if (pct.HasValue)
+                                        {
+                                            <div class="badge bg-danger mt-3" style="font-size:1rem;">
+                                                -@pct.Value% OFF
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <!-- Cột thông tin -->
+                                <div class="col-lg-6 text-right deal_ofthe_week_col">
+                                    <div class="deal_ofthe_week_content d-flex flex-column align-items-center float-right text-center p-4">
+
+                                        <div class="section_title">
+                                            <h2>Giảm Giá Tuần !</h2>
+                                            <div class="text-muted small">
+                                                @p.Name<br />
+                                                Sản phẩm hot giá sốc trong thời gian có hạn
+                                            </div>
+                                            <hr style="width:80px;border:2px solid #ff3b30;border-radius:2px;margin:12px auto 0;">
+                                        </div>
+
+                                        <!-- GIÁ -->
+                                        <div class="my-3">
+                                            <div class="h3 text-danger fw-bold mb-1">
+                                                @deal.FlashPrice.ToString("N0")đ
+                                            </div>
+                                            <div class="text-muted text-decoration-line-through">
+                                                @p.Price.ToString("N0")đ
+                                            </div>
+                                            <div class="small text-muted mt-1">
+                                                Còn @p.StockQuantity sản phẩm
+                                            </div>
+                                        </div>
+
+                                        <!-- COUNTDOWN -->
+                                        <ul class="timer list-unstyled d-flex justify-content-center flex-wrap gap-3 mb-4"
+                                            data-end="@deal.EndTime.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                                                <div class="timer_num fs-day h2 fw-bold text-danger">0</div>
+                                                <div class="timer_unit">Day</div>
+                                            </li>
+                                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                                                <div class="timer_num fs-hour h2 fw-bold text-danger">0</div>
+                                                <div class="timer_unit">Hours</div>
+                                            </li>
+                                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                                                <div class="timer_num fs-min h2 fw-bold text-danger">0</div>
+                                                <div class="timer_unit">Mins</div>
+                                            </li>
+                                            <li class="d-inline-flex flex-column justify-content-center align-items-center">
+                                                <div class="timer_num fs-sec h2 fw-bold text-danger">0</div>
+                                                <div class="timer_unit">Sec</div>
+                                            </li>
+                                        </ul>
+
+                                        <div class="red_button deal_ofthe_week_button">
+                                            <a asp-controller="Product"
+                                               asp-action="Detail"
+                                               asp-route-id="@p.Id"
+                                               style="display:inline-block;padding:.75rem 1.5rem;
+                                                      background:#1a1a1a;color:#fff;
+                                                      border-radius:.25rem;text-decoration:none;">
+                                                MUA NGAY
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div> <!-- row -->
+                        </div> <!-- carousel-item -->
+                    }
+
+                </div> <!-- carousel-inner -->
+
+                <!-- Nút điều hướng trái/phải -->
+                @if (Model.Count > 1)
+                {
+                    <button class="carousel-control-prev" type="button"
+                            data-bs-target="#flashSaleCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="#flashSaleCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
+            </div> <!-- carousel -->
+        </div> <!-- container -->
+    </section>
+
+    <script>
+        (function () {
+            function pad(n) { return n < 10 ? '0' + n : n; }
+
+            function setupCountdown(wrapper) {
+                var endStr = wrapper.getAttribute('data-end');
+                if (!endStr) return;
+                var endTs = new Date(endStr).getTime();
+
+                function tick() {
+                    var now = Date.now();
+                    var diff = endTs - now;
+                    if (diff < 0) diff = 0;
+
+                    var sec = Math.floor(diff / 1000);
+                    var d = Math.floor(sec / 86400); sec -= d * 86400;
+                    var h = Math.floor(sec / 3600); sec -= h * 3600;
+                    var m = Math.floor(sec / 60); sec -= m * 60;
+                    var s = sec;
+
+                    wrapper.querySelector('.fs-day').textContent = d;
+                    wrapper.querySelector('.fs-hour').textContent = pad(h);
+                    wrapper.querySelector('.fs-min').textContent = pad(m);
+                    wrapper.querySelector('.fs-sec').textContent = pad(s);
+
+                    requestAnimationFrame(tick);
+                }
+
+                tick();
+            }
+
+            document.querySelectorAll('.timer[data-end]').forEach(setupCountdown);
+        })();
+    </script>
+}

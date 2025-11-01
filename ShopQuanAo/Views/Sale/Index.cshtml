@@ -63,7 +63,8 @@
                                     </li>
                                 </ul>
                             </div>
-
+                            <!-- FLASH SALE NỔI BẬT -->
+                            @await Component.InvokeAsync("FlashSaleHero")
                             <!-- Product Grid -->
                             <div class="product-grid row g-2">
                                 @if (Model.Any())

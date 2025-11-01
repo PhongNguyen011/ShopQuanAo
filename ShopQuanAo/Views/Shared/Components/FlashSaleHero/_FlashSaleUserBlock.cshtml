@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ShopQuanAo.Models.FlashSaleItem>
+
+@{
+    string Img(string? u) =>
+        Url.Content(string.IsNullOrWhiteSpace(u)
+            ? "~/images/product_1.png"
+            : (u.StartsWith("~/") || u.StartsWith("/")) ? u : $"/images/products/{u}");
+}
+
+<div class="flash-sale-hero my-5">
+    <div class="container">
+        <div class="owl-carousel owl-theme" id="flashSaleCarousel">
+            @foreach (var item in Model)
+            {
+                var p = item.Product!;
+                var endAt = item.EndTime;
+                var diff = p.Price > item.FlashPrice ? (p.Price - item.FlashPrice) / p.Price * 100 : 0;
+                var pct = (int)Math.Round(diff);
+
+                <div class="item">
+                    <div class="deal_ofthe_week d-flex flex-column flex-lg-row align-items-center justify-content-center bg-light p-4 rounded-3 shadow-sm">
+                        <!-- Hình ảnh -->
+                        <div class="col-lg-5 text-center mb-3 mb-lg-0">
+                            <a asp-controller="Product" asp-action="Detail" asp-route-id="@p.Id">
+                                <img src="@Img(p.ImageUrl)" alt="@p.Name"
+                                     style="max-height:360px;object-fit:contain;border-radius:10px;" />
+                            </a>
+                            <div class="badge bg-danger position-relative mt-3 px-3 py-2 fs-6">-@pct% OFF</div>
+                        </div>
+
+                        <!-- Nội dung -->
+                        <div class="col-lg-6 text-center text-lg-start ms-lg-4">
+                            <h2 class="fw-bold text-dark mb-3">🔥 GIẢM GIÁ TUẦN NÀY!</h2>
+                            <p class="text-muted mb-2">Sản phẩm hot giá sốc trong thời gian có hạn</p>
+
+                            <h3 class="text-danger fw-bold mb-0">@item.FlashPrice.ToString("N0")đ</h3>
+                            <div class="text-muted text-decoration-line-through mb-2">@p.Price.ToString("N0")đ</div>
+                            <p class="small text-muted mb-3">Còn @p.StockQuantity sản phẩm</p>
+
+                            <!-- Countdown -->
+                            <ul class="timer list-unstyled d-flex justify-content-center justify-content-lg-start gap-3 mb-3"
+                                data-end="@endAt.ToString("yyyy-MM-ddTHH:mm:ss")">
+                                <li><div class="timer_num fs-day fw-bold text-danger">0</div><div>Ngày</div></li>
+                                <li><div class="timer_num fs-hour fw-bold text-danger">0</div><div>Giờ</div></li>
+                                <li><div class="timer_num fs-min fw-bold text-danger">0</div><div>Phút</div></li>
+                                <li><div class="timer_num fs-sec fw-bold text-danger">0</div><div>Giây</div></li>
+                            </ul>
+
+                            <a asp-controller="Product" asp-action="Detail" asp-route-id="@p.Id"
+                               class="btn btn-dark px-4 py-2">
+                                MUA NGAY
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script>
+        // Kích hoạt Owl Carousel
+        $('#flashSaleCarousel').owlCarousel({
+            loop: true,
+            margin: 20,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            dots: true,
+            nav: false,
+            items: 1
+        });
+
+        // Countdown cho từng item
+        function initCountdown(wrapper) {
+            var endStr = wrapper.dataset.end;
+            if (!endStr) return;
+            var endTs = new Date(endStr).getTime();
+
+            function update() {
+                var now = Date.now();
+                var diff = endTs - now;
+                if (diff < 0) diff = 0;
+                var sec = Math.floor(diff / 1000);
+                var d = Math.floor(sec / 86400); sec -= d * 86400;
+                var h = Math.floor(sec / 3600); sec -= h * 3600;
+                var m = Math.floor(sec / 60); sec -= m * 60;
+                var s = sec;
+
+                wrapper.querySelector('.fs-day').textContent = d;
+                wrapper.querySelector('.fs-hour').textContent = h.toString().padStart(2, '0');
+                wrapper.querySelector('.fs-min').textContent = m.toString().padStart(2, '0');
+                wrapper.querySelector('.fs-sec').textContent = s.toString().padStart(2, '0');
+
+                requestAnimationFrame(update);
+            }
+            update();
+        }
+
+        document.querySelectorAll('.timer[data-end]').forEach(initCountdown);
+    </script>
+}

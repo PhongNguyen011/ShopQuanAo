@@ -18,6 +18,7 @@ namespace ShopQuanAo.Data
         public DbSet<Coupon> Coupons { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<FlashSaleItem> FlashSaleItems { get; set; }
         public DbSet<MomoTransaction> MomoTransactions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

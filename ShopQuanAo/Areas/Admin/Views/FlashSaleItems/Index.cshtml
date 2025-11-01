@@ -1,0 +1,171 @@
+﻿@model List<ShopQuanAo.Models.FlashSaleItem>
+
+@{
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Flash Sale";
+    ViewData["Card"] = "Danh sách";
+
+    string Img(string? u) =>
+        Url.Content(string.IsNullOrWhiteSpace(u)
+            ? "~/images/product_1.png"
+            : (u.StartsWith("~/") || u.StartsWith("/")) ? u : $"/images/products/{u}");
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <!-- HEADER -->
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <div>
+                    <h6>Flash Sale hiện tại</h6>
+                    <p class="text-xs text-secondary mb-0">
+                        Quản lý các sản phẩm đang chạy Flash Sale / sắp hết hạn
+                    </p>
+                </div>
+                <a asp-area="Admin"
+                   asp-controller="FlashSaleItems"
+                   asp-action="Create"
+                   class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus"></i> Thêm Flash Sale
+                </a>
+            </div>
+
+            <!-- BODY -->
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Sản Phẩm
+                                </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">
+                                    Giá Flash
+                                </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                    Kết Thúc
+                                </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center">
+                                    Trạng Thái
+                                </th>
+                                <th class="text-secondary opacity-7 text-end">
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model.Any())
+                            {
+                                foreach (var item in Model)
+                                {
+                                    var p = item.Product;
+                                    var expired = item.EndTime <= DateTime.Now;
+
+                                    <tr>
+                                        <!-- SẢN PHẨM -->
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div>
+                                                    <img src="@Img(p?.ImageUrl)"
+                                                         class="avatar avatar-sm me-3 border-radius-lg"
+                                                         style="width:60px;height:60px;object-fit:cover;"
+                                                         alt="product" />
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">@p?.Name</h6>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        Giá gốc:
+                                                        @(p?.Price.ToString("N0")) VNĐ |
+                                                        Tồn kho: @p?.StockQuantity
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </td>
+
+                                        <!-- GIÁ FLASH -->
+                                        <td class="align-middle text-center text-sm">
+                                            <p class="text-xs font-weight-bold mb-0 text-danger">
+                                                @item.FlashPrice.ToString("N0") VNĐ
+                                            </p>
+                                        </td>
+
+                                        <!-- KẾT THÚC -->
+                                        <td class="align-middle text-center text-sm">
+                                            <div class="text-xs font-weight-bold @(expired ? "text-danger" : "text-dark") mb-0">
+                                                @item.EndTime.ToString("dd/MM/yyyy HH:mm")
+                                            </div>
+
+                                            @if (expired)
+                                            {
+                                                <span class="badge badge-sm bg-gradient-danger mt-1">Hết hạn</span>
+                                            }
+                                        </td>
+
+                                        <!-- TRẠNG THÁI -->
+                                        <td class="align-middle text-center text-sm">
+                                            @if (item.IsActive && !expired)
+                                            {
+                                                <span class="badge badge-sm bg-gradient-success">Đang bật</span>
+                                            }
+                                            else if (!item.IsActive)
+                                            {
+                                                <span class="badge badge-sm bg-gradient-secondary">Tắt</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-sm bg-gradient-danger">Hết hạn</span>
+                                            }
+                                        </td>
+
+                                        <!-- ACTION -->
+                                        <td class="align-middle text-end">
+                                            <a asp-area="Admin"
+                                               asp-controller="FlashSaleItems"
+                                               asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-link text-dark px-2 mb-0"
+                                               title="Sửa">
+                                                <i class="fa fa-pencil text-dark me-2"></i>
+                                            </a>
+
+                                            <form asp-area="Admin"
+                                                  asp-controller="FlashSaleItems"
+                                                  asp-action="Toggle"
+                                                  asp-route-id="@item.Id"
+                                                  method="post"
+                                                  class="d-inline">
+                                                <button type="submit"
+                                                        class="btn btn-link text-warning text-gradient px-2 mb-0"
+                                                        title="Bật / Tắt">
+                                                    <i class="fa @(item.IsActive ? "fa-pause" : "fa-play") text-warning me-2"></i>
+                                                </button>
+                                            </form>
+
+                                            <a asp-area="Admin"
+                                               asp-controller="FlashSaleItems"
+                                               asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-link text-danger text-gradient px-2 mb-0"
+                                               title="Xóa">
+                                                <i class="fa fa-trash text-danger me-2"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">
+                                        Chưa có Flash Sale nào.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

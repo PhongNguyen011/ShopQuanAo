@@ -1,0 +1,93 @@
+﻿@model ShopQuanAo.Models.FlashSaleItem
+
+@{
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Flash Sale";
+    ViewData["Card"] = "Xóa Flash Sale";
+
+    var p = Model.Product;
+
+    string Img(string? u) =>
+        Url.Content(string.IsNullOrWhiteSpace(u)
+            ? "~/images/product_1.png"
+            : (u.StartsWith("~/") || u.StartsWith("/")) ? u : $"/images/products/{u}");
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <!-- HEADER -->
+            <div class="card-header pb-0">
+                <h6 class="text-danger">Xóa Flash Sale</h6>
+            </div>
+
+            <!-- BODY -->
+            <div class="card-body">
+                <div class="alert alert-warning" role="alert">
+                    <strong>Cảnh báo!</strong> Bạn có chắc chắn muốn xóa Flash Sale này không?
+                </div>
+
+                <div class="row">
+                    <!-- Cột hình ảnh -->
+                    <div class="col-md-3">
+                        <img src="@Img(p?.ImageUrl)"
+                             alt="@p?.Name"
+                             class="img-fluid rounded"
+                             style="max-width:200px;max-height:200px;object-fit:cover;border:1px solid #eee;" />
+                    </div>
+
+                    <!-- Cột thông tin -->
+                    <div class="col-md-9">
+                        <dl class="row">
+
+                            <dt class="col-sm-4">Sản phẩm</dt>
+                            <dd class="col-sm-8">@p?.Name</dd>
+
+                            <dt class="col-sm-4">Giá gốc</dt>
+                            <dd class="col-sm-8">
+                                @(p != null ? p.Price.ToString("N0") + " VNĐ" : "")
+                            </dd>
+
+                            <dt class="col-sm-4">Giá Flash</dt>
+                            <dd class="col-sm-8" style="color:#e53935;font-weight:600;">
+                                @Model.FlashPrice.ToString("N0") VNĐ
+                            </dd>
+
+                            <dt class="col-sm-4">Kết thúc</dt>
+                            <dd class="col-sm-8">
+                                @Model.EndTime.ToString("dd/MM/yyyy HH:mm")
+                            </dd>
+
+                            <dt class="col-sm-4">Trạng thái hiện tại</dt>
+                            <dd class="col-sm-8">
+                                @(Model.IsActive ? "Đang bật" : "Tắt")
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <form asp-area="Admin"
+                      asp-controller="FlashSaleItems"
+                      asp-action="DeleteConfirmed"
+                      asp-route-id="@Model.Id"
+                      method="post"
+                      class="mt-4">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-trash"></i> Xác Nhận Xóa
+                    </button>
+
+                    <a asp-area="Admin"
+                       asp-controller="FlashSaleItems"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                        <i class="fa fa-arrow-left"></i> Hủy Bỏ
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
