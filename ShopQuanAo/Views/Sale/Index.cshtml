@@ -11,6 +11,15 @@
         if (s.StartsWith("/")) return s;
         return Url.Content($"~/images/{s}");
     };
+
+    // Tạo list có index để giữ thứ tự ban đầu
+    var productsWithIndex = Model
+        .Select((p, idx) => new
+        {
+            Product = p,
+            Index = idx
+        })
+        .ToList();
 }
 
 @section Styles {
@@ -39,46 +48,85 @@
                 </ul>
             </div>
 
-            <!-- Main Content (không cần sidebar danh mục vì đây là Sale tổng) -->
+            <!-- Main Content -->
             <div class="main_content">
                 <div class="products_iso">
                     <div class="row">
                         <div class="col">
-                            <!-- Product Sorting (giữ nguyên UI cho đồng bộ) -->
+
+                            <!-- Product Sorting -->
                             <div class="product_sorting_container product_sorting_container_top">
                                 <ul class="product_sorting">
-                                    <li>
-                                        <span class="type_sorting_text">Sắp Xếp Theo</span>
+                                    <li class="sorting-group">
+                                        <span class="sort-label">
+                                            Sắp Xếp Theo - (<span class="current_sort_value" id="currentSortText">Mặc Định</span>)
+                                        </span>
                                         <i class="fa fa-angle-down"></i>
+
                                         <ul class="sorting_type">
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "original-order" }'><span>Mặc Định</span></li>
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "price" }'><span>Giá</span></li>
-                                            <li class="type_sorting_btn" data-isotope-option='{ "sortBy": "name" }'><span>Tên</span></li>
+                                            <li class="type_sorting_btn active-sort text-start"
+                                                data-sortby="original"
+                                                data-sorttext=" Mặc Định">
+                                                <span>Mặc Định</span>
+                                            </li>
+                                            <li class="type_sorting_btn text-start"
+                                                data-sortby="price"
+                                                data-sortasc="true"
+                                                data-sorttext=" Giá: Thấp → Cao">
+                                                <span>Giá: Thấp → Cao</span>
+                                            </li>
+                                            <li class="type_sorting_btn text-start"
+                                                data-sortby="price"
+                                                data-sortasc="false"
+                                                data-sorttext=" Giá: Cao → Thấp">
+                                                <span>Giá: Cao → Thấp</span>
+                                            </li>
+                                            <li class="type_sorting_btn text-start"
+                                                data-sortby="name"
+                                                data-sorttext=" Tên">
+                                                <span>Tên</span>
+                                            </li>
                                         </ul>
                                     </li>
+
                                     <li>
                                         <span>Hiển Thị</span>
                                         <span class="num_sorting_text">@Model.Count()</span>
-                                        <i class="fa fa-angle-down"></i>
+                                        @* <i class="fa fa-angle-down"></i> *@
                                     </li>
                                 </ul>
                             </div>
 
                             <!-- Product Grid -->
                             <div class="product-grid row g-2">
-                                @if (Model.Any())
+                                @if (productsWithIndex.Any())
                                 {
-                                    @foreach (var product in Model)
+                                    @foreach (var wrap in productsWithIndex)
                                     {
-                                        var hasOld = product.OldPrice.HasValue && product.OldPrice.Value > product.Price && product.OldPrice.Value > 0;
-                                        var discount = hasOld ? Math.Round((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100M) : 0;
+                                        var product = wrap.Product;
+                                        var idx = wrap.Index;
 
+                                        var hasOld = product.OldPrice.HasValue
+                                        && product.OldPrice.Value > product.Price
+                                        && product.OldPrice.Value > 0;
+                                        var discount = hasOld
+                                        ? Math.Round(
+                                        (product.OldPrice.Value - product.Price)
+                                        / product.OldPrice.Value * 100M
+                                        )
+                                        : 0;
 
-                                        <div class="product-item @product.Category">
-                                            <div class="product @(product.IsOnSale ? "discount" : "")">
-                                                <div class="product_image">
-                                                    <img src="@imgSrc(product.ImageUrl)" alt="@product.Name" style="height:240px">
+                                        <div class="product-item @product.Category col-12 col-sm-6 col-md-4 col-lg-3 mb-3"
+                                             data-original-order="@idx"
+                                             data-price="@product.Price"
+                                             data-name="@product.Name">
+                                            <div class="product @(product.IsOnSale ? "discount" : "") h-100 d-flex flex-column">
+                                                <div class="product_image text-center" style="padding:10px">
+                                                    <img src="@imgSrc(product.ImageUrl)"
+                                                         alt="@product.Name"
+                                                         style="height:240px; max-width:100%; object-fit:contain;">
                                                 </div>
+
                                                 <div class="favorite favorite_left"></div>
 
                                                 @if (product.IsOnSale && hasOld)
@@ -88,9 +136,11 @@
                                                     </div>
                                                 }
 
-                                                <div class="product_info">
-                                                    <h6 class="product_name">
-                                                        <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
+                                                <div class="product_info mt-auto p-2">
+                                                    <h6 class="product_name" style="min-height:38px">
+                                                        <a asp-controller="Product"
+                                                           asp-action="Detail"
+                                                           asp-route-id="@product.Id">
                                                             @product.Name
                                                         </a>
                                                     </h6>
@@ -104,8 +154,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="red_button add_to_cart_button">
-                                                <a asp-controller="Cart" asp-action="Add" asp-route-Id="@product.Id">Thêm Vào Giỏ</a>
+                                            <div class="red_button add_to_cart_button text-center">
+                                                <a asp-controller="Cart"
+                                                   asp-action="Add"
+                                                   asp-route-Id="@product.Id">
+                                                    Thêm Vào Giỏ
+                                                </a>
                                             </div>
                                         </div>
                                     }
@@ -118,6 +172,8 @@
                                     </div>
                                 }
                             </div>
+                            <!-- /product-grid -->
+
                         </div>
                     </div>
                 </div> <!-- /products_iso -->
@@ -136,10 +192,38 @@
     <script src="~/js/custom.js"></script>
 
     <script>
-        // Isotope (nếu cần)
+        // Khởi tạo Isotope
         var $grid = $('.product-grid').isotope({
             itemSelector: '.product-item',
-            layoutMode: 'fitRows'
+            layoutMode: 'fitRows',
+            getSortData: {
+                original: function (el) {
+                    return parseInt($(el).attr('data-original-order')) || 0;
+                },
+                price: function (el) {
+                    return parseFloat($(el).attr('data-price')) || 0;
+                },
+                name: function (el) {
+                    return ($(el).attr('data-name') || '').toLowerCase();
+                }
+            },
+            sortBy: 'original',
+            sortAscending: true
+        });
+
+        $('.type_sorting_btn').on('click', function () {
+            var sortByValue = $(this).data('sortby');
+            var sortAsc     = $(this).data('sortasc') === true || $(this).data('sortasc') === "true";
+            var sortText    = $(this).data('sorttext');
+
+            $('#currentSortText').text(sortText);
+            $('.type_sorting_btn').removeClass('active-sort');
+            $(this).addClass('active-sort');
+
+            $grid.isotope({
+                sortBy: sortByValue,
+                sortAscending: sortAsc
+            });
         });
     </script>
 }
