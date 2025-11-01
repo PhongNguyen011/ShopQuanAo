@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShopQuanAo.Data;
 using ShopQuanAo.Models;
+using ShopQuanAo.Models.ViewModels;
 using System.IO;
 using System.Linq;
-using ShopQuanAo.Data;
 
 namespace ShopQuanAo.Controllers
 {
@@ -116,6 +117,64 @@ namespace ShopQuanAo.Controllers
                 .OrderByDescending(x => x.CreatedAt)
                 .ToList();
             return View(orders);
+        }
+
+
+
+        // GET: /Profile/ChangePassword
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account");
+
+            // XÓA mọi lỗi cũ để lần đầu load form không bị đỏ
+            ModelState.Clear();
+
+            return View(new ShopQuanAo.Models.ViewModels.ChangePasswordViewModel());
+        }
+
+        // POST: /Profile/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ShopQuanAo.Models.ViewModels.ChangePasswordViewModel model)
+        {
+            // trường hợp form còn trống hoặc sai => show lỗi
+            if (!ModelState.IsValid)
+            {
+                // KHÔNG Clear ModelState ở đây, vì ta muốn hiện lỗi sau khi bấm submit
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                TempData["Error"] = "Không tìm thấy tài khoản.";
+                return RedirectToAction(nameof(ChangePassword));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(
+                user,
+                model.OldPassword,
+                model.NewPassword
+            );
+
+            if (!result.Succeeded)
+            {
+                foreach (var e in result.Errors)
+                {
+                    ModelState.AddModelError("", e.Description);
+                }
+
+                return View(model); // vẫn trả lại view với lỗi
+            }
+
+            user.UpdatedDate = DateTime.Now;
+            await _userManager.UpdateAsync(user);
+
+            TempData["Success"] = "Đổi mật khẩu thành công!";
+            return RedirectToAction(nameof(Index));
         }
     }
 }
