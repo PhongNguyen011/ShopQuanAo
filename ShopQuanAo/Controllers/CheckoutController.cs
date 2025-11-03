@@ -18,7 +18,7 @@ namespace ShopQuanAo.Controllers
         private readonly IMomoService _momoService;
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IGhnShippingService _ghnShippingService;
+        private readonly IGhtkShippingService _ghtkShippingService;
         private readonly IConfiguration _config;
 
         private const string COUPON_KEY = "CART_COUPON";
@@ -30,7 +30,7 @@ namespace ShopQuanAo.Controllers
             IMomoService momoService,
             ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
-            IGhnShippingService ghnShippingService,
+            IGhtkShippingService ghtkShippingService,
             IConfiguration config
         )
         {
@@ -40,7 +40,7 @@ namespace ShopQuanAo.Controllers
             _momoService = momoService;
             _db = db;
             _userManager = userManager;
-            _ghnShippingService = ghnShippingService;
+            _ghtkShippingService = ghtkShippingService;
             _config = config;
         }
 
@@ -66,13 +66,20 @@ namespace ShopQuanAo.Controllers
         // Request body cho CalcShipFee
         public class ShippingAddressVM
         {
-            public int ToDistrictId { get; set; }        // GHN DistrictID
-            public string ToWardCode { get; set; } = ""; // GHN WardCode
-            public int? Weight { get; set; }             // gram
-            public int? Length { get; set; }             // cm
-            public int? Width { get; set; }              // cm
-            public int? Height { get; set; }             // cm
-            public int? InsuranceValue { get; set; }     // VNĐ
+            // Dữ liệu dùng cho GHTK
+            public string ProvinceName { get; set; } = "";
+            public string DistrictName { get; set; } = "";
+            public string WardName { get; set; } = "";
+            public string AddressDetail { get; set; } = "";
+            public int? Weight { get; set; }
+            public int? InsuranceValue { get; set; }
+
+            // Giữ các trường cũ (GHN) để không lỗi nếu FE cũ còn gửi
+            public int ToDistrictId { get; set; }
+            public string ToWardCode { get; set; } = "";
+            public int? Length { get; set; }
+            public int? Width { get; set; }
+            public int? Height { get; set; }
         }
 
         // ======================= HELPERS =======================
@@ -276,18 +283,17 @@ namespace ShopQuanAo.Controllers
             return Content(text, "application/json");
         }
 
-        // ======================= API TÍNH PHÍ SHIP GHN =======================
+        // ======================= API TÍNH PHÍ SHIP (GHTK) =======================
 
         [HttpPost]
         public async Task<IActionResult> CalcShipFee([FromBody] ShippingAddressVM addr)
         {
-            var fee = await _ghnShippingService.CalculateShippingFeeAsync(
-                addr.ToDistrictId,
-                addr.ToWardCode,
-                addr.Weight ?? 500,
-                addr.Length ?? 20,
-                addr.Width ?? 20,
-                addr.Height ?? 10,
+            var fee = await _ghtkShippingService.CalculateShippingFeeAsync(
+                addr.ProvinceName,
+                addr.DistrictName,
+                addr.WardName,
+                addr.AddressDetail,
+                addr.Weight ?? 1200,
                 addr.InsuranceValue ?? 200000
             );
 
@@ -297,7 +303,7 @@ namespace ShopQuanAo.Controllers
                 {
                     ok = false,
                     shipFee = 0,
-                    message = "GHN không trả về phí ship. Có thể khu vực chưa được hỗ trợ."
+                    message = "Không tính được phí ship từ GHTK. Vui lòng kiểm tra lại địa chỉ."
                 });
             }
 
@@ -474,6 +480,36 @@ namespace ShopQuanAo.Controllers
             ViewBag.Status = status;
             ViewBag.Message = message;
             return View();
+        }
+
+        // ======================= GHTK: GỢI Ý ĐỊA CHỈ CẤP 4 =======================
+
+        [HttpGet]
+        public async Task<IActionResult> GhtkSuggest(string province, string district, string ward_street, string? address)
+        {
+            var baseUrl = _config["GHTK:BaseUrl"] ?? "https://services.giaohangtietkiem.vn";
+            var token = _config["GHTK:Token"] ?? string.Empty;
+            if (string.IsNullOrWhiteSpace(province) || string.IsNullOrWhiteSpace(district) || string.IsNullOrWhiteSpace(ward_street))
+            {
+                return Json(new { success = false, data = Array.Empty<string>(), message = "Thiếu tham số bắt buộc" });
+            }
+
+            using var http = new HttpClient();
+            http.DefaultRequestHeaders.Add("Token", token);
+
+            var query = new List<string>
+            {
+                $"province={Uri.EscapeDataString(province)}",
+                $"district={Uri.EscapeDataString(district)}",
+                $"ward_street={Uri.EscapeDataString(ward_street)}"
+            };
+            if (!string.IsNullOrWhiteSpace(address))
+                query.Add($"address={Uri.EscapeDataString(address)}");
+
+            var url = baseUrl.TrimEnd('/') + "/services/address/getAddressLevel4?" + string.Join("&", query);
+            var resp = await http.GetAsync(url);
+            var text = await resp.Content.ReadAsStringAsync();
+            return Content(text, "application/json", Encoding.UTF8);
         }
 
         [HttpGet]

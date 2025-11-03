@@ -30,7 +30,7 @@
                         <td class="text-center">
                             @if(o.Status == "Pending"){
                                 <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
-                                    <input type="hidden" name="status" value="Shipping" /><button class="btn btn-primary btn-sm" type="submit">Bàn giao GHN</button>
+                                    <input type="hidden" name="status" value="Shipping" /><button class="btn btn-primary btn-sm" type="submit">Bàn giao giao vận</button>
                                 </form>
                                 <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
                                     <input type="hidden" name="status" value="Cancelled" /><button class="btn btn-danger btn-sm" type="submit">Hủy</button>

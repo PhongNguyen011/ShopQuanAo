@@ -86,11 +86,11 @@
                                     @foreach (var product in Model)
                                     {
                                         <div class="product-item @product.Category">
-                                            <div class="product @(product.IsOnSale ? "discount" : "")">
+                                            <div class="product @(product.IsOnSale ? "discount" : "")" data-product-id="@product.Id">
                                                 <div class="product_image">
                                                     <img src="@Url.Content(product.ImageUrl ?? "~/images/product_1.png")" alt="@product.Name" style="height:240px">
                                                 </div>
-                                                <div class="favorite favorite_left"></div>
+                                                
                                                 @if (product.IsOnSale && product.OldPrice.HasValue)
                                                 {
                                                     var discount = ((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100);
@@ -172,6 +172,8 @@
 
         $('.product_slider_nav_left').on('click', function(){ $('.product_slider').trigger('prev.owl.carousel'); });
         $('.product_slider_nav_right').on('click', function(){ $('.product_slider').trigger('next.owl.carousel'); });
+
+        // (Đã bỏ trái tim ở thẻ sản phẩm)
     </script>
 }
 

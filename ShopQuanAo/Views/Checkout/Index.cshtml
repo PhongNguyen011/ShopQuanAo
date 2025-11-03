@@ -225,34 +225,30 @@
 
                             <div class="col-12 col-md-4">
                                 <label class="form-label small text-muted fw-semibold">Tỉnh/Thành phố</label>
-                                <select id="province-select" class="form-select" required>
-                                    <option value="">Chọn tỉnh/thành phố</option>
-                                </select>
+                                <input id="province-input" class="form-control" placeholder="VD: Hồ Chí Minh" required />
                                 <input type="hidden" id="ProvinceNameInput" name="ProvinceName" />
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label class="form-label small text-muted fw-semibold">Quận/Huyện</label>
-                                <select id="district-select" class="form-select" required disabled>
-                                    <option value="">Chọn quận/huyện</option>
-                                </select>
+                                <input id="district-input" class="form-control" placeholder="VD: Bình Thạnh" required />
                                 <input type="hidden" id="DistrictNameInput" name="DistrictName" />
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label class="form-label small text-muted fw-semibold">Phường/Xã</label>
-                                <select id="ward-select" class="form-select" required disabled>
-                                    <option value="">Chọn phường/xã</option>
-                                </select>
+                                <input id="ward-input" class="form-control" placeholder="VD: Phường 25" required />
                                 <input type="hidden" id="WardNameInput" name="WardName" />
                             </div>
 
                             <div class="col-12">
                                 <label class="form-label small text-muted fw-semibold">Số nhà, tên đường...</label>
-                                <input class="form-control"
+                                <input class="form-control" id="address-input"
                                        name="AddressDetail"
-                                       placeholder="VD: 12/3 Nguyễn Văn A, P.Bình Thạnh"
+                                       placeholder="VD: 12/3 Nguyễn Văn A"
+                                       autocomplete="off"
                                        required />
+                                <div id="addr-suggest" class="list-group mt-1" style="display:none; position:relative; z-index:10;"></div>
                             </div>
 
                             <div class="col-12">
@@ -395,59 +391,61 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // GHN master-data endpoints (proxy qua server để tránh CORS)
-            const provinces_url = '/Checkout/GhnProvinces';
-            const districts_url = pid => `/Checkout/GhnDistricts?provinceId=${pid}`;
-            const wards_url = did => `/Checkout/GhnWards?districtId=${did}`;
+            // Khởi tạo input refs cho GHTK
+            const $province = document.getElementById('province-input');
+            const $district = document.getElementById('district-input');
+            const $ward = document.getElementById('ward-input');
+            const $addr = document.getElementById('address-input');
+            const $suggest = document.getElementById('addr-suggest');
 
-            const $province = document.getElementById('province-select');
-            const $district = document.getElementById('district-select');
-            const $ward = document.getElementById('ward-select');
-
-            // Tải tỉnh/thành từ GHN
-            fetch(provinces_url)
-              .then(rs=>rs.json())
-              .then(json => {
-                const data = json.data || [];
-                $province.innerHTML = `<option value=''>Chọn tỉnh/thành phố</option>\n`
-                    + data.map(p=>`<option value='${p.ProvinceID}' data-name='${p.ProvinceName}'>${p.ProvinceName}</option>`).join('\n');
+            let suggestTimer;
+            function hideSuggest(){ $suggest.style.display = 'none'; $suggest.innerHTML = ''; }
+            function showSuggest(items){
+              if(!items || !items.length){ hideSuggest(); return; }
+              $suggest.innerHTML = items.map(x=>`<button type='button' class='list-group-item list-group-item-action'>${x}</button>`).join('');
+              $suggest.style.display = 'block';
+              [...$suggest.querySelectorAll('button')].forEach(btn=>{
+                btn.addEventListener('click', ()=>{
+                  $addr.value = btn.textContent;
+                  hideSuggest();
+                  fetchShippingFee();
+                });
               });
+            }
 
-            // Khi chọn tỉnh -> nạp quận/huyện
-            $province.addEventListener('change', function() {
-              $district.innerHTML = `<option value=''>Chọn quận/huyện</option>`;
-              $ward.innerHTML = `<option value=''>Chọn phường/xã</option>`;
-              $district.disabled = true;
-              $ward.disabled = true;
-              const pid = $province.value;
-              if(!pid) return;
-              fetch(districts_url(pid))
-                .then(rs=>rs.json())
-                .then(json => {
-                  const districts = json.data || [];
-                  $district.innerHTML = `<option value=''>Chọn quận/huyện</option>\n`
-                    + districts.map(d=>`<option value='${d.DistrictID}' data-name='${d.DistrictName}'>${d.DistrictName}</option>`).join('\n');
-                  $district.disabled = false;
-                  updateHiddenNameInputs();
-                });
-            });
+            async function fetchSuggest(){
+              const province = ($province.value||'').trim();
+              const district = ($district.value||'').trim();
+              const ward = ($ward.value||'').trim();
+              const addr = ($addr.value||'').trim();
+              if(!province || !district || !ward) { hideSuggest(); return; }
+              try{
+                const url = `/Checkout/GhtkSuggest?province=${encodeURIComponent(province)}&district=${encodeURIComponent(district)}&ward_street=${encodeURIComponent(ward)}&address=${encodeURIComponent(addr)}`;
+                const rs = await fetch(url);
+                const js = await rs.json();
+                if(js && js.success && Array.isArray(js.data)){
+                  showSuggest(js.data);
+                } else {
+                  hideSuggest();
+                }
+              }catch{ hideSuggest(); }
+            }
 
-            // Khi chọn quận/huyện -> nạp phường/xã
-            $district.addEventListener('change', function() {
-              $ward.innerHTML = `<option value=''>Chọn phường/xã</option>`;
-              $ward.disabled = true;
-              const did = $district.value;
-              if(!did) return;
-              fetch(wards_url(did))
-                .then(rs=>rs.json())
-                .then(json => {
-                  const wards = json.data || [];
-                  $ward.innerHTML = `<option value=''>Chọn phường/xã</option>\n`
-                    + wards.map(w=>`<option value='${w.WardCode}' data-name='${w.WardName}'>${w.WardName}</option>`).join('\n');
-                  $ward.disabled = false;
-                  updateHiddenNameInputs();
-                });
+            function debouncedSuggest(){
+              clearTimeout(suggestTimer);
+              suggestTimer = setTimeout(fetchSuggest, 300);
+            }
+
+            [$province, $district, $ward].forEach(inp=>{
+              inp.addEventListener('input', ()=>{
+                updateHiddenNameInputs();
+                debouncedSuggest();
+              });
+              inp.addEventListener('blur', ()=> setTimeout(hideSuggest, 200));
             });
+            $addr.addEventListener('input', debouncedSuggest);
+            $addr.addEventListener('focus', debouncedSuggest);
+            $addr.addEventListener('blur', ()=> setTimeout(hideSuggest, 200));
         });
 
         var subtotal = Number('@subtotal');
@@ -456,9 +454,9 @@
         var freeShipThreshold = 500000;
         var shippingFee = 0;
 
-        const $province = document.getElementById('province-select');
-        const $district = document.getElementById('district-select');
-        const $ward = document.getElementById('ward-select');
+        const $province = document.getElementById('province-input');
+        const $district = document.getElementById('district-input');
+        const $ward = document.getElementById('ward-input');
         const $ckShipping = document.getElementById('ck-shipping');
         const $ckShippingMsg = document.getElementById('ck-shipping-msg');
         const $grand = document.getElementById('ck-grandtotal');
@@ -489,21 +487,21 @@
         }
 
         async function fetchShippingFee() {
-            let district = $district.value;
-            let ward = $ward.value;
+            let district = ($district.value||'').trim();
+            let ward = ($ward.value||'').trim();
             if (!district || !ward) {
                 $ckShipping.textContent = '┄';
                 updateGrandTotal();
                 return;
             }
             $ckShipping.textContent = 'Đang tính...';
+            const addressInput = document.querySelector('input[name="AddressDetail"]');
             let data = {
-                toDistrictId: parseInt(district),
-                toWardCode: ward,
+                provinceName: ($province.value||'').trim(),
+                districtName: (district||'').trim(),
+                wardName: (ward||'').trim(),
+                addressDetail: (addressInput?.value || '').trim(),
                 weight: 1200,
-                length: 20,
-                width: 20,
-                height: 10,
                 insuranceValue: Math.max(total, 0)
             };
             try {
@@ -521,7 +519,7 @@
                     $ckShippingMsg.textContent = js.error || 'Không tính được phí ship!';
                     $ckShippingMsg.className = 'text-danger small mt-1';
                     $ckShippingMsg.style.display = 'block';
-                    console.error('GHN fee error:', js);
+                    console.error('GHTK fee error:', js);
                 }
             } catch (err) {
                 shippingFee = 0;
@@ -534,12 +532,9 @@
         }
 
         function updateHiddenNameInputs() {
-          const p = $province.options[$province.selectedIndex];
-          const d = $district.options[$district.selectedIndex];
-          const w = $ward.options[$ward.selectedIndex];
-          $provinceInput.value = p && p.value ? (p.getAttribute('data-name') || p.text) : '';
-          $districtInput.value = d && d.value ? (d.getAttribute('data-name') || d.text) : '';
-          $wardInput.value = w && w.value ? (w.getAttribute('data-name') || w.text) : '';
+          $provinceInput.value = ($province.value||'').trim();
+          $districtInput.value = ($district.value||'').trim();
+          $wardInput.value = ($ward.value||'').trim();
         }
 
         function updateShippingDisplayState() {
@@ -553,15 +548,12 @@
           }
         }
 
-        $district.addEventListener('change', function() {
-            updateHiddenNameInputs();
-            updateShippingDisplayState();
-            setTimeout(fetchShippingFee, 300);
-        });
-        $ward.addEventListener('change', function() {
-            updateHiddenNameInputs();
-            updateShippingDisplayState();
-            fetchShippingFee();
+        [$province, $district, $ward].forEach(inp => {
+            inp.addEventListener('input', function() {
+                updateHiddenNameInputs();
+                updateShippingDisplayState();
+                setTimeout(fetchShippingFee, 500);
+            });
         });
 
         document.addEventListener('DOMContentLoaded', function() {

@@ -14,18 +14,26 @@ namespace ShopQuanAo.Controllers
         }
 
         // GET: Shop
-        public async Task<IActionResult> Index(string? category)
+        public async Task<IActionResult> Index(string? category, string? q)
         {
-            var products = await _context.Products
-                .Where(p => p.IsAvailable)
-                .ToListAsync();
+            var query = _context.Products.AsQueryable();
+            query = query.Where(p => p.IsAvailable);
 
-            if (!string.IsNullOrEmpty(category))
+            if (!string.IsNullOrWhiteSpace(category))
             {
-                products = products.Where(p => p.Category == category).ToList();
+                query = query.Where(p => p.Category == category);
             }
 
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                var kw = q.Trim();
+                query = query.Where(p => p.Name.Contains(kw) || (p.Description != null && p.Description.Contains(kw)));
+            }
+
+            var products = await query.ToListAsync();
+
             ViewBag.SelectedCategory = category;
+            ViewBag.Keyword = q;
             return View(products);
         }
 

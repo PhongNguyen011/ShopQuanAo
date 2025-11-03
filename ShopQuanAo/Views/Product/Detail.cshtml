@@ -14,6 +14,10 @@
     <link href="~/css/main_styles.css" rel="stylesheet">
     <link href="~/css/categories_styles.css" rel="stylesheet">  <!-- dùng lại style card --> 
     <link href="~/css/categories_responsive.css" rel="stylesheet">
+    <style>
+        /* Ensure favorite button aligns nicely on detail */
+        #btnFav { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; }
+    </style>
 }
 
 <div class="container">
@@ -46,7 +50,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-start justify-content-between mb-2">
                                 <h2 class="h4 mb-0">@Model.Name</h2>
-                                <div>
+                                <div class="d-flex align-items-center gap-2">
                                     @if (Model.IsFeatured)
                                     {
                                         <span class="badge bg-info text-dark">Nổi bật</span>
@@ -88,8 +92,8 @@
 
                             <hr class="text-muted">
 
-                            <!-- Số lượng + Thêm vào giỏ -->
-                            <form asp-controller="Cart" asp-action="Add" method="post" class="mt-3">
+                            <!-- Số lượng + Thêm vào giỏ + Yêu thích -->
+                            <form asp-controller="Cart" asp-action="Add" method="post" class="mt-3" id="detail-cart-form">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@Model.Id" />
                                 <input type="hidden" id="qtyInput" name="qty" value="1" />
@@ -122,11 +126,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 col-md-auto">
-                                        <button type="submit"
-                                                class="btn btn-danger btn-lg px-4"
-                                                @(Model.StockQuantity <= 0 ? "disabled" : null)>
+                                    <div class="col-12 col-md-auto d-flex gap-2 align-items-center">
+                                        <button type="submit" class="btn btn-dark btn-lg px-4" @(Model.StockQuantity <= 0 ? "disabled" : null)>
                                             <i class="fa fa-shopping-bag me-2"></i>Thêm vào giỏ
+                                        </button>
+                                        <button type="button" id="btnFav" class="btn btn-outline-danger" title="Yêu thích" style="width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;">
+                                            <i class="fa fa-heart-o"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -239,6 +244,27 @@
             qtyDisp.addEventListener('keydown', e => e.preventDefault());
 
             sync();
+        })();
+        // Toggle wishlist on detail
+        (function(){
+            const btn = document.getElementById('btnFav');
+            if(!btn) return;
+            btn.addEventListener('click', async function(){
+                try{
+                    const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                    const fd = new FormData();
+                    fd.append('__RequestVerificationToken', token);
+                    fd.append('productId', '@Model.Id');
+                    const res = await fetch('/Wishlist/Toggle', { method:'POST', body: fd, headers: { 'X-Requested-With':'XMLHttpRequest' } });
+                    if(res.status === 401){ window.location.href = '/Account/Login'; return; }
+                    const js = await res.json();
+                    if(js.ok){
+                        btn.classList.toggle('btn-danger', !!js.favorited);
+                        btn.classList.toggle('btn-outline-danger', !js.favorited);
+                        btn.innerHTML = js.favorited ? '<i class="fa fa-heart"></i>' : '<i class="fa fa-heart-o"></i>';
+                    }
+                }catch(e){ console.error(e); }
+            });
         })();
     </script>
 

@@ -48,7 +48,7 @@
         <div class="empty-cart text-center py-5 bg-light border-1 rounded-4">
             <div class="display-6 mb-2">🧺</div>
             <p class="mb-3 text-muted">Giỏ hàng của bạn đang trống.</p>
-            <a asp-controller="Product" asp-action="Index" class="btn btn-primary px-4">Đi mua sắm</a>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-dark px-4">Đi mua sắm</a>
         </div>
     }
     else
@@ -162,12 +162,12 @@
                     </div>
 
                     <div class="card-footer bg-white d-flex flex-wrap justify-content-between gap-2 py-3">
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info rounded-pill">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-dark rounded-pill">
                             <i class="fa fa-arrow-left me-1"></i>Tiếp tục mua sắm
                         </a>
                         <form asp-action="Clear" method="post" class="m-0">
                             @Html.AntiForgeryToken()
-                            <button class="btn btn-outline-danger rounded-pill" type="submit">Xoá tất cả </button>
+                            <button class="btn btn-danger rounded-pill" type="submit">Xoá tất cả </button>
                         </form>
                     </div>
                 </div>
@@ -191,7 +191,7 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fa fa-tag"></i></span>
                                     <input type="text" name="code" class="form-control coupon-input" placeholder="NHẬP MÃ (VD: SALE10)" />
-                                    <button class="btn btn-primary">Áp dụng</button>
+                                    <button class="btn btn-dark"><strong>Áp dụng</strong></button>
                                 </div>
                                 <div class="form-text mt-2">
                                     Có thể nhập nhiều mã, cách nhau dấu phẩy — hệ thống sẽ chọn mã tốt nhất.
@@ -250,7 +250,7 @@
                         </ul>
 
                         <div class="d-grid gap-2">
-                            <a asp-controller="Checkout" asp-action="Index" class="btn btn-dark btn-lg">Thanh toán</a>
+                            <a asp-controller="Checkout" asp-action="Index" class="btn btn-dark btn-lg"><strong>Thanh toán</strong></a>
                         </div>
                     </div>
                 </div>

@@ -20,6 +20,7 @@ namespace ShopQuanAo.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<FlashSaleItem> FlashSaleItems { get; set; }
         public DbSet<MomoTransaction> MomoTransactions { get; set; }
+        public DbSet<WishlistItem> WishlistItems { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -92,6 +93,13 @@ namespace ShopQuanAo.Data
                 e.HasIndex(x => x.OrderId).IsUnique(false);
                 e.Property(x => x.Amount).HasColumnType("decimal(18,2)");
                 e.Property(x => x.Status).HasMaxLength(32);
+            });
+
+            // ===== Wishlist config =====
+            modelBuilder.Entity<WishlistItem>(e =>
+            {
+                e.HasIndex(x => new { x.ApplicationUserId, x.ProductId }).IsUnique();
+                e.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Cascade);
             });
             adminUser.PasswordHash = hasher.HashPassword(adminUser, "Admin@123");
 

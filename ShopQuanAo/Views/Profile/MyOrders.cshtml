@@ -3,7 +3,7 @@
     ViewData["Title"] = "Lịch sử đơn hàng";
     string renderStatus(string s) => s switch {
         "Pending" => "<span class='badge bg-warning text-dark'>Tiếp nhận</span>",
-        "Shipping" => "<span class='badge bg-info text-dark'>Đã gửi GHN</span>",
+        "Shipping" => "<span class='badge bg-info text-dark'>Đang giao</span>",
         "Delivered" => "<span class='badge bg-success'>Đã giao</span>",
         "Cancelled" => "<span class='badge bg-danger'>Đã hủy</span>",
         _ => s

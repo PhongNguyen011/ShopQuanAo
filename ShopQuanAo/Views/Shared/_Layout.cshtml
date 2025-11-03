@@ -61,7 +61,17 @@
                 </nav>
 
                 <ul class="navbar_user">
-                    <li><a class="icon-btn" href="#"><i class="fa fa-search"></i></a></li>
+                    <li>
+                        <a class="icon-btn" href="#" id="btn-search-toggle"><i class="fa fa-search"></i></a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a class="icon-btn" asp-controller="Wishlist" asp-action="Index" title="Yêu thích">
+                                <i class="fa fa-heart-o"></i>
+                            </a>
+                        </li>
+                    }
                     <li>
                         <a class="icon-btn position-relative" asp-controller="Cart" asp-action="Index">
                             <i class="fa fa-shopping-bag"></i>
@@ -122,6 +132,16 @@
             </div>
         </div>
     </header>
+
+    <!-- Search bar dropdown -->
+    <div class="container" id="header-search" style="display:none;">
+        <form class="my-2" method="get" asp-controller="Product" asp-action="Index">
+            <div class="input-group">
+                <input type="text" class="form-control" name="q" placeholder="Tìm sản phẩm..." />
+                <button class="btn btn-dark" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
 
     <!-- Overlay tối -->
     <div class="fs_menu_overlay" id="menuOverlay" hidden></div>
@@ -266,6 +286,21 @@
     <script src="~/js/site.js"></script>
 
     <script>
+        (function(){
+            const btn = document.getElementById('btn-search-toggle');
+            const box = document.getElementById('header-search');
+            if(btn && box){
+                btn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    box.style.display = (box.style.display === 'none' || !box.style.display) ? 'block' : 'none';
+                    if(box.style.display === 'block'){
+                        const inp = box.querySelector('input[name="q"]');
+                        setTimeout(()=> inp && inp.focus(), 100);
+                    }
+                });
+            }
+        })();
+
         async function refreshCartCount() {
           try {
             const res = await fetch('/Cart/Count', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
