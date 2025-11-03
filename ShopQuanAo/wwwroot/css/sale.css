@@ -99,10 +99,10 @@
     margin-left: -1rem;
 }
 
-    .g-3 > * {
-        padding-right: 1rem;
-        padding-left: 1rem;
-    }
+.g-3 > * {
+    padding-right: 1rem;
+    padding-left: 1rem;
+}
 
 /* Ẩn sản phẩm không thuộc trang hiện tại */
 .paged-out {
@@ -119,28 +119,28 @@
     white-space: nowrap;
 }
 
-    .paging-toolbar .form-select, .paging-toolbar .form-control {
-        display: inline-block !important;
-        width: auto !important;
-        min-width: 80px;
-        max-width: 120px;
-        height: 32px;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.9rem;
-    }
+.paging-toolbar .form-select, .paging-toolbar .form-control {
+    display: inline-block !important;
+    width: auto !important;
+    min-width: 80px;
+    max-width: 120px;
+    height: 32px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
 
-    .paging-toolbar .btn {
-        height: 32px;
-        padding: 0.25rem 0.6rem;
-        font-size: 0.9rem;
-        line-height: 1;
-    }
+.paging-toolbar .btn {
+    height: 32px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.9rem;
+    line-height: 1;
+}
 
 .page-nums .btn {
     min-width: 36px;
 }
 
-@@media (max-width: 576px) {
+@media (max-width: 576px) {
     .page-nums {
         display: none;
     }
@@ -158,63 +158,75 @@
     clear: both;
     padding-top: 10px;
 }
+/* ===== Pagination: ô vuông dính liền, trang hiện tại màu đen ===== */
+.pagination-bar .d-flex {
+    gap: 0 !important; /* bỏ khoảng trống giữa các nút */
+}
 
-    .pagination-bar .page-nums {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
+.pagination-bar .page-nums {
+    display: flex;
+    gap: 0 !important;
+}
 
-    .pagination-bar .d-inline-flex {
-        gap: 8px;
-    }
+/* Kiểu chung cho tất cả nút */
+.pagination-bar .btn,
+.pagination-bar .page-nums .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 0 !important; /* vuông góc */
+    border: 1px solid #d0d5dd;
+    background: #fff;
+    color: #344054;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.15s ease;
+}
 
-    .pagination-bar .btn, .pagination-bar .page-nums .btn {
-        min-width: 40px;
-        height: 40px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        border: 1px solid #d0d5dd;
-        background: #fff;
-        color: #344054;
-        box-shadow: 0 1px 2px rgba(16,24,40,.06);
-        transition: all .18s ease;
-    }
+/* Dính liền viền */
+.pagination-bar .d-flex > .btn,
+.pagination-bar .page-nums .btn {
+    margin-left: -1px;
+}
 
-        .pagination-bar .btn:not(:disabled):hover, .pagination-bar .page-nums .btn:not(.disabled):hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(16,24,40,.10);
-            border-color: #c5cad3;
-        }
+.pagination-bar .d-flex > .btn:first-child,
+.pagination-bar .page-nums .btn:first-child {
+    margin-left: 0;
+}
 
-        .pagination-bar .page-nums .btn.btn-dark {
-            background: #ff3b30;
-            border-color: #ff3b30;
-            color: #fff;
-            box-shadow: 0 6px 14px rgba(255,59,48,.25);
-            border: 1px solid #ddd;
-        }
+/* Hover */
+.pagination-bar .btn:not(:disabled):hover,
+.pagination-bar .page-nums .btn:not(.disabled):hover {
+    background: #f7f7f7;
+    border-color: #cfd4dc;
+}
 
-    .pagination-bar .btn-outline-secondary {
-        background: #fff;
-        color: #475467;
-    }
+/* Trang hiện tại = màu đen */
+.pagination-bar .page-nums .btn.active,
+.pagination-bar .page-nums .btn[aria-current="page"] {
+    background: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+    z-index: 1;
+}
 
-    .pagination-bar .btn:disabled, .pagination-bar .page-nums .btn.disabled {
-        background: #fff;
-        color: #98a2b3;
-        border-color: #e4e7ec;
-        opacity: .75;
-        cursor: default;
-        box-shadow: none;
-        transform: none;
-        pointer-events: none;
-    }
+/* Nút điều hướng vẫn vuông & dính */
+#btnFirst, #btnPrev, #btnNext, #btnLast {
+    border-radius: 0 !important;
+    width: 40px;
+    height: 40px;
+}
 
-    .pagination-bar .btn:focus {
-        outline: 0;
-        box-shadow: 0 0 0 2px rgba(255,59,48,.20);
-    }
+/* Disabled */
+.pagination-bar .btn:disabled,
+.pagination-bar .page-nums .btn.disabled {
+    background: #fff;
+    color: #98a2b3;
+    border-color: #e4e7ec;
+    opacity: 0.75;
+    pointer-events: none;
+}

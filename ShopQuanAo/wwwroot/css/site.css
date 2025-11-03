@@ -106,7 +106,7 @@
 	box-shadow: 0 8px 24px rgba(0,0,0,.08);
 	padding: 10px 0;
 	display: none;
-	z-index: 1001;
+	z-index: 2000 !important;
 }
 
 .dropdown:hover > .dropdown-menu {
@@ -550,4 +550,4 @@
 
 /* Đẩy bubble bên trái tránh đè icon trái tim */
 .product .product_bubble_left { left: 52px !important; top: 10px !important; z-index: 5; }
-.product .product_bubble_right { right: 10px !important; top: 10px !important; z-index: 5; }
+.product .product_bubble_right { right: 10px !important; top: 10px !important; }

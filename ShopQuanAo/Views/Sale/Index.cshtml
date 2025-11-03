@@ -49,9 +49,12 @@
                 </ul>
             </div>
 
-            <div class="mb-3">
-                @await Component.InvokeAsync("FlashSaleHero")
-            </div>
+            @if (ViewBag.HasFlashSale == true)
+            {
+                <div class="mb-3">
+                    @await Component.InvokeAsync("FlashSaleHero")
+                </div>
+            }
 
             <!-- Main Content -->
             <div class="main">
@@ -101,16 +104,18 @@
 
                                             <span class="ms-2 fw-semibold">SP/trang:</span>
                                             <select id="quickSize" class="form-select form-select-sm d-inline-block w-auto">
-                                                <option value="">Chọn</option>
-                                                <option value="5">5</option>
-                                                <option value="10" selected>10</option>
-                                                <option value="15">15</option>
+                                                <option value="" selected>Chọn</option>
+                                                <option value="4">4</option>
+                                                <option value="8">8</option>
+                                                <option value="12">12</option>
                                             </select>
 
                                         </div>
                                     </li>
                                 </ul>
                             </div>
+
+                            <hr />
 
                             <!-- Product Grid -->
                             <div class="product-grid row g-2">
@@ -186,13 +191,13 @@
                     </div>
                     <div class="pagination-bar my-4 d-flex justify-content-center">
                         <div class="d-flex justify-content-center align-items-center gap-1 flex-wrap">
-                            <button class="btn btn-outline-secondary btn-sm" id="btnFirst" title="Trang đầu">«</button>
-                            <button class="btn btn-outline-secondary btn-sm" id="btnPrev" title="Trang trước">‹</button>
+                            <button class="btn btn-outline-secondary" id="btnFirst" title="Trang đầu">«</button>
+                            <button class="btn btn-outline-secondary" id="btnPrev" title="Trang trước">‹</button>
 
                             <div class="page-nums" id="pageNums"></div>
 
-                            <button class="btn btn-outline-secondary btn-sm" id="btnNext" title="Trang sau">›</button>
-                            <button class="btn btn-outline-secondary btn-sm" id="btnLast" title="Trang cuối">»</button>
+                            <button class="btn btn-outline-secondary" id="btnNext" title="Trang sau">›</button>
+                            <button class="btn btn-outline-secondary" id="btnLast" title="Trang cuối">»</button>
                         </div>
                     </div>
                 </div> <!-- /products_iso -->
