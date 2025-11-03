@@ -98,7 +98,6 @@
     </div>
 </section>
 
-@await Component.InvokeAsync("FlashSaleHero")
 
 <!-- ========== 3 BANNER NHỎ BÊN DƯỚI ========== -->
 <section class="banner-section py-5">
@@ -107,21 +106,21 @@
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="background-image:url('@Img("banner_1.jpg")')">
                     <div class="banner_category">
-                        <a href="@Url.Action("Index", "Products", new { category = "women" })">women's</a>
+                        <a href="@Url.Action("Index", "Product", new { category = "women" })">women's</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="background-image:url('@Img("banner_2.jpg")')">
                     <div class="banner_category">
-                        <a href="@Url.Action("Index", "Products", new { category = "accessories" })">accessories</a>
+                        <a href="@Url.Action("Index", "Product", new { category = "accessories" })">accessories</a>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="banner_item align-items-center" style="background-image:url('@Img("banner_3.jpg")')">
                     <div class="banner_category">
-                        <a href="@Url.Action("Index", "Products", new { category = "men" })">men's</a>
+                        <a href="@Url.Action("Index", "Product", new { category = "men" })">men's</a>
                     </div>
                 </div>
             </div>
@@ -210,6 +209,9 @@
     </div>
 </div>
 
+<div class="container">
+    @await Component.InvokeAsync("FlashSaleHero")
+</div>
 
 <!-- Best Sellers -->
 <div class="best_sellers">

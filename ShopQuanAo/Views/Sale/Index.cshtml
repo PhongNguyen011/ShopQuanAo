@@ -32,6 +32,7 @@
     <link href="~/css/main_styles.css" rel="stylesheet">
     <link href="~/css/categories_styles.css" rel="stylesheet">
     <link href="~/css/categories_responsive.css" rel="stylesheet">
+    <link href="~/css/sale.css" rel="stylesheet">
 }
 
 <div class="container">
@@ -48,13 +49,17 @@
                 </ul>
             </div>
 
+            <div class="mb-3">
+                @await Component.InvokeAsync("FlashSaleHero")
+            </div>
+
             <!-- Main Content -->
-            <div class="main_content">
+            <div class="main">
                 <div class="products_iso">
                     <div class="row">
                         <div class="col">
 
-                            <!-- Product Sorting -->
+                            <!-- Product Sorting + Paging Toolbar -->
                             <div class="product_sorting_container product_sorting_container_top">
                                 <ul class="product_sorting">
                                     <li class="sorting-group">
@@ -89,15 +94,24 @@
                                         </ul>
                                     </li>
 
-                                    <li>
-                                        <span>Hiển Thị</span>
-                                        <span class="num_sorting_text">@Model.Count()</span>
-                                        @* <i class="fa fa-angle-down"></i> *@
+                                    <li class="ms-3">
+                                        <div class="paging-toolbar">
+                                            <span class="fw-semibold">Tổng SP:</span>
+                                            <strong id="totalCount">@Model.Count()</strong>
+
+                                            <span class="ms-2 fw-semibold">SP/trang:</span>
+                                            <select id="quickSize" class="form-select form-select-sm d-inline-block w-auto">
+                                                <option value="">Chọn</option>
+                                                <option value="5">5</option>
+                                                <option value="10" selected>10</option>
+                                                <option value="15">15</option>
+                                            </select>
+
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
-                            <!-- FLASH SALE NỔI BẬT -->
-                            @await Component.InvokeAsync("FlashSaleHero")
+
                             <!-- Product Grid -->
                             <div class="product-grid row g-2">
                                 @if (productsWithIndex.Any())
@@ -111,10 +125,7 @@
                                         && product.OldPrice.Value > product.Price
                                         && product.OldPrice.Value > 0;
                                         var discount = hasOld
-                                        ? Math.Round(
-                                        (product.OldPrice.Value - product.Price)
-                                        / product.OldPrice.Value * 100M
-                                        )
+                                        ? Math.Round((product.OldPrice.Value - product.Price) / product.OldPrice.Value * 100M)
                                         : 0;
 
                                         <div class="product-item @product.Category col-12 col-sm-6 col-md-4 col-lg-3 mb-3"
@@ -127,8 +138,6 @@
                                                          alt="@product.Name"
                                                          style="height:240px; max-width:100%; object-fit:contain;">
                                                 </div>
-
-                                                <div class="favorite favorite_left"></div>
 
                                                 @if (product.IsOnSale && hasOld)
                                                 {
@@ -172,9 +181,18 @@
                                         <p>Vui lòng quay lại sau nhé!</p>
                                     </div>
                                 }
-                            </div>
-                            <!-- /product-grid -->
+                            </div> <!-- /product-grid -->
+                        </div>
+                    </div>
+                    <div class="pagination-bar my-4 d-flex justify-content-center">
+                        <div class="d-flex justify-content-center align-items-center gap-1 flex-wrap">
+                            <button class="btn btn-outline-secondary btn-sm" id="btnFirst" title="Trang đầu">«</button>
+                            <button class="btn btn-outline-secondary btn-sm" id="btnPrev" title="Trang trước">‹</button>
 
+                            <div class="page-nums" id="pageNums"></div>
+
+                            <button class="btn btn-outline-secondary btn-sm" id="btnNext" title="Trang sau">›</button>
+                            <button class="btn btn-outline-secondary btn-sm" id="btnLast" title="Trang cuối">»</button>
                         </div>
                     </div>
                 </div> <!-- /products_iso -->
@@ -191,40 +209,5 @@
     <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
     <script src="~/plugins/easing/easing.js"></script>
     <script src="~/js/custom.js"></script>
-
-    <script>
-        // Khởi tạo Isotope
-        var $grid = $('.product-grid').isotope({
-            itemSelector: '.product-item',
-            layoutMode: 'fitRows',
-            getSortData: {
-                original: function (el) {
-                    return parseInt($(el).attr('data-original-order')) || 0;
-                },
-                price: function (el) {
-                    return parseFloat($(el).attr('data-price')) || 0;
-                },
-                name: function (el) {
-                    return ($(el).attr('data-name') || '').toLowerCase();
-                }
-            },
-            sortBy: 'original',
-            sortAscending: true
-        });
-
-        $('.type_sorting_btn').on('click', function () {
-            var sortByValue = $(this).data('sortby');
-            var sortAsc     = $(this).data('sortasc') === true || $(this).data('sortasc') === "true";
-            var sortText    = $(this).data('sorttext');
-
-            $('#currentSortText').text(sortText);
-            $('.type_sorting_btn').removeClass('active-sort');
-            $(this).addClass('active-sort');
-
-            $grid.isotope({
-                sortBy: sortByValue,
-                sortAscending: sortAsc
-            });
-        });
-    </script>
+    <script src="~/js/sale.js"></script>
 }
