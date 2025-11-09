@@ -1,0 +1,100 @@
+﻿@model ShopQuanAo.Models.ViewModels.ContactReplyViewModel
+@{
+    ViewData["Title"] = "Trả lời liên hệ";
+}
+@section Styles {
+    <style>
+        .elev-card {
+            border: 0;
+            border-radius: 20px;
+            box-shadow: 0 10px 28px rgba(15,23,42,.07);
+            overflow: hidden;
+        }
+
+        .elev-header {
+            background: linear-gradient(135deg, #ecfeff 0%, #eef2ff 100%);
+            border-bottom: 1px solid #e9ecef;
+            padding: 18px 20px;
+        }
+
+        .elev-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        label {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .form-control {
+            border-radius: 14px;
+        }
+
+        textarea.form-control {
+            min-height: 220px;
+        }
+
+        pre {
+            background: #f8fafc;
+            border: 1px solid #e9ecef;
+            border-radius: 14px;
+            padding: .9rem;
+        }
+
+        .btn-success {
+            border-radius: 12px;
+            box-shadow: 0 6px 14px rgba(16,185,129,.25);
+            border: 0;
+        }
+
+        .btn-secondary {
+            border-radius: 12px;
+        }
+    </style>
+}
+<div class="card elev-card">
+    <div class="elev-header">
+        <h5 class="elev-title mb-0">Trả lời liên hệ #@Model.Id</h5>
+    </div>
+
+    <div class="card-body">
+        <div class="mb-3">
+            <div><b>Từ:</b> @Model.FromName &lt;@Model.FromEmail&gt;</div>
+            @if (!string.IsNullOrEmpty(Model.FromWebsite))
+            {
+                <div><b>Website:</b> <a href="@Model.FromWebsite" target="_blank" rel="noopener">@Model.FromWebsite</a></div>
+            }
+            <div class="mt-2"><b>Nội dung gốc:</b></div>
+            <pre class="mb-0" style="white-space:pre-wrap">@Model.OriginalMessage</pre>
+        </div>
+
+        <form asp-action="Reply" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="mb-3">
+                <label class="form-label">Tiêu đề</label>
+                <input asp-for="Subject" class="form-control" />
+                <span class="text-danger" asp-validation-for="Subject"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nội dung trả lời</label>
+                <textarea asp-for="Body" rows="8" class="form-control"></textarea>
+                <span class="text-danger" asp-validation-for="Body"></span>
+            </div>
+
+            <div class="d-flex">
+                <button class="btn btn-success">Gửi trả lời</button>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary ms-2">Huỷ</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

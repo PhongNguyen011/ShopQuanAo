@@ -87,6 +87,9 @@ namespace ShopQuanAo.Services
                 Console.WriteLine($"Lỗi: {ex.Message}\n");
             }
         }
+
+        public Task SendAsync(string v, string subject, string html)
+            => SendEmailAsync(v, subject, html);
     }
 }
 

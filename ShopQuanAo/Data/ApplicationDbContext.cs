@@ -21,6 +21,7 @@ namespace ShopQuanAo.Data
         public DbSet<FlashSaleItem> FlashSaleItems { get; set; }
         public DbSet<MomoTransaction> MomoTransactions { get; set; }
         public DbSet<WishlistItem> WishlistItems { get; set; }
+        public DbSet<ContactMessage> ContactMessages { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ShopQuanAo.Models.ViewModels.ContactFormViewModel
+@{
     ViewData["Title"] = "Liên Hệ";
 }
 
@@ -66,16 +67,28 @@
             <div class="get_in_touch_contents">
                 <h1>Get In Touch With Us!</h1>
                 <p>Fill out the form below to receive a free and confidential message.</p>
-                <form method="post">
+
+                <form asp-action="Send" asp-controller="Contact" method="post" novalidate>
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                     <div>
-                        <input id="input_name" class="form_input input_name input_ph" type="text" name="name" placeholder="Name" required>
-                        <input id="input_email" class="form_input input_email input_ph" type="email" name="email" placeholder="Email" required>
-                        <input id="input_website" class="form_input input_website input_ph" type="url" name="website" placeholder="Website">
-                        <textarea id="input_message" class="input_ph input_message" name="message" placeholder="Message" rows="3" required></textarea>
+                        <input asp-for="Name" class="form_input input_name input_ph" placeholder="Name" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+
+                        <input asp-for="Email" class="form_input input_email input_ph" placeholder="Email" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+
+                        <input asp-for="Website" class="form_input input_website input_ph" placeholder="Website" />
+                        <span class="text-danger" asp-validation-for="Website"></span>
+
+                        <textarea asp-for="Message" class="input_ph input_message" rows="3" placeholder="Message"></textarea>
+                        <span class="text-danger" asp-validation-for="Message"></span>
                     </div>
-                    <div>
+                    <div class="mt-2">
                         <button type="submit" class="red_button message_submit_btn trans_300">Send message</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -88,16 +101,5 @@
     <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js" asp-append-version="true"></script>
     <script src="~/plugins/easing/easing.js" asp-append-version="true"></script>
     <script src="~/plugins/jquery-ui-1.12.1.custom/jquery-ui.js" asp-append-version="true"></script>
-
-    <!-- Nếu muốn dùng Google Maps JS thay vì iframe:
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap"></script>
-    <script>
-        function initMap() {
-            const pos = { lat: 10.776889, lng: 106.700423 };
-            const map = new google.maps.Map(document.getElementById('map'), { zoom: 14, center: pos });
-            new google.maps.Marker({ position: pos, map });
-        }
-    </script>
-    -->
     <script src="~/js/contact_custom.js" asp-append-version="true"></script>
 }

@@ -1,0 +1,129 @@
+﻿@model IEnumerable<ShopQuanAo.Models.ContactMessage>
+@{
+    ViewData["Title"] = "Liên hệ";
+    var filter = (string?)ViewBag.Filter ?? "all";
+    var q = (string?)ViewBag.Keyword ?? "";
+
+    // Helper chọn option an toàn, tránh lỗi selected="false"
+    Func<string, string> Sel = v => filter == v ? "selected" : "";
+}
+
+@section Styles {
+<style>
+    /* --------- PNT CONTACT (namespace riêng) --------- */
+    .pnt-card{border:0;border-radius:20px;box-shadow:0 8px 24px rgba(15,23,42,.06);overflow:hidden;}
+    .pnt-header{background:linear-gradient(135deg,#f8fafc 0%,#eef2ff 100%);border-bottom:1px solid #e9ecef;padding:18px 20px;}
+    .pnt-title{font-size:1.35rem;font-weight:800;color:#0f172a;margin:0;}
+    .pnt-muted{color:#64748b;}
+
+    /* Filter form */
+    .pnt-filter{gap:.5rem;}
+    .pnt-input,.pnt-select{
+        border-radius:12px;border:1px solid #d1d5db;padding:.35rem .75rem;font-size:.9rem;background:#fff;
+    }
+    .pnt-input:focus,.pnt-select:focus{border-color:#6366f1;box-shadow:0 0 0 2px rgba(99,102,241,.25);outline:0;}
+    .pnt-btn{
+        border-radius:12px;padding:.45rem .9rem;border:0;
+        background:linear-gradient(135deg,#4f46e5,#3b82f6);color:#fff;font-weight:600;
+        box-shadow:0 6px 14px rgba(59,130,246,.25);
+    }
+
+    /* Table */
+    .pnt-table thead th{text-transform:uppercase;font-size:.75rem;letter-spacing:.06em;color:#64748b;border:0;background:#f8fafc;}
+    .pnt-table tbody td {vertical-align: middle !important;border-top: 1px dashed #e6e8f0;}
+
+    .pnt-table-hover tbody tr:hover{background:#f9fbff;}
+    .pnt-col-time{width:180px;white-space:nowrap;}
+    .pnt-col-actions{width:190px;}
+    .pnt-name{font-weight:700;color:#0f172a;}
+    .pnt-email a{color:#2563eb;text-decoration:none;}
+    .pnt-email a:hover{text-decoration:underline;}
+
+    /* Badge */
+    .badge-pill{ display:inline-flex; align-items:center; min-height:32px; line-height:1; padding:0 .9rem; }
+    .pnt-table td.text-end .btn{ display:inline-flex; align-items:center; min-height:32px; line-height:1; }
+    .badge-unread{background:#ffedd5;color:#9a3412;}
+    .badge-read{background:#cffafe;color:#0c4a6e;}
+    .badge-replied{background:#dcfce7;color:#166534;}
+
+    /* Soft button cho actions */
+    .btn-soft{border-radius:12px;border:1px solid #e5e7eb;background:#fff;color:#0f172a;transition:all .15s ease;box-shadow:0 2px 6px rgba(2,6,23,.06);}
+    .btn-soft:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(2,6,23,.10);}
+    .btn-success{border-radius:12px;box-shadow:0 6px 14px rgba(16,185,129,.25);border:0;}
+
+    @@media (max-width: 767.98px){
+        .pnt-header{gap:.75rem;}
+        .pnt-filter{width:100%;}
+        .pnt-input{flex:1;}
+        .pnt-col-actions,.pnt-col-time{width:auto;}
+    }
+</style>
+}
+
+<div class="card pnt-card">
+    <div class="pnt-header d-flex flex-wrap justify-content-between align-items-center">
+        <div>
+            <h5 class="pnt-title">Danh sách liên hệ</h5>
+            <div class="pnt-muted small">Quản lý phản hồi từ khách hàng</div>
+        </div>
+
+        <form method="get" class="d-flex pnt-filter">
+            <input name="q" value="@q" class="pnt-input" placeholder="Tìm tên / email / nội dung" />
+            <select name="filter" class="pnt-select">
+                <option value="all" selected="@(filter == "all" ? "selected" : null)">Tất cả</option>
+                <option value="unread" selected="@(filter == "unread" ? "selected" : null)">Chưa đọc</option>
+                <option value="unreplied" selected="@(filter == "unreplied" ? "selected" : null)">Chưa trả lời</option>
+            </select>
+            <button class="pnt-btn">Lọc</button>
+        </form>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table pnt-table pnt-table-hover align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="pnt-col-time">Thời gian</th>
+                        <th>Người gửi</th>
+                        <th>Email</th>
+                        @* <th>Nội dung</th> *@
+                        <th class="text-center">Trạng thái</th>
+                        <th class="pnt-col-actions"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var m in Model)
+                {
+                    <tr class="text-center">
+                        <td class="pnt-col-time">@m.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td class="pnt-name">@m.Name</td>
+                        <td class="pnt-email"><a href="mailto:@m.Email">@m.Email</a></td>
+                        @* <td class="text-truncate" style="max-width:460px;">@m.Message</td> *@
+                        <td class="text-center">
+                            @if (!m.IsRead)
+                            {
+                                <span class="badge badge-pill badge-unread">Chưa đọc</span>
+                            }
+                            else if (!m.IsReplied)
+                            {
+                                <span class="badge badge-pill badge-read">Đã đọc</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-pill badge-replied">Đã trả lời</span>
+                            }
+                        </td>
+                            <td class="text-end">
+                            <a asp-action="Details" asp-route-id="@m.Id" class="btn btn-sm btn-soft">Chi tiết</a>
+                            @if (!m.IsReplied)
+                            {
+                                <a asp-action="Reply" asp-route-id="@m.Id" class="btn btn-sm btn-success ms-1">Trả lời</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
