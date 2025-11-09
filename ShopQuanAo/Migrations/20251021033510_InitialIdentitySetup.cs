@@ -208,16 +208,16 @@ namespace ShopQuanAo.Migrations
                 columns: new[] { "Id", "Category", "CreatedDate", "Description", "ImageUrl", "IsAvailable", "IsFeatured", "IsOnSale", "Name", "OldPrice", "Price", "StockQuantity", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, "men", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8546), "Áo thun nam chất liệu cotton cao cấp, thoáng mát", "~/images/product_1.png", true, true, true, "Áo Thun Nam Basic", 250000m, 199000m, 100, null },
-                    { 2, "women", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8551), "Áo sơ mi nữ công sở sang trọng", "~/images/product_2.png", true, true, false, "Áo Sơ Mi Nữ", null, 350000m, 50, null },
-                    { 3, "men", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8555), "Quần jeans nam form slim fit", "~/images/product_3.png", true, false, false, "Quần Jeans Nam", null, 450000m, 75, null },
-                    { 4, "women", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8559), "Váy đầm nữ thời trang cao cấp", "~/images/product_4.png", true, true, true, "Váy Đầm Nữ", 650000m, 550000m, 30, null },
-                    { 5, "men", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8562), "Áo khoác nam phong cách Hàn Quốc", "~/images/product_5.png", true, false, false, "Áo Khoác Nam", null, 650000m, 45, null },
-                    { 6, "women", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8566), "Chân váy nữ dáng dài phong cách vintage", "~/images/product_6.png", true, true, false, "Chân Váy Dài Nữ", null, 420000m, 40, null },
-                    { 7, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8570), "Thắt lưng da thật cao cấp", "~/images/product_7.png", true, false, true, "Thắt Lưng Da", 320000m, 250000m, 60, null },
-                    { 8, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8574), "Kính mát thời trang unisex", "~/images/product_8.png", true, true, false, "Kính Mát Unisex", null, 380000m, 80, null },
-                    { 9, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8578), "Mũ lưỡi trai năng động, cá tính", "~/images/product_9.png", true, false, false, "Mũ Lưỡi Trai", null, 180000m, 90, null },
-                    { 10, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8582), "Túi xách da nữ sang trọng", "~/images/product_10.png", true, true, true, "Túi Xách Nữ Da", 750000m, 590000m, 25, null }
+                    { 1, "men", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8546), "Áo thun nam chất liệu cotton cao cấp, thoáng mát", "~/images/product-1.png", true, true, true, "Áo Thun Nam Basic", 250000m, 199000m, 100, null },
+                    { 2, "women", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8551), "Áo sơ mi nữ công sở sang trọng", "~/images/product-2.png", true, true, false, "Áo Sơ Mi Nữ", null, 350000m, 50, null },
+                    { 3, "men", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8555), "Quần jeans nam form slim fit", "~/images/product-3.png", true, false, false, "Quần Jeans Nam", null, 450000m, 75, null },
+                    { 4, "women", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8559), "Váy đầm nữ thời trang cao cấp", "~/images/product-4.png", true, true, true, "Váy Đầm Nữ", 650000m, 550000m, 30, null },
+                    { 5, "men", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8562), "Áo khoác nam phong cách Hàn Quốc", "~/images/product-5.png", true, false, false, "Áo Khoác Nam", null, 650000m, 45, null },
+                    { 6, "women", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8566), "Chân váy nữ dáng dài phong cách vintage", "~/images/product-6.png", true, true, false, "Chân Váy Dài Nữ", null, 420000m, 40, null },
+                    { 7, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8570), "Thắt lưng da thật cao cấp", "~/images/product-7.png", true, false, true, "Thắt Lưng Da", 320000m, 250000m, 60, null },
+                    { 8, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8574), "Kính mát thời trang unisex", "~/images/product-8.png", true, true, false, "Kính Mát Unisex", null, 380000m, 80, null },
+                    { 9, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8578), "Mũ lưỡi trai năng động, cá tính", "~/images/product-9.png", true, false, false, "Mũ Lưỡi Trai", null, 180000m, 90, null },
+                    { 10, "accessories", new DateTime(2025, 10, 21, 10, 35, 9, 648, DateTimeKind.Local).AddTicks(8582), "Túi xách da nữ sang trọng", "~/images/product-10.png", true, true, true, "Túi Xách Nữ Da", 750000m, 590000m, 25, null }
                 });
 
             migrationBuilder.InsertData(
