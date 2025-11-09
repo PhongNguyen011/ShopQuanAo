@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopQuanAo.Data;
 using ShopQuanAo.Models;
+using ShopQuanAo.ViewModels;
 
 namespace ShopQuanAo.Areas.Admin.Controllers
 {
@@ -24,6 +25,55 @@ namespace ShopQuanAo.Areas.Admin.Controllers
         {
             var products = await _context.Products.ToListAsync();
             return View(products);
+        }
+
+        // 🔥 Thống kê sản phẩm bán chạy cho Admin
+        // GET: Admin/Product/BestSellers
+        public async Task<IActionResult> BestSellers(int top = 20)
+        {
+            if (top < 1) top = 10;
+            if (top > 100) top = 100;
+
+            var bestQuery =
+                from oi in _context.OrderItems
+                join o in _context.Orders on oi.OrderId equals o.Id
+                join p in _context.Products on oi.ProductName equals p.Name
+                where o.Status == "Delivered"
+                group new { oi, p } by new
+                {
+                    p.Id,
+                    p.Name,
+                    p.ImageUrl,
+                    p.Price,
+                    p.OldPrice,
+                    p.Category,
+                    p.IsAvailable,
+                    p.IsFeatured,
+                    p.IsOnSale
+                }
+                into g
+                orderby g.Sum(x => x.oi.Quantity) descending
+                select new BestSellerProductViewModel
+                {
+                    ProductId = g.Key.Id,
+                    Name = g.Key.Name,
+                    ImageUrl = g.Key.ImageUrl,
+                    Price = g.Key.Price,
+                    OldPrice = g.Key.OldPrice,
+                    Category = g.Key.Category,
+                    IsAvailable = g.Key.IsAvailable,
+                    IsFeatured = g.Key.IsFeatured,
+                    IsOnSale = g.Key.IsOnSale,
+                    SoldQuantity = g.Sum(x => x.oi.Quantity),
+                    Revenue = g.Sum(x => x.oi.LineTotal)
+                };
+
+            var model = await bestQuery
+                .Take(top)
+                .ToListAsync();
+
+            ViewBag.Top = top;
+            return View(model);
         }
 
         // GET: Admin/Product/Details/5
@@ -187,4 +237,3 @@ namespace ShopQuanAo.Areas.Admin.Controllers
         }
     }
 }
-

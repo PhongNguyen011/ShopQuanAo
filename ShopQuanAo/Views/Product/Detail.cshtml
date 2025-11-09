@@ -76,18 +76,33 @@
                             }
 
                             @{
-                                var hasOld = Model.OldPrice.HasValue && Model.OldPrice.Value > Model.Price;
-                                var percent = hasOld ? Math.Round((Model.OldPrice!.Value - Model.Price) / Model.OldPrice.Value * 100) : 0;
+                                var displayPrice = ViewBag.DisplayPrice as decimal? ?? Model.Price;
+                                var isFlashSale = ViewBag.IsFlashSale as bool? ?? false;
+                                var flashSaleItem = ViewBag.FlashSaleItem as ShopQuanAo.Models.FlashSaleItem;
+                                var hasOld = Model.OldPrice.HasValue && Model.OldPrice.Value > displayPrice;
+                                var percent = hasOld ? Math.Round((Model.OldPrice!.Value - displayPrice) / Model.OldPrice.Value * 100) : 0;
+                                var flashPercent = isFlashSale ? Math.Round((Model.Price - flashSaleItem!.FlashPrice) / Model.Price * 100) : 0;
                             }
                             <div class="mb-3">
                                 <div class="d-flex align-items-baseline gap-3">
-                                    <span class="h3 mb-0 text-danger fw-bold">@Model.Price.ToString("N0")đ</span>
-                                    @if (hasOld)
+                                    <span class="h3 mb-0 text-danger fw-bold">@displayPrice.ToString("N0")đ</span>
+                                    @if (isFlashSale)
+                                    {
+                                        <span class="text-muted text-decoration-line-through">@Model.Price.ToString("N0")đ</span>
+                                        <span class="badge bg-danger">FLASH SALE -@flashPercent%</span>
+                                    }
+                                    else if (hasOld)
                                     {
                                         <span class="text-muted text-decoration-line-through">@Model.OldPrice!.Value.ToString("N0")đ</span>
                                         <span class="badge bg-danger">-@percent%</span>
                                     }
                                 </div>
+                                @if (isFlashSale && flashSaleItem != null)
+                                {
+                                    <div class="small text-muted mt-1">
+                                        <i class="fa fa-clock-o"></i> Kết thúc: @flashSaleItem.EndTime.ToString("dd/MM/yyyy HH:mm")
+                                    </div>
+                                }
                             </div>
 
                             <hr class="text-muted">

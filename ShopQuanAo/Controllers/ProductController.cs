@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopQuanAo.Data;
+using ShopQuanAo.ViewModels;
 
 namespace ShopQuanAo.Controllers
 {
@@ -85,6 +86,15 @@ namespace ShopQuanAo.Controllers
             if (product == null)
                 return NotFound();
 
+            // Kiểm tra Flash Sale cho sản phẩm này
+            var flashSale = await _context.FlashSaleItems
+                .FirstOrDefaultAsync(f => f.ProductId == product.Id && f.IsActive && f.EndTime > DateTime.Now);
+
+            var displayPrice = flashSale != null ? flashSale.FlashPrice : product.Price;
+            ViewBag.DisplayPrice = displayPrice;
+            ViewBag.IsFlashSale = flashSale != null;
+            ViewBag.FlashSaleItem = flashSale;
+
             // Sản phẩm liên quan
             var relatedProducts = await _context.Products
                 .AsNoTracking()
@@ -95,6 +105,56 @@ namespace ShopQuanAo.Controllers
 
             ViewBag.RelatedProducts = relatedProducts;
             return View(product);
+        }
+
+        // 🔥 GET: /Product/BestSellers
+        // Trang hiển thị danh sách sản phẩm bán chạy cho user
+        public async Task<IActionResult> BestSellers(int top = 8)
+        {
+            if (top < 1) top = 4;
+            if (top > 50) top = 50;
+
+            // Tính tổng số lượng đã bán cho từng sản phẩm
+            // Dựa trên OrderItems + Orders.Status = Delivered
+            var bestQuery =
+                from oi in _context.OrderItems
+                join o in _context.Orders on oi.OrderId equals o.Id
+                join p in _context.Products on oi.ProductName equals p.Name
+                where o.Status == "Delivered" && p.IsAvailable
+                group new { oi, p } by new
+                {
+                    p.Id,
+                    p.Name,
+                    p.ImageUrl,
+                    p.Price,
+                    p.OldPrice,
+                    p.Category,
+                    p.IsAvailable,
+                    p.IsFeatured,
+                    p.IsOnSale
+                }
+                into g
+                orderby g.Sum(x => x.oi.Quantity) descending
+                select new BestSellerProductViewModel
+                {
+                    ProductId = g.Key.Id,
+                    Name = g.Key.Name,
+                    ImageUrl = g.Key.ImageUrl,
+                    Price = g.Key.Price,
+                    OldPrice = g.Key.OldPrice,
+                    Category = g.Key.Category,
+                    IsAvailable = g.Key.IsAvailable,
+                    IsFeatured = g.Key.IsFeatured,
+                    IsOnSale = g.Key.IsOnSale,
+                    SoldQuantity = g.Sum(x => x.oi.Quantity),
+                    Revenue = g.Sum(x => x.oi.LineTotal)
+                };
+
+            var bestSellers = await bestQuery
+                .Take(top)
+                .ToListAsync();
+
+            return View(bestSellers);
         }
     }
 }

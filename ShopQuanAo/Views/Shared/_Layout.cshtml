@@ -54,7 +54,7 @@
                         <li class="menu_item"><a asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
                         <li class="menu_item"><a asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
                         <li class="menu_item"><a asp-controller="Sale" asp-action="Index">Khuyến Mãi</a></li>
-                        <li class="menu_item"><a href="#">Cửa Hàng</a></li>
+                        <li class="menu_item"><a asp-controller="Product" asp-action="BestSellers">Bán chạy nhất</a></li>
                         <li class="menu_item"><a asp-controller="Posts" asp-action="Index">Bài Viết</a></li>
                         <li class="menu_item"><a asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
                     </ul>
@@ -154,7 +154,8 @@
                 <li class="menu_item"><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
                 <li class="menu_item"><a asp-area="" asp-controller="Product" asp-action="Index">Sản Phẩm</a></li>
                 <li class="menu_item"><a asp-controller="Sale" asp-action="Index">Khuyến Mãi</a></li>
-                <li class="menu_item"><a href="#">Cửa Hàng</a></li>
+                <li class="menu_item"><a asp-controller="Product" asp-action="BestSellers">Bán chạy nhất</a></li>
+
                 <li class="menu_item"><a asp-area="" asp-controller="Posts" asp-action="Index">Bài Viết</a></li>
                 <li class="menu_item"><a asp-area="" asp-controller="Contact" asp-action="Index">Liên Hệ</a></li>
                 <li class="menu_item has-children account-dd">

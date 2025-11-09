@@ -1,0 +1,101 @@
+﻿@model IEnumerable<ShopQuanAo.ViewModels.BestSellerProductViewModel>
+
+@{
+    ViewData["Title"] = "Sản Phẩm Bán Chạy";
+}
+
+@section Styles {
+    <link href="~/bootstrap4/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/main_styles.css" rel="stylesheet" />
+    <link href="~/css/categories_styles.css" rel="stylesheet" />
+    <link href="~/css/categories_responsive.css" rel="stylesheet" />
+}
+
+<div class="container mt-4 mb-5">
+    <div class="breadcrumbs d-flex flex-row align-items-center mb-3">
+        <ul>
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+            <li class="active"><a href="#"><i class="fa fa-angle-right"></i> Sản Phẩm Bán Chạy</a></li>
+        </ul>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col text-center">
+            <h2 class="section_title">Sản Phẩm Bán Chạy Nhất</h2>
+            <p class="text-muted mb-0">Top sản phẩm được đặt mua nhiều nhất (đã giao thành công).</p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            Chưa có dữ liệu đơn hàng để thống kê sản phẩm bán chạy.
+        </div>
+    }
+    else
+    {
+        <div class="row product-grid">
+            @foreach (var item in Model)
+            {
+                <div class="product-item @item.Category">
+                    <div class="product @(item.IsOnSale ? "discount" : "")">
+                        <div class="product_image">
+                            <img src="@Url.Content(item.DisplayImageUrl)" alt="@item.Name" style="height:240px;">
+                        </div>
+
+                        @* Badge: Sale / Featured / Bán chạy *@
+                        @if (item.IsOnSale && item.OldPrice.HasValue && item.OldPrice.Value > item.Price)
+                        {
+                            var percent = (int)Math.Round((item.OldPrice.Value - item.Price) / item.OldPrice.Value * 100m);
+                            <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                <span>-@percent%</span>
+                            </div>
+                        }
+                        else if (item.IsFeatured)
+                        {
+                            <div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center">
+                                <span>new</span>
+                            </div>
+                        }
+
+                        <div class="product_bubble product_bubble_left product_bubble_red d-flex flex-column align-items-center" style="top:40px;">
+                            <span><i class="fa fa-fire"></i></span>
+                        </div>
+
+                        <div class="product_info">
+                            <h6 class="product_name">
+                                <a asp-action="Detail" asp-route-id="@item.ProductId">@item.Name</a>
+                            </h6>
+                            <div class="product_price">
+                                @item.Price.ToString("N0")đ
+                                @if (item.OldPrice.HasValue && item.OldPrice.Value > item.Price)
+                                {
+                                    <span>@item.OldPrice.Value.ToString("N0")đ</span>
+                                }
+                            </div>
+                            <div class="small text-muted mt-1">
+                                Đã bán: <strong>@item.SoldQuantity</strong> · Doanh thu: <strong>@item.Revenue.ToString("N0")đ</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="red_button add_to_cart_button">
+                        <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.ProductId" asp-route-qty="1">
+                            Thêm Vào Giỏ
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/styles/bootstrap4/popper.js"></script>
+    <script src="~/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="~/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+    <script src="~/plugins/easing/easing.js"></script>
+    <script src="~/js/custom.js"></script>
+}

@@ -89,6 +89,12 @@ namespace ShopQuanAo.Controllers
             var p = await _db.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
             if (p == null) return NotFound();
 
+            // Kiểm tra Flash Sale cho sản phẩm này
+            var flashSale = await _db.FlashSaleItems
+                .FirstOrDefaultAsync(f => f.ProductId == p.Id && f.IsActive && f.EndTime > DateTime.Now);
+
+            var effectivePrice = flashSale != null ? flashSale.FlashPrice : p.Price;
+
             var cart = _cart.GetCart();
             var line = cart.FirstOrDefault(x => x.ProductId == id);
 
@@ -106,7 +112,7 @@ namespace ShopQuanAo.Controllers
                 {
                     ProductId = p.Id,
                     Name = p.Name,
-                    Price = p.Price,
+                    Price = effectivePrice,
                     Image = p.ImageUrl,
                     Quantity = addQty
                 });
@@ -114,6 +120,8 @@ namespace ShopQuanAo.Controllers
             else
             {
                 line.Quantity = Math.Min(line.Quantity + qty, stock);
+                // Cập nhật giá nếu có flash sale
+                line.Price = effectivePrice;
             }
 
             _cart.SaveCart(cart);

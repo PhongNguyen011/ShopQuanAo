@@ -1,4 +1,5 @@
 ﻿@using ShopQuanAo.Data
+@using ShopQuanAo.ViewModels
 @inject ApplicationDbContext _context
 
 @{
@@ -6,9 +7,7 @@
     Layout = "_Layout";
 }
 
-<!-- Phần New Arrivals -->
 @functions {
-    // Giữ nguyên các hàm Img, SafeThumb bạn đã có
     string Slugify(string s)
     {
         s = s.Trim().ToLowerInvariant();
@@ -26,38 +25,72 @@
         }
     }
     string ProdImg(string? url) => Url.Content(string.IsNullOrWhiteSpace(url)
-        ? "~/images/product_1.png" // placeholder
+        ? "~/images/product_1.png"
         : (url.StartsWith("~/") || url.StartsWith("/")) ? url : $"/images/products/{url}");
+
+    string Img(string rel) => Url.Content($"~/images/{rel}");
+    string SafeThumb(string? path) => Url.Content(string.IsNullOrWhiteSpace(path)
+        ? "~/images/_placeholder.png"
+        : (path!.StartsWith("~/") || path.StartsWith("/")) ? path : $"/images/posts/{path}");
 }
 
 @{
-    // Lấy sản phẩm mới từ DB (giữ cấu trúc cũ, chỉ thay dữ liệu)
+    // ===== SẢN PHẨM MỚI =====
     var newArrivals = _context.Products
         .Where(p => p.IsAvailable)
         .OrderByDescending(p => p.CreatedDate)
-        .Take(24) // tuỳ bạn
+        .Take(24)
         .ToList();
 
-    // Lấy danh mục duy nhất từ tất cả sản phẩm (hỗ trợ nhiều danh mục / sp)
     var allCategories = newArrivals
         .SelectMany(p => SplitCats(p.Category))
         .Distinct(StringComparer.OrdinalIgnoreCase)
         .OrderBy(c => c)
         .ToList();
 
-    // Blogs (lấy từ DB ngay tại Index)
+    // ===== BÀI VIẾT GẦN ĐÂY =====
     var recentPosts = _context.Posts
-    .OrderByDescending(p => p.CreatedAt)
-    .Take(3)
-    .ToList();
-}
+        .OrderByDescending(p => p.CreatedAt)
+        .Take(3)
+        .ToList();
 
-<!-- Phần Posts ( Bài viết ) -->
-@functions {
-    string Img(string rel) => Url.Content($"~/images/{rel}");
-    string SafeThumb(string? path) => Url.Content(string.IsNullOrWhiteSpace(path)
-        ? "~/images/_placeholder.png"
-        : (path!.StartsWith("~/") || path.StartsWith("/")) ? path : $"/images/posts/{path}");
+    // ===== SẢN PHẨM BÁN CHẠY (TOP 10) =====
+    var bestSellersQuery =
+        from oi in _context.OrderItems
+        join o in _context.Orders on oi.OrderId equals o.Id
+        join p in _context.Products on oi.ProductName equals p.Name
+        where o.Status == "Delivered" && p.IsAvailable
+        group new { oi, p } by new
+        {
+            p.Id,
+            p.Name,
+            p.ImageUrl,
+            p.Price,
+            p.OldPrice,
+            p.Category,
+            p.IsFeatured,
+            p.IsOnSale
+        }
+        into g
+        orderby g.Sum(x => x.oi.Quantity) descending
+        select new BestSellerProductViewModel
+        {
+            ProductId = g.Key.Id,
+            Name = g.Key.Name,
+            ImageUrl = g.Key.ImageUrl,
+            Price = g.Key.Price,
+            OldPrice = g.Key.OldPrice,
+            Category = g.Key.Category,
+            IsAvailable = true,
+            IsFeatured = g.Key.IsFeatured,
+            IsOnSale = g.Key.IsOnSale,
+            SoldQuantity = g.Sum(x => x.oi.Quantity),
+            Revenue = g.Sum(x => x.oi.LineTotal)
+        };
+
+    var bestSellers = bestSellersQuery
+        .Take(10)
+        .ToList();
 }
 
 @section Styles {
@@ -69,7 +102,7 @@
     <link href="~/css/main_styles.css" rel="stylesheet">
 }
 
-<!-- ========== SLIDER ========== -->
+<!-- ========== SLIDER TRÊN CÙNG ========== -->
 <section id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
     <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
@@ -98,8 +131,7 @@
     </div>
 </section>
 
-
-<!-- ========== 3 BANNER NHỎ BÊN DƯỚI ========== -->
+<!-- ========== 3 BANNER NHỎ ========== -->
 <section class="banner-section py-5">
     <div class="container">
         <div class="row g-3">
@@ -128,7 +160,7 @@
     </div>
 </section>
 
-<!-- New Arrivals -->
+<!-- ========== SẢN PHẨM MỚI ========== -->
 <div class="new_arrivals">
     <div class="container">
         <div class="row">
@@ -166,7 +198,9 @@
                         <div class="product-item @classStr">
                             <div class="product @(hasDiscount ? "discount" : "") product_filter">
                                 <div class="product_image">
-                                    <img src="@ProdImg(product.ImageUrl)" alt="@product.Name">
+                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">
+                                        <img src="@ProdImg(product.ImageUrl)" alt="@product.Name">
+                                    </a>
                                 </div>
 
                                 @if (hasDiscount)
@@ -197,7 +231,7 @@
                             </div>
 
                             <div class="red_button add_to_cart_button">
-                                <a asp-controller="Cart" asp-action="Add" asp-route-Id="@product.Id">Thêm vào giỏ</a>
+                                <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" asp-route-qty="1">Thêm vào giỏ</a>
                             </div>
                         </div>
                     }
@@ -207,11 +241,12 @@
     </div>
 </div>
 
+<!-- FLASH SALE HERO -->
 <div class="container">
     @await Component.InvokeAsync("FlashSaleHero")
 </div>
 
-<!-- Best Sellers -->
+<!-- ========== BÁN CHẠY NHẤT (SLIDER DÙNG DỮ LIỆU THẬT) ========== -->
 <div class="best_sellers">
     <div class="container">
         <div class="row">
@@ -222,43 +257,94 @@
             </div>
         </div>
     </div>
-    <!-- (Giữ nguyên Owl Carousel của bạn, chỉ đổi src ảnh sang Img(...)) -->
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="product_slider_container">
-                    <div class="owl-carousel owl-theme product_slider">
-                        <div class="owl-item product_slider_item">
-                            <div class="product-item">
-                                <div class="product discount">
-                                    <div class="product_image">
-                                        <img src="@Img("product_1.png")" alt="">
-                                    </div>
-                                    <div class="favorite favorite_left"></div>
-                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>
-                                    <div class="product_info">
-                                        <h6 class="product_name"><a href="#">Fujifilm X100T 16 MP Digital Camera (Silver)</a></h6>
-                                        <div class="product_price">$520.00<span>$590.00</span></div>
+
+    @if (!bestSellers.Any())
+    {
+        <div class="container">
+            <div class="alert alert-info mt-3">
+                Chưa có dữ liệu đơn hàng (Delivered) để thống kê sản phẩm bán chạy.
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="product_slider_container">
+                        <div class="owl-carousel owl-theme product_slider">
+
+                            @foreach (var item in bestSellers)
+                            {
+                                var hasDiscount = item.OldPrice.HasValue && item.OldPrice.Value > item.Price;
+                                var discountPct = hasDiscount
+                                ? (int)Math.Round((item.OldPrice.Value - item.Price) / item.OldPrice.Value * 100m)
+                                : 0;
+
+                                <div class="owl-item product_slider_item">
+                                    <div class="product-item">
+                                        <div class="product @(hasDiscount ? "discount" : "")">
+                                            <div class="product_image">
+                                                <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">
+                                                    <img src="@ProdImg(item.ImageUrl)" alt="@item.Name">
+                                                </a>
+                                            </div>
+
+                                            @if (hasDiscount)
+                                            {
+                                                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                                    <span>-@discountPct%</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="product_bubble product_bubble_left product_bubble_red d-flex flex-column align-items-center">
+                                                    <span><i class="fa fa-fire"></i></span>
+                                                </div>
+                                            }
+
+                                            <div class="product_info">
+                                                <h6 class="product_name">
+                                                    <a asp-controller="Product" asp-action="Detail" asp-route-id="@item.ProductId">@item.Name</a>
+                                                </h6>
+                                                <div class="product_price">
+                                                    @item.Price.ToString("N0")đ
+                                                    @if (hasDiscount)
+                                                    {
+                                                        <span>@item.OldPrice!.Value.ToString("N0")đ</span>
+                                                    }
+                                                </div>
+                                                <div class="small text-muted mt-1">
+                                                    Đã bán: <strong>@item.SoldQuantity</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="red_button add_to_cart_button">
+                                            <a asp-controller="Cart" asp-action="Add"
+                                               asp-route-id="@item.ProductId" asp-route-qty="1">
+                                                Thêm vào giỏ
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- ... các slide khác: đổi <img src="@Img("product_X.png")" /> tương tự ... -->
-                    </div>
+                            }
 
-                    <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                    </div>
-                    <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
-                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </div>
+
+                        <div class="product_slider_nav_left product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        </div>
+                        <div class="product_slider_nav_right product_slider_nav d-flex align-items-center justify-content-center flex-column">
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 
-<!-- Benefit -->
+<!-- BENEFIT -->
 <div class="benefit">
     <div class="container">
         <div class="row benefit_row">
@@ -302,7 +388,7 @@
     </div>
 </div>
 
-
+<!-- BLOGS -->
 <div class="blogs">
     <div class="container">
         <div class="row">
