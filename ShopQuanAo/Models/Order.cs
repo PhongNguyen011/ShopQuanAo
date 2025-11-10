@@ -38,7 +38,7 @@ namespace ShopQuanAo.Models
         public string? CouponCode { get; set; }
         
         /// <summary>
-        /// Trạng thái đơn hàng: "Pending" = Tiếp nhận, "Shipping" = Đã chuyển GHN, "Delivered" = Đã giao thành công, "Cancelled" = Đã hủy
+        /// Trạng thái đơn hàng: "Pending" = Tiếp nhận, "Shipping" = Đang giao hàng, "Delivered" = Đã giao thành công, "Cancelled" = Đã hủy
         /// </summary>
         [StringLength(20)]
         public string Status { get; set; } = "Pending"; // Pending, Shipping, Delivered, Cancelled

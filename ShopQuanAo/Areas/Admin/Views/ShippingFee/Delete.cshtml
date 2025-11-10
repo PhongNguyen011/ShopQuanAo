@@ -1,0 +1,81 @@
+@model ShopQuanAo.Models.ShippingFee
+
+@{
+    ViewData["Title"] = "Xóa phí ship";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="mb-1 fw-semibold text-danger">Xóa phí ship</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-action="Index">Phí ship</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Xóa</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="alert alert-warning d-flex align-items-start" role="alert">
+            <i class="fa fa-exclamation-triangle me-2 mt-1"></i>
+            <div>
+                <strong>Bạn chắc chắn muốn xóa cấu hình phí ship này?</strong><br />
+                Hành động này không thể hoàn tác. Các đơn hàng mới sẽ không còn áp dụng mức phí ship này nữa.
+            </div>
+        </div>
+
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Tỉnh / Thành phố</dt>
+            <dd class="col-sm-9 fw-semibold">@Model.ProvinceName</dd>
+
+            <dt class="col-sm-3">Phí ship</dt>
+            <dd class="col-sm-9">@Model.Fee.ToString("N0") đ</dd>
+
+            <dt class="col-sm-3">Mô tả</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Trạng thái</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsActive)
+                {
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+                        ĐANG HOẠT ĐỘNG
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 rounded-pill">
+                        ĐANG TẮT
+                    </span>
+                }
+            </dd>
+        </dl>
+
+        <hr />
+
+        <form asp-action="Delete" method="post" class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div class="text-muted small">
+                ID: @Model.Id
+            </div>
+
+            <div>
+                <a asp-action="Index" class="btn btn-light border me-2">
+                    Hủy
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash me-1"></i> Xác nhận xóa
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

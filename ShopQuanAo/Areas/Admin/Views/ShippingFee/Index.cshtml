@@ -1,0 +1,182 @@
+@model IEnumerable<ShopQuanAo.Models.ShippingFee>
+@using System.Globalization
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Quản Lý Phí Ship";
+
+    var vn = CultureInfo.GetCultureInfo("vi-VN");
+    string VnMoney(decimal v) => string.Format(vn, "{0:N0} đ", v);
+
+    string search = ViewBag.Search as string ?? "";
+    int currentPage = ViewBag.Page is int ? (int)ViewBag.Page : 1;
+    int totalPages = ViewBag.TotalPages is int ? (int)ViewBag.TotalPages : 1;
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <div>
+                    <h6 class="mb-1">Danh Sách Phí Ship</h6>
+                    <p class="text-xs text-secondary mb-0">
+                        Quản lý phí giao hàng theo tỉnh / thành phố.
+                    </p>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <form asp-action="Index" method="get" class="d-flex align-items-center">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="fa fa-search"></i>
+                            </span>
+                            <input type="text"
+                                   name="search"
+                                   class="form-control border-start-0"
+                                   placeholder="Tìm theo tỉnh / thành phố..."
+                                   value="@search" />
+                        </div>
+                    </form>
+
+                    <a asp-action="Create"
+                       class="btn btn-primary btn-sm d-flex align-items-center">
+                        <i class="fa fa-plus me-1"></i>
+                        <span>Thêm</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Tỉnh / Thành Phố
+                                </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    Phí Ship
+                                </th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                    Ghi chú
+                                </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    Trạng thái
+                                </th>
+                                <th class="text-secondary opacity-7"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (!Model.Any())
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center text-xs text-muted py-4">
+                                        Không có bản ghi nào.
+                                    </td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex flex-column px-3 py-2">
+                                                <span class="text-sm font-weight-bold">
+                                                    @item.ProvinceName
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm font-weight-bold">
+                                                @VnMoney(item.Fee)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="text-xs text-secondary">
+                                                @(string.IsNullOrWhiteSpace(item.Description)
+                                                                                        ? "—"
+                                                                                        : item.Description)
+                                    </span>
+                                </td>
+                                <td class="align-middle text-center">
+                                    @if (item.IsActive)
+                                            {
+                                                <span class="badge badge-sm bg-gradient-success">
+                                                    Đang dùng
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-sm bg-gradient-secondary">
+                                                    Tạm tắt
+                                                </span>
+                                            }
+                                        </td>
+                                        <td class="align-middle text-end pe-4">
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-link text-dark px-2 mb-0"
+                                               title="Sửa">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-link text-danger text-gradient px-2 mb-0"
+                                               title="Xóa">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @* PHÂN TRANG *@
+                @if (totalPages > 1)
+                {
+                    <div class="px-4 pb-3 pt-2 d-flex justify-content-between align-items-center">
+                        <div class="text-xs text-muted">
+                            Trang @currentPage / @totalPages (@ViewBag.TotalItems bản ghi)
+                        </div>
+
+                        <nav aria-label="Shipping fee pagination">
+                            <ul class="pagination pagination-sm mb-0">
+                                @{
+                                    var prevDisabled = currentPage == 1 ? "disabled" : "";
+                                    var nextDisabled = currentPage == totalPages ? "disabled" : "";
+                                }
+
+                                <li class="page-item @prevDisabled">
+                                    <a class="page-link"
+                                       asp-action="Index"
+                                       asp-route-page="@(currentPage - 1)"
+                                       asp-route-search="@search">‹</a>
+                                </li>
+
+                                @for (int i = 1; i <= totalPages; i++)
+                                {
+                                    <li class="page-item @(i == currentPage ? "active" : "")">
+                                        <a class="page-link"
+                                           asp-action="Index"
+                                           asp-route-page="@i"
+                                           asp-route-search="@search">@i</a>
+                                    </li>
+                                }
+
+                                <li class="page-item @nextDisabled">
+                                    <a class="page-link"
+                                       asp-action="Index"
+                                       asp-route-page="@(currentPage + 1)"
+                                       asp-route-search="@search">›</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

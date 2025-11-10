@@ -70,11 +70,12 @@ builder.Services.AddSession(o =>
     o.Cookie.IsEssential = true;
 });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IShippingFeeService, ShippingFeeService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.Configure<MomoOptionModel>(builder.Configuration.GetSection("MomoAPI"));
 builder.Services.AddScoped<IMomoService, MomoService>();
-builder.Services.AddHttpClient<IGhtkShippingService, GhtkShippingService>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

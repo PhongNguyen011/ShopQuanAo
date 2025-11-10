@@ -29,10 +29,11 @@
                     Giỏ hàng
                 </a>
             </li>
-            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+            <li class="active">
+                <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a>
+            </li>
         </ul>
     </div>
-    
 
     <div class="row g-4 g-lg-5">
         <!-- RIGHT COLUMN (order summary) -->
@@ -152,23 +153,23 @@
                                 <span class="code-chip">@appliedCoupon.Code</span>
                                 <span class="text-muted small">
                                     — @(
-                                    appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
-                                    ? $"Giảm {appliedCoupon.DiscountValue}%"
-                                    : $"Giảm {VnMoney((decimal)appliedCoupon.DiscountValue)}"
-                                                                )
-                            </span>
+                                        appliedCoupon.DiscountType == ShopQuanAo.Models.DiscountType.Percentage
+                                            ? $"Giảm {appliedCoupon.DiscountValue}%"
+                                            : $"Giảm {VnMoney((decimal)appliedCoupon.DiscountValue)}"
+                                      )
+                                </span>
+                            </div>
+
+                            <form asp-action="RemoveCoupon" method="post" class="m-0">
+                                @Html.AntiForgeryToken()
+                                <button class="btn btn-outline-danger btn-sm fw-semibold" type="submit">
+                                    <i class="fa fa-times me-1"></i> Bỏ mã
+                                </button>
+                            </form>
                         </div>
 
-                        <form asp-action="RemoveCoupon" method="post" class="m-0">
-                            @Html.AntiForgeryToken()
-                            <button class="btn btn-outline-danger btn-sm fw-semibold" type="submit">
-                                <i class="fa fa-times me-1"></i> Bỏ mã
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="mt-3 small text-muted lh-lg bg-light rounded p-2 border">
-                        @if (appliedCoupon.MinOrderAmount != null)
+                        <div class="mt-3 small text-muted lh-lg bg-light rounded p-2 border">
+                            @if (appliedCoupon.MinOrderAmount != null)
                             {
                                 <div>
                                     • Đơn tối thiểu:
@@ -225,20 +226,26 @@
 
                             <div class="col-12 col-md-4">
                                 <label class="form-label small text-muted fw-semibold">Tỉnh/Thành phố</label>
-                                <input id="province-input" class="form-control" placeholder="VD: Hồ Chí Minh" required />
-                                <input type="hidden" id="ProvinceNameInput" name="ProvinceName" />
+                                <select id="province-select" class="form-select" required>
+                                    <option value="">-- Chọn tỉnh/thành phố --</option>
+                                </select>
+                                <input type="hidden" id="ProvinceName" name="ProvinceName" />
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label class="form-label small text-muted fw-semibold">Quận/Huyện</label>
-                                <input id="district-input" class="form-control" placeholder="VD: Bình Thạnh" required />
-                                <input type="hidden" id="DistrictNameInput" name="DistrictName" />
+                                <select id="district-select" class="form-select" required disabled>
+                                    <option value="">-- Chọn quận/huyện --</option>
+                                </select>
+                                <input type="hidden" id="DistrictName" name="DistrictName" />
                             </div>
 
                             <div class="col-12 col-md-4">
                                 <label class="form-label small text-muted fw-semibold">Phường/Xã</label>
-                                <input id="ward-input" class="form-control" placeholder="VD: Phường 25" required />
-                                <input type="hidden" id="WardNameInput" name="WardName" />
+                                <select id="ward-select" class="form-select" required disabled>
+                                    <option value="">-- Chọn phường/xã --</option>
+                                </select>
+                                <input type="hidden" id="WardName" name="WardName" />
                             </div>
 
                             <div class="col-12">
@@ -248,7 +255,6 @@
                                        placeholder="VD: 12/3 Nguyễn Văn A"
                                        autocomplete="off"
                                        required />
-                                <div id="addr-suggest" class="list-group mt-1" style="display:none; position:relative; z-index:10;"></div>
                             </div>
 
                             <div class="col-12">
@@ -376,77 +382,14 @@
         }
 
     @@media (max-width: 991.98px) {
-        /* để card tổng tiền nhảy lên đầu ở mobile là do order-lg-2,
-               nên ở mobile đã là order: default -> nó tự lên rồi.
-               Nếu bạn muốn ép style riêng có thể làm thêm ở đây. */
-        .summary-card
-
-    {
-        /* placeholder cho custom mobile styling nếu cần */
-    }
-
+        .summary-card {
+        }
     }
 </style>
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Khởi tạo input refs cho GHTK
-            const $province = document.getElementById('province-input');
-            const $district = document.getElementById('district-input');
-            const $ward = document.getElementById('ward-input');
-            const $addr = document.getElementById('address-input');
-            const $suggest = document.getElementById('addr-suggest');
-
-            let suggestTimer;
-            function hideSuggest(){ $suggest.style.display = 'none'; $suggest.innerHTML = ''; }
-            function showSuggest(items){
-              if(!items || !items.length){ hideSuggest(); return; }
-              $suggest.innerHTML = items.map(x=>`<button type='button' class='list-group-item list-group-item-action'>${x}</button>`).join('');
-              $suggest.style.display = 'block';
-              [...$suggest.querySelectorAll('button')].forEach(btn=>{
-                btn.addEventListener('click', ()=>{
-                  $addr.value = btn.textContent;
-                  hideSuggest();
-                  fetchShippingFee();
-                });
-              });
-            }
-
-            async function fetchSuggest(){
-              const province = ($province.value||'').trim();
-              const district = ($district.value||'').trim();
-              const ward = ($ward.value||'').trim();
-              const addr = ($addr.value||'').trim();
-              if(!province || !district || !ward) { hideSuggest(); return; }
-              try{
-                const url = `/Checkout/GhtkSuggest?province=${encodeURIComponent(province)}&district=${encodeURIComponent(district)}&ward_street=${encodeURIComponent(ward)}&address=${encodeURIComponent(addr)}`;
-                const rs = await fetch(url);
-                const js = await rs.json();
-                if(js && js.success && Array.isArray(js.data)){
-                  showSuggest(js.data);
-                } else {
-                  hideSuggest();
-                }
-              }catch{ hideSuggest(); }
-            }
-
-            function debouncedSuggest(){
-              clearTimeout(suggestTimer);
-              suggestTimer = setTimeout(fetchSuggest, 300);
-            }
-
-            [$province, $district, $ward].forEach(inp=>{
-              inp.addEventListener('input', ()=>{
-                updateHiddenNameInputs();
-                debouncedSuggest();
-              });
-              inp.addEventListener('blur', ()=> setTimeout(hideSuggest, 200));
-            });
-            $addr.addEventListener('input', debouncedSuggest);
-            $addr.addEventListener('focus', debouncedSuggest);
-            $addr.addEventListener('blur', ()=> setTimeout(hideSuggest, 200));
-        });
+        const API_HOST = "https://provinces.open-api.vn/api/v1/";
 
         var subtotal = Number('@subtotal');
         var discount = Number('@discount');
@@ -454,23 +397,134 @@
         var freeShipThreshold = 500000;
         var shippingFee = 0;
 
-        const $province = document.getElementById('province-input');
-        const $district = document.getElementById('district-input');
-        const $ward = document.getElementById('ward-input');
+        const $provinceSelect = document.getElementById('province-select');
+        const $districtSelect = document.getElementById('district-select');
+        const $wardSelect = document.getElementById('ward-select');
+        const $provinceNameInput = document.getElementById('ProvinceName');
+        const $districtNameInput = document.getElementById('DistrictName');
+        const $wardNameInput = document.getElementById('WardName');
         const $ckShipping = document.getElementById('ck-shipping');
         const $ckShippingMsg = document.getElementById('ck-shipping-msg');
         const $grand = document.getElementById('ck-grandtotal');
         const $shippingFeeInput = document.getElementById('ShippingFee');
-        const $provinceInput = document.getElementById('ProvinceNameInput');
-        const $districtInput = document.getElementById('DistrictNameInput');
-        const $wardInput = document.getElementById('WardNameInput');
 
+        // ========== LOAD PROVINCES (API thật) ==========
+        async function loadProvinces() {
+            try {
+                $provinceSelect.innerHTML = '<option value="">-- Đang tải... --</option>';
+                const res = await fetch(API_HOST + '?depth=1');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const provinces = await res.json();
+
+                $provinceSelect.innerHTML = '<option value="">-- Chọn tỉnh/thành phố --</option>';
+
+                provinces.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.code;        // mã tỉnh
+                    opt.textContent = p.name;  // tên tỉnh
+                    opt.dataset.name = p.name;
+                    $provinceSelect.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Error loading provinces:', err);
+                $provinceSelect.innerHTML = '<option value="">-- Lỗi tải dữ liệu --</option>';
+            }
+        }
+
+        // ========== LOAD DISTRICTS ==========
+        $provinceSelect.addEventListener('change', async function () {
+            const provinceCode = this.value;
+            const selectedOption = this.options[this.selectedIndex];
+            const provinceName = selectedOption ? selectedOption.dataset.name || selectedOption.textContent : '';
+
+            $provinceNameInput.value = provinceName;
+            $districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+            $wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            $districtSelect.disabled = !provinceCode;
+            $wardSelect.disabled = true;
+            $districtNameInput.value = '';
+            $wardNameInput.value = '';
+            shippingFee = 0;
+            updateGrandTotal();
+
+            if (!provinceCode) return;
+
+            try {
+                // /p/{code}?depth=2 -> province + districts
+                const res = await fetch(`${API_HOST}p/${provinceCode}?depth=2`);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const province = await res.json();
+                const districts = province.districts || [];
+
+                $districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+                districts.forEach(d => {
+                    const opt = document.createElement('option');
+                    opt.value = d.code;
+                    opt.textContent = d.name;
+                    opt.dataset.name = d.name;
+                    $districtSelect.appendChild(opt);
+                });
+                $districtSelect.disabled = false;
+            } catch (err) {
+                console.error('Error loading districts:', err);
+                $districtSelect.innerHTML = '<option value="">-- Lỗi tải dữ liệu --</option>';
+            }
+        });
+
+        // ========== LOAD WARDS ==========
+        $districtSelect.addEventListener('change', async function () {
+            const districtCode = this.value;
+            const selectedOption = this.options[this.selectedIndex];
+            const districtName = selectedOption ? selectedOption.dataset.name || selectedOption.textContent : '';
+
+            $districtNameInput.value = districtName;
+            $wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            $wardSelect.disabled = !districtCode;
+            $wardNameInput.value = '';
+            shippingFee = 0;
+            updateGrandTotal();
+
+            if (!districtCode) return;
+
+            try {
+                // /d/{code}?depth=2 -> district + wards
+                const res = await fetch(`${API_HOST}d/${districtCode}?depth=2`);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const district = await res.json();
+                const wards = district.wards || [];
+
+                $wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+                wards.forEach(w => {
+                    const opt = document.createElement('option');
+                    opt.value = w.code;
+                    opt.textContent = w.name;
+                    opt.dataset.name = w.name;
+                    $wardSelect.appendChild(opt);
+                });
+                $wardSelect.disabled = false;
+            } catch (err) {
+                console.error('Error loading wards:', err);
+                $wardSelect.innerHTML = '<option value="">-- Lỗi tải dữ liệu --</option>';
+            }
+        });
+
+        // ========== WARD CHANGE → TÍNH PHÍ SHIP ==========
+        $wardSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const wardName = selectedOption ? selectedOption.dataset.name || selectedOption.textContent : '';
+            $wardNameInput.value = wardName;
+            fetchShippingFee();
+        });
+
+        // ========== CẬP NHẬT TỔNG TIỀN ==========
         function updateGrandTotal() {
             let grandTotal = total;
+
             if (shippingFee > 0 && total < freeShipThreshold) {
                 grandTotal += shippingFee;
                 $ckShippingMsg.style.display = 'none';
             }
+
             if (total >= freeShipThreshold) {
                 $ckShippingMsg.textContent = 'Đơn hàng trên 500.000đ - Miễn phí ship!';
                 $ckShippingMsg.style.display = 'block';
@@ -480,86 +534,69 @@
                 grandTotal = total;
             } else {
                 $ckShippingMsg.style.display = 'none';
-                $ckShipping.textContent = shippingFee > 0 ? shippingFee.toLocaleString('vi-VN') + ' ₫' : 'Đang tính...';
+                $ckShipping.textContent = shippingFee > 0
+                    ? shippingFee.toLocaleString('vi-VN') + ' ₫'
+                    : 'Đang tính...';
             }
+
             $grand.textContent = grandTotal.toLocaleString('vi-VN') + ' ₫';
             $shippingFeeInput.value = shippingFee || 0;
         }
 
+        // ========== GỌI BACKEND TÍNH PHÍ SHIP ==========
         async function fetchShippingFee() {
-            let district = ($district.value||'').trim();
-            let ward = ($ward.value||'').trim();
-            if (!district || !ward) {
-                $ckShipping.textContent = '┄';
+            const provinceName = $provinceNameInput.value;
+            const districtName = $districtNameInput.value;
+            const wardName = $wardNameInput.value;
+
+            if (!provinceName || !districtName || !wardName) {
+                $ckShipping.textContent = 'Đang tính...';
+                shippingFee = 0;
                 updateGrandTotal();
                 return;
             }
+
             $ckShipping.textContent = 'Đang tính...';
-            const addressInput = document.querySelector('input[name="AddressDetail"]');
-            let data = {
-                provinceName: ($province.value||'').trim(),
-                districtName: (district||'').trim(),
-                wardName: (ward||'').trim(),
-                addressDetail: (addressInput?.value || '').trim(),
-                weight: 1200,
-                insuranceValue: Math.max(total, 0)
-            };
+
             try {
+                const data = {
+                    provinceName: provinceName,
+                    districtName: districtName,
+                    wardName: wardName,
+                    addressDetail: document.querySelector('input[name="AddressDetail"]')?.value || ''
+                };
+
                 const res = await fetch('/Checkout/CalcShipFee', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
+
                 const js = await res.json();
-                if(js.ok && js.shipFee && js.shipFee > 0) {
+                if (js.ok && js.shipFee && js.shipFee > 0) {
                     shippingFee = js.shipFee;
                     $ckShippingMsg.style.display = 'none';
                 } else {
                     shippingFee = 0;
-                    $ckShippingMsg.textContent = js.error || 'Không tính được phí ship!';
+                    $ckShippingMsg.textContent = js.message || 'Không tính được phí ship!';
                     $ckShippingMsg.className = 'text-danger small mt-1';
                     $ckShippingMsg.style.display = 'block';
-                    console.error('GHTK fee error:', js);
                 }
             } catch (err) {
+                console.error(err);
                 shippingFee = 0;
                 $ckShippingMsg.textContent = 'Không kết nối được máy chủ phí ship. Vui lòng thử lại hoặc báo admin!';
                 $ckShippingMsg.className = 'text-danger small mt-1';
                 $ckShippingMsg.style.display = 'block';
-                console.error(err);
             }
+
             updateGrandTotal();
         }
 
-        function updateHiddenNameInputs() {
-          $provinceInput.value = ($province.value||'').trim();
-          $districtInput.value = ($district.value||'').trim();
-          $wardInput.value = ($ward.value||'').trim();
-        }
-
-        function updateShippingDisplayState() {
-          if (!$district.value || !$ward.value) {
-            $ckShipping.textContent = 'Đang tính...';
-          } else if (shippingFee === 0) {
-            $ckShipping.textContent = 'Không định giá được';
-            $ckShippingMsg.textContent = 'Hãy thử lại địa chỉ khác hoặc liên hệ CSKH.';
-            $ckShippingMsg.style.display = 'block';
-            $ckShippingMsg.className = 'text-danger small mt-1';
-          }
-        }
-
-        [$province, $district, $ward].forEach(inp => {
-            inp.addEventListener('input', function() {
-                updateHiddenNameInputs();
-                updateShippingDisplayState();
-                setTimeout(fetchShippingFee, 500);
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            updateHiddenNameInputs();
-            updateShippingDisplayState();
-            if ($district.value && $ward.value) fetchShippingFee();
+        // ========== INIT ==========
+        document.addEventListener('DOMContentLoaded', function () {
+            loadProvinces();
+            updateGrandTotal();
         });
     </script>
 }

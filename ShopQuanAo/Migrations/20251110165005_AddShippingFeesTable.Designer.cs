@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopQuanAo.Data;
 
@@ -11,9 +12,11 @@ using ShopQuanAo.Data;
 namespace ShopQuanAo.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251110165005_AddShippingFeesTable")]
+    partial class AddShippingFeesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,8 +273,8 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = "admin-001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3891cd90-0945-4d08-a014-3248994dd981",
-                            CreatedDate = new DateTime(2025, 11, 11, 1, 25, 4, 352, DateTimeKind.Local).AddTicks(1169),
+                            ConcurrencyStamp = "d927c89e-166d-4057-9a8a-1ac5b33a32cf",
+                            CreatedDate = new DateTime(2025, 11, 10, 23, 50, 4, 552, DateTimeKind.Local).AddTicks(9752),
                             Email = "admin@shopquanao.com",
                             EmailConfirmed = true,
                             FullName = "Administrator",
@@ -279,10 +282,10 @@ namespace ShopQuanAo.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@SHOPQUANAO.COM",
                             NormalizedUserName = "ADMIN@SHOPQUANAO.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBM+cV005lbJT+f9AFRwDDSsEnEJ5w+gtIrIgFtt3Ylj+UaElZEGvJtwqPSdzD35Zw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK70dShBF4ZKf19dREh+6xf/CRhcLEJbaF0y4pgs6CY4KOGx5pUFnPrZXOXscleXwA==",
                             PhoneNumber = "0123456789",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f69a47c6-dc84-4046-89ae-8036cce849cf",
+                            SecurityStamp = "9244b978-ec13-4b2d-994e-581abfae51d9",
                             TwoFactorEnabled = false,
                             UserName = "admin@shopquanao.com"
                         });
@@ -712,7 +715,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 1,
                             Category = "men",
-                            CreatedDate = new DateTime(2025, 11, 11, 1, 25, 4, 433, DateTimeKind.Local).AddTicks(4526),
+                            CreatedDate = new DateTime(2025, 11, 10, 23, 50, 4, 671, DateTimeKind.Local).AddTicks(7844),
                             Description = "Áo thun nam chất liệu cotton cao cấp, thoáng mát",
                             ImageUrl = "~/images/product_1.png",
                             IsAvailable = true,
@@ -727,7 +730,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 2,
                             Category = "women",
-                            CreatedDate = new DateTime(2025, 11, 11, 1, 25, 4, 433, DateTimeKind.Local).AddTicks(4531),
+                            CreatedDate = new DateTime(2025, 11, 10, 23, 50, 4, 671, DateTimeKind.Local).AddTicks(7850),
                             Description = "Áo sơ mi nữ công sở sang trọng",
                             ImageUrl = "~/images/product_2.png",
                             IsAvailable = true,
@@ -741,7 +744,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 3,
                             Category = "men",
-                            CreatedDate = new DateTime(2025, 11, 11, 1, 25, 4, 433, DateTimeKind.Local).AddTicks(4537),
+                            CreatedDate = new DateTime(2025, 11, 10, 23, 50, 4, 671, DateTimeKind.Local).AddTicks(7855),
                             Description = "Quần jeans nam form slim fit",
                             ImageUrl = "~/images/product_3.png",
                             IsAvailable = true,
@@ -755,7 +758,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 4,
                             Category = "women",
-                            CreatedDate = new DateTime(2025, 11, 11, 1, 25, 4, 433, DateTimeKind.Local).AddTicks(4544),
+                            CreatedDate = new DateTime(2025, 11, 10, 23, 50, 4, 671, DateTimeKind.Local).AddTicks(7861),
                             Description = "Váy đầm nữ thời trang cao cấp",
                             ImageUrl = "~/images/product_4.png",
                             IsAvailable = true,
@@ -770,7 +773,7 @@ namespace ShopQuanAo.Migrations
                         {
                             Id = 5,
                             Category = "men",
-                            CreatedDate = new DateTime(2025, 11, 11, 1, 25, 4, 433, DateTimeKind.Local).AddTicks(4548),
+                            CreatedDate = new DateTime(2025, 11, 10, 23, 50, 4, 671, DateTimeKind.Local).AddTicks(7865),
                             Description = "Áo khoác nam phong cách Hàn Quốc",
                             ImageUrl = "~/images/product_5.png",
                             IsAvailable = true,
@@ -816,575 +819,6 @@ namespace ShopQuanAo.Migrations
                     b.HasIndex("ProvinceName");
 
                     b.ToTable("ShippingFees");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 101,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Nội thành & lân cận",
-                            Fee = 35000m,
-                            IsActive = true,
-                            ProvinceName = "Thành phố Hà Nội"
-                        },
-                        new
-                        {
-                            Id = 102,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Nội thành & lân cận",
-                            Fee = 35000m,
-                            IsActive = true,
-                            ProvinceName = "Thành phố Hồ Chí Minh"
-                        },
-                        new
-                        {
-                            Id = 103,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Nội thành & lân cận",
-                            Fee = 35000m,
-                            IsActive = true,
-                            ProvinceName = "Thành phố Đà Nẵng"
-                        },
-                        new
-                        {
-                            Id = 104,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Nội thành & lân cận",
-                            Fee = 35000m,
-                            IsActive = true,
-                            ProvinceName = "Thành phố Hải Phòng"
-                        },
-                        new
-                        {
-                            Id = 105,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Nội thành & lân cận",
-                            Fee = 35000m,
-                            IsActive = true,
-                            ProvinceName = "Thành phố Cần Thơ"
-                        },
-                        new
-                        {
-                            Id = 106,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hà Giang"
-                        },
-                        new
-                        {
-                            Id = 107,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Cao Bằng"
-                        },
-                        new
-                        {
-                            Id = 108,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bắc Kạn"
-                        },
-                        new
-                        {
-                            Id = 109,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Tuyên Quang"
-                        },
-                        new
-                        {
-                            Id = 110,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Lào Cai"
-                        },
-                        new
-                        {
-                            Id = 111,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Điện Biên"
-                        },
-                        new
-                        {
-                            Id = 112,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Lai Châu"
-                        },
-                        new
-                        {
-                            Id = 113,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Sơn La"
-                        },
-                        new
-                        {
-                            Id = 114,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Yên Bái"
-                        },
-                        new
-                        {
-                            Id = 115,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tỉnh miền núi",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hòa Bình"
-                        },
-                        new
-                        {
-                            Id = 116,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Vùng núi phía Bắc",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Lạng Sơn"
-                        },
-                        new
-                        {
-                            Id = 117,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tây Nguyên",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Kon Tum"
-                        },
-                        new
-                        {
-                            Id = 118,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tây Nguyên",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Gia Lai"
-                        },
-                        new
-                        {
-                            Id = 119,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tây Nguyên",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Đắk Lắk"
-                        },
-                        new
-                        {
-                            Id = 120,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tây Nguyên",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Đắk Nông"
-                        },
-                        new
-                        {
-                            Id = 121,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Tây Nguyên",
-                            Fee = 55000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Lâm Đồng"
-                        },
-                        new
-                        {
-                            Id = 122,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Quảng Ninh"
-                        },
-                        new
-                        {
-                            Id = 123,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bắc Giang"
-                        },
-                        new
-                        {
-                            Id = 124,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Phú Thọ"
-                        },
-                        new
-                        {
-                            Id = 125,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Vĩnh Phúc"
-                        },
-                        new
-                        {
-                            Id = 126,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Thái Nguyên"
-                        },
-                        new
-                        {
-                            Id = 127,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bắc Ninh"
-                        },
-                        new
-                        {
-                            Id = 128,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hải Dương"
-                        },
-                        new
-                        {
-                            Id = 129,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hưng Yên"
-                        },
-                        new
-                        {
-                            Id = 130,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Thái Bình"
-                        },
-                        new
-                        {
-                            Id = 131,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hà Nam"
-                        },
-                        new
-                        {
-                            Id = 132,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Nam Định"
-                        },
-                        new
-                        {
-                            Id = 133,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Ninh Bình"
-                        },
-                        new
-                        {
-                            Id = 134,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Thanh Hóa"
-                        },
-                        new
-                        {
-                            Id = 135,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Nghệ An"
-                        },
-                        new
-                        {
-                            Id = 136,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hà Tĩnh"
-                        },
-                        new
-                        {
-                            Id = 137,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Quảng Bình"
-                        },
-                        new
-                        {
-                            Id = 138,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Quảng Trị"
-                        },
-                        new
-                        {
-                            Id = 139,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Thừa Thiên Huế"
-                        },
-                        new
-                        {
-                            Id = 140,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Quảng Nam"
-                        },
-                        new
-                        {
-                            Id = 141,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Quảng Ngãi"
-                        },
-                        new
-                        {
-                            Id = 142,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bình Định"
-                        },
-                        new
-                        {
-                            Id = 143,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Phú Yên"
-                        },
-                        new
-                        {
-                            Id = 144,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Khánh Hòa"
-                        },
-                        new
-                        {
-                            Id = 145,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Ninh Thuận"
-                        },
-                        new
-                        {
-                            Id = 146,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bình Thuận"
-                        },
-                        new
-                        {
-                            Id = 147,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bình Phước"
-                        },
-                        new
-                        {
-                            Id = 148,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Tây Ninh"
-                        },
-                        new
-                        {
-                            Id = 149,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bình Dương"
-                        },
-                        new
-                        {
-                            Id = 150,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Đồng Nai"
-                        },
-                        new
-                        {
-                            Id = 151,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bà Rịa - Vũng Tàu"
-                        },
-                        new
-                        {
-                            Id = 152,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Long An"
-                        },
-                        new
-                        {
-                            Id = 153,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Tiền Giang"
-                        },
-                        new
-                        {
-                            Id = 154,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bến Tre"
-                        },
-                        new
-                        {
-                            Id = 155,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Trà Vinh"
-                        },
-                        new
-                        {
-                            Id = 156,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Vĩnh Long"
-                        },
-                        new
-                        {
-                            Id = 157,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Đồng Tháp"
-                        },
-                        new
-                        {
-                            Id = 158,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh An Giang"
-                        },
-                        new
-                        {
-                            Id = 159,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Kiên Giang"
-                        },
-                        new
-                        {
-                            Id = 160,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Hậu Giang"
-                        },
-                        new
-                        {
-                            Id = 161,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Sóc Trăng"
-                        },
-                        new
-                        {
-                            Id = 162,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Bạc Liêu"
-                        },
-                        new
-                        {
-                            Id = 163,
-                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Ven biển",
-                            Fee = 45000m,
-                            IsActive = true,
-                            ProvinceName = "Tỉnh Cà Mau"
-                        });
                 });
 
             modelBuilder.Entity("ShopQuanAo.Models.Slide", b =>

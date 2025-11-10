@@ -4,12 +4,19 @@ using ShopQuanAo.Data;
 using ShopQuanAo.Models;
 using ShopQuanAo.Services;
 using ShopQuanAo.Utils;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
-using System.Text;
 
 namespace ShopQuanAo.Controllers
 {
+    public class CalcShipFeeRequest
+    {
+        public string? ProvinceName { get; set; }
+        public string? DistrictName { get; set; }
+        public string? WardName { get; set; }
+        public string? AddressDetail { get; set; }
+    }
     public class CheckoutController : Controller
     {
         private readonly ICartService _cartService;
@@ -18,8 +25,8 @@ namespace ShopQuanAo.Controllers
         private readonly IMomoService _momoService;
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IGhtkShippingService _ghtkShippingService;
         private readonly IConfiguration _config;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         private const string COUPON_KEY = "CART_COUPON";
 
@@ -30,8 +37,8 @@ namespace ShopQuanAo.Controllers
             IMomoService momoService,
             ApplicationDbContext db,
             UserManager<ApplicationUser> userManager,
-            IGhtkShippingService ghtkShippingService,
-            IConfiguration config
+            IConfiguration config,
+            IHttpClientFactory httpClientFactory
         )
         {
             _cartService = cartService;
@@ -40,8 +47,8 @@ namespace ShopQuanAo.Controllers
             _momoService = momoService;
             _db = db;
             _userManager = userManager;
-            _ghtkShippingService = ghtkShippingService;
             _config = config;
+            _httpClientFactory = httpClientFactory;
         }
 
         // ======================= VIEW MODELS / DTOs =======================
@@ -66,20 +73,13 @@ namespace ShopQuanAo.Controllers
         // Request body cho CalcShipFee
         public class ShippingAddressVM
         {
-            // Dữ liệu dùng cho GHTK
+            public int ProvinceId { get; set; }
             public string ProvinceName { get; set; } = "";
+            public int DistrictId { get; set; }
             public string DistrictName { get; set; } = "";
+            public int WardId { get; set; }
             public string WardName { get; set; } = "";
             public string AddressDetail { get; set; } = "";
-            public int? Weight { get; set; }
-            public int? InsuranceValue { get; set; }
-
-            // Giữ các trường cũ (GHN) để không lỗi nếu FE cũ còn gửi
-            public int ToDistrictId { get; set; }
-            public string ToWardCode { get; set; } = "";
-            public int? Length { get; set; }
-            public int? Width { get; set; }
-            public int? Height { get; set; }
         }
 
         // ======================= HELPERS =======================
@@ -219,95 +219,154 @@ namespace ShopQuanAo.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ======================= API GHN: TỈNH / QUẬN / PHƯỜNG =======================
-        // Frontend gọi để nạp dropdown
+        // ======================= API: TỈNH / QUẬN / PHƯỜNG (TỪ GHN API) =======================
 
         [HttpGet]
-        public async Task<IActionResult> GetProvincesGhn()
+        public async Task<IActionResult> GetProvinces()
         {
-            var baseUrl = _config["GHN:BaseUrl"];
-            var token = _config["GHN:Token"];
+            // Có thể dùng GHN API hoặc API khác
+            // Ví dụ: GHN API
+            var baseUrl = _config["GHN:BaseUrl"] ?? "https://online-gateway.ghn.vn/shiip/public-api/v2";
+            var token = _config["GHN:Token"] ?? "";
 
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-
-            var resp = await http.GetAsync($"{baseUrl}/master-data/province");
-            var text = await resp.Content.ReadAsStringAsync();
-
-            if (!resp.IsSuccessStatusCode)
+            if (string.IsNullOrWhiteSpace(token))
             {
-                return Json(new { ok = false, message = "GHN province API error", raw = text });
+                return Json(new { code = 400, message = "GHN Token chưa được cấu hình" });
             }
 
-            // Trả y nguyên JSON GHN { code, data:[...] } để FE dùng trực tiếp
-            return Content(text, "application/json");
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(30);
+                httpClient.DefaultRequestHeaders.Clear();
+                httpClient.DefaultRequestHeaders.Add("Token", token);
+                
+                var response = await httpClient.GetAsync($"{baseUrl}/master-data/province");
+                var content = await response.Content.ReadAsStringAsync();
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    // Trả về trực tiếp content từ GHN API
+                    Response.ContentType = "application/json";
+                    return Content(content, "application/json");
+                }
+                
+                // Log lỗi để debug
+                Console.WriteLine($"GHN API Error: Status={response.StatusCode}, Content={content}");
+                return Json(new { code = (int)response.StatusCode, message = "Không thể lấy danh sách tỉnh/thành phố từ GHN API", data = new object[0] });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in GetProvinces: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return Json(new { code = 500, message = $"Lỗi: {ex.Message}", data = new object[0] });
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDistrictsGhn(int provinceId)
+        public async Task<IActionResult> GetDistricts(int provinceId)
         {
-            var baseUrl = _config["GHN:BaseUrl"];
-            var token = _config["GHN:Token"];
+            var baseUrl = _config["GHN:BaseUrl"] ?? "https://online-gateway.ghn.vn/shiip/public-api/v2";
+            var token = _config["GHN:Token"] ?? "";
 
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-
-            var resp = await http.GetAsync($"{baseUrl}/master-data/district?province_id={provinceId}");
-            var text = await resp.Content.ReadAsStringAsync();
-
-            if (!resp.IsSuccessStatusCode)
+            if (string.IsNullOrWhiteSpace(token))
             {
-                return Json(new { ok = false, message = "GHN district API error", raw = text });
+                return Json(new { code = 400, message = "GHN Token chưa được cấu hình", data = new object[0] });
             }
 
-            return Content(text, "application/json");
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(30);
+                httpClient.DefaultRequestHeaders.Clear();
+                httpClient.DefaultRequestHeaders.Add("Token", token);
+                
+                var response = await httpClient.GetAsync($"{baseUrl}/master-data/district?province_id={provinceId}");
+                var content = await response.Content.ReadAsStringAsync();
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    Response.ContentType = "application/json";
+                    return Content(content, "application/json");
+                }
+                
+                Console.WriteLine($"GHN API Error: Status={response.StatusCode}, Content={content}");
+                return Json(new { code = (int)response.StatusCode, message = "Không thể lấy danh sách quận/huyện", data = new object[0] });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in GetDistricts: {ex.Message}");
+                return Json(new { code = 500, message = $"Lỗi: {ex.Message}", data = new object[0] });
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetWardsGhn(int districtId)
+        public async Task<IActionResult> GetWards(int districtId)
         {
-            var baseUrl = _config["GHN:BaseUrl"];
-            var token = _config["GHN:Token"];
+            var baseUrl = _config["GHN:BaseUrl"] ?? "https://online-gateway.ghn.vn/shiip/public-api/v2";
+            var token = _config["GHN:Token"] ?? "";
 
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-
-            var resp = await http.GetAsync($"{baseUrl}/master-data/ward?district_id={districtId}");
-            var text = await resp.Content.ReadAsStringAsync();
-
-            if (!resp.IsSuccessStatusCode)
+            if (string.IsNullOrWhiteSpace(token))
             {
-                return Json(new { ok = false, message = "GHN ward API error", raw = text });
+                return Json(new { code = 400, message = "GHN Token chưa được cấu hình", data = new object[0] });
             }
 
-            return Content(text, "application/json");
+            try
+            {
+                var httpClient = _httpClientFactory.CreateClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(30);
+                httpClient.DefaultRequestHeaders.Clear();
+                httpClient.DefaultRequestHeaders.Add("Token", token);
+                
+                var response = await httpClient.GetAsync($"{baseUrl}/master-data/ward?district_id={districtId}");
+                var content = await response.Content.ReadAsStringAsync();
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    Response.ContentType = "application/json";
+                    return Content(content, "application/json");
+                }
+                
+                Console.WriteLine($"GHN API Error: Status={response.StatusCode}, Content={content}");
+                return Json(new { code = (int)response.StatusCode, message = "Không thể lấy danh sách phường/xã", data = new object[0] });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Exception in GetWards: {ex.Message}");
+                return Json(new { code = 500, message = $"Lỗi: {ex.Message}", data = new object[0] });
+            }
         }
 
-        // ======================= API TÍNH PHÍ SHIP (GHTK) =======================
+        // ======================= API TÍNH PHÍ SHIP (THỦ CÔNG) =======================
 
         [HttpPost]
         public async Task<IActionResult> CalcShipFee([FromBody] ShippingAddressVM addr)
         {
-            var fee = await _ghtkShippingService.CalculateShippingFeeAsync(
-                addr.ProvinceName,
-                addr.DistrictName,
-                addr.WardName,
-                addr.AddressDetail,
-                addr.Weight ?? 1200,
-                addr.InsuranceValue ?? 200000
-            );
-
-            if (fee == null)
+            if (string.IsNullOrWhiteSpace(addr.ProvinceName))
             {
                 return Json(new
                 {
                     ok = false,
                     shipFee = 0,
-                    message = "Không tính được phí ship từ GHTK. Vui lòng kiểm tra lại địa chỉ."
+                    message = "Vui lòng chọn tỉnh/thành phố."
                 });
             }
 
-            return Json(new { ok = true, shipFee = fee });
+            // Tìm phí ship theo tên tỉnh/thành phố
+            var shippingFee = await _db.ShippingFees
+                .FirstOrDefaultAsync(sf => sf.ProvinceName.ToLower().Trim() == addr.ProvinceName.ToLower().Trim() && sf.IsActive);
+
+            if (shippingFee == null)
+            {
+                return Json(new
+                {
+                    ok = false,
+                    shipFee = 0,
+                    message = "Chưa có cấu hình phí ship cho tỉnh/thành phố này. Vui lòng liên hệ admin."
+                });
+            }
+
+            return Json(new { ok = true, shipFee = (int)shippingFee.Fee });
         }
 
         // ======================= THANH TOÁN / ĐẶT HÀNG =======================
@@ -335,7 +394,7 @@ namespace ShopQuanAo.Controllers
 
             var (subtotal, discount, total) = await CalcTotalsAsync(cart);
 
-            // Địa chỉ hiển thị/lưu DB
+            // Địa chỉ hiển thị/lưu DB (lấy từ API địa chỉ)
             string fullAddress = $"{AddressDetail}, {WardName}, {DistrictName}, {ProvinceName}";
 
             // Tổng cuối = total + phí ship nếu chưa free ship
@@ -482,72 +541,5 @@ namespace ShopQuanAo.Controllers
             return View();
         }
 
-        // ======================= GHTK: GỢI Ý ĐỊA CHỈ CẤP 4 =======================
-
-        [HttpGet]
-        public async Task<IActionResult> GhtkSuggest(string province, string district, string ward_street, string? address)
-        {
-            var baseUrl = _config["GHTK:BaseUrl"] ?? "https://services.giaohangtietkiem.vn";
-            var token = _config["GHTK:Token"] ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(province) || string.IsNullOrWhiteSpace(district) || string.IsNullOrWhiteSpace(ward_street))
-            {
-                return Json(new { success = false, data = Array.Empty<string>(), message = "Thiếu tham số bắt buộc" });
-            }
-
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-
-            var query = new List<string>
-            {
-                $"province={Uri.EscapeDataString(province)}",
-                $"district={Uri.EscapeDataString(district)}",
-                $"ward_street={Uri.EscapeDataString(ward_street)}"
-            };
-            if (!string.IsNullOrWhiteSpace(address))
-                query.Add($"address={Uri.EscapeDataString(address)}");
-
-            var url = baseUrl.TrimEnd('/') + "/services/address/getAddressLevel4?" + string.Join("&", query);
-            var resp = await http.GetAsync(url);
-            var text = await resp.Content.ReadAsStringAsync();
-            return Content(text, "application/json", Encoding.UTF8);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GhnProvinces()
-        {
-            var token = _config["GHN:Token"] ?? string.Empty;
-            var baseUrl = _config["GHN:BaseUrl"] ?? "https://dev-online-gateway.ghn.vn/shiip/public-api";
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-            var res = await http.GetAsync($"{baseUrl.TrimEnd('/')}/master-data/province");
-            var text = await res.Content.ReadAsStringAsync();
-            return Content(text, "application/json", Encoding.UTF8);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GhnDistricts(int provinceId)
-        {
-            var token = _config["GHN:Token"] ?? string.Empty;
-            var baseUrl = _config["GHN:BaseUrl"] ?? "https://dev-online-gateway.ghn.vn/shiip/public-api";
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-            var url = $"{baseUrl.TrimEnd('/')}/master-data/district?province_id={provinceId}";
-            var res = await http.GetAsync(url);
-            var text = await res.Content.ReadAsStringAsync();
-            return Content(text, "application/json", Encoding.UTF8);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GhnWards(int districtId)
-        {
-            var token = _config["GHN:Token"] ?? string.Empty;
-            var baseUrl = _config["GHN:BaseUrl"] ?? "https://dev-online-gateway.ghn.vn/shiip/public-api";
-            using var http = new HttpClient();
-            http.DefaultRequestHeaders.Add("Token", token);
-            var url = $"{baseUrl.TrimEnd('/')}/master-data/ward?district_id={districtId}";
-            var res = await http.GetAsync(url);
-            var text = await res.Content.ReadAsStringAsync();
-            return Content(text, "application/json", Encoding.UTF8);
-        }
     }
 }

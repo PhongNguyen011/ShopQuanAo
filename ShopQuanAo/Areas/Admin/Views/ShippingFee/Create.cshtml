@@ -1,0 +1,161 @@
+@model ShopQuanAo.Models.ShippingFee
+
+@{
+    ViewData["Title"] = "Thêm phí ship";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="mb-1 fw-semibold">Thêm phí ship</h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item">
+                    <a asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a asp-action="Index">Phí ship</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="row g-3">
+                <!-- Tỉnh / Thành -->
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold small">Tỉnh / Thành phố</label>
+                    <select id="provinceSelect" class="form-select">
+                        <option value="">-- Đang tải dữ liệu --</option>
+                    </select>
+                    <input type="hidden" asp-for="ProvinceName" id="ProvinceName" />
+                    <span asp-validation-for="ProvinceName" class="text-danger small"></span>
+                    <div class="form-text">
+                        Lựa chọn tên tỉnh/thành trùng với dữ liệu dùng ở trang checkout.
+                    </div>
+                </div>
+
+                <!-- Phí ship -->
+                <div class="col-md-6">
+                    <label asp-for="Fee" class="form-label fw-semibold small"></label>
+                    <div class="input-group">
+                        <input asp-for="Fee"
+                               class="form-control"
+                               inputmode="numeric"
+                               placeholder="Ví dụ: 35000" />
+                        <span class="input-group-text">đ</span>
+                    </div>
+                    <span asp-validation-for="Fee" class="text-danger small"></span>
+                </div>
+
+                <!-- Mô tả -->
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label fw-semibold small"></label>
+                    <input asp-for="Description" class="form-control" placeholder="Ví dụ: Ship nội thành" />
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+
+                <!-- Trạng thái hoạt động -->
+                <div class="col-12">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsActive"
+                                   class="form-check-input"
+                                   type="checkbox"
+                                   role="switch"
+                                   id="IsActiveSwitch" />
+                            <label class="form-check-label fw-semibold" for="IsActiveSwitch">
+                                Đang hoạt động
+                            </label>
+                        </div>
+
+                        <div id="createStatusBadge">
+                            <!-- JS sẽ set badge ở đây -->
+                        </div>
+                    </div>
+                    <div class="small text-muted mt-1">
+                        Khi tắt, hệ thống sẽ <strong>không</strong> dùng mức phí ship này.
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mt-4" />
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="text-muted small fst-italic">
+                    Nhập phí ship theo đơn vị VNĐ. Ví dụ: <strong>35000</strong> = 35.000 đ
+                </div>
+                <div>
+                    <a asp-action="Index" class="btn btn-light border me-2">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save me-1"></i> Lưu
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const API_HOST = "https://provinces.open-api.vn/api/v1/";
+
+        const $provinceSelect = document.getElementById('provinceSelect');
+        const $provinceNameInput = document.getElementById('ProvinceName');
+        const $isActiveSwitch = document.getElementById('IsActiveSwitch');
+        const $createStatusBadge = document.getElementById('createStatusBadge');
+
+        // Load danh sách tỉnh thành VN
+        async function loadProvinces() {
+            try {
+                $provinceSelect.innerHTML = '<option value="">-- Đang tải... --</option>';
+                const res = await fetch(API_HOST + '?depth=1');
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const provinces = await res.json();
+
+                const currentProvince = $provinceNameInput.value || "";
+
+                $provinceSelect.innerHTML = '<option value="">-- Chọn tỉnh/thành phố --</option>';
+                provinces.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.name;
+                    opt.textContent = p.name;
+                    if (currentProvince && currentProvince === p.name) {
+                        opt.selected = true;
+                    }
+                    $provinceSelect.appendChild(opt);
+                });
+            } catch (err) {
+                console.error('Error load provinces:', err);
+                $provinceSelect.innerHTML = '<option value="">-- Lỗi tải dữ liệu --</option>';
+            }
+        }
+
+        $provinceSelect.addEventListener('change', function () {
+            $provinceNameInput.value = this.value || '';
+        });
+
+        function renderStatusBadgeCreate() {
+            if (!$createStatusBadge) return;
+            if ($isActiveSwitch.checked) {
+                $createStatusBadge.innerHTML =
+                    '<span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">ĐANG HOẠT ĐỘNG</span>';
+            } else {
+                $createStatusBadge.innerHTML =
+                    '<span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle px-3 py-2 rounded-pill">ĐANG TẮT</span>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadProvinces();
+            renderStatusBadgeCreate();
+            $isActiveSwitch.addEventListener('change', renderStatusBadgeCreate);
+        });
+    </script>
+}
