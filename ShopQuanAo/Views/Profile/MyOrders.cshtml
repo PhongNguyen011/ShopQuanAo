@@ -56,7 +56,7 @@
                         <td class="text-end">@((o.ShippingFee > 0 ? o.ShippingFee.ToString("N0") : "Miễn phí"))</td>
                         <td class="text-end">@o.Total.ToString("N0") ₫</td>
                         <td>@Html.Raw(renderStatus(o.Status))</td>
-                        <td><a class="btn btn-outline-primary btn-sm" href="#">Chi tiết</a></td>
+                        <td><a class="btn btn-primary btn-sm" asp-controller="Profile" asp-action="OrderDetail" asp-route-id="@o.OrderCode">Chi tiết</a></td>
                     </tr>
                 }
                 </tbody>

@@ -1,0 +1,182 @@
+﻿@model ShopQuanAo.Models.Order
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+
+    string renderStatus(string s) => s switch
+    {
+        "Pending" => "<span class='badge bg-warning text-dark'>Tiếp nhận</span>",
+        "Shipping" => "<span class='badge bg-info text-dark'>Đang giao</span>",
+        "Delivered" => "<span class='badge bg-success'>Đã giao</span>",
+        "Cancelled" => "<span class='badge bg-danger'>Đã hủy</span>",
+        _ => s
+    };
+
+    var vn = CultureInfo.GetCultureInfo("vi-VN");
+    string VnMoney(decimal v) => string.Format(vn, "{0:N0} ₫", v);
+}
+
+<div class="container">
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs d-flex flex-row align-items-center">
+        <ul>
+            <li>
+                <a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a>
+            </li>
+            <li class="active">
+                <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> Tài khoản</a>
+            </li>
+            <li class="active">
+                <a asp-controller="Profile" asp-action="MyOrders">
+                    <i class="fa fa-angle-right" aria-hidden="true"></i> Lịch sử đơn hàng
+                </a>
+            </li>
+            <li class="active">
+                <a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> Chi tiết đơn hàng</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+    <div class="row mb-3">
+        <!-- Thông tin đơn hàng -->
+        <div class="col-md-7">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Thông tin đơn hàng</strong>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Mã đơn</dt>
+                        <dd class="col-sm-8">@Model.OrderCode</dd>
+
+                        <dt class="col-sm-4">Ngày đặt</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4">Trạng thái</dt>
+                        <dd class="col-sm-8">@Html.Raw(renderStatus(Model.Status))</dd>
+
+                        <dt class="col-sm-4">Khách hàng</dt>
+                        <dd class="col-sm-8">@Model.CustomerName</dd>
+
+                        <dt class="col-sm-4">Số điện thoại</dt>
+                        <dd class="col-sm-8">@Model.Phone</dd>
+
+                        <dt class="col-sm-4">Địa chỉ nhận</dt>
+                        <dd class="col-sm-8">@Model.Address</dd>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Note))
+                        {
+                            <dt class="col-sm-4">Ghi chú</dt>
+                            <dd class="col-sm-8">@Model.Note</dd>
+                        }
+
+                        <dt class="col-sm-4">Thanh toán</dt>
+                        <dd class="col-sm-8">@Model.PaymentMethod</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tóm tắt thanh toán -->
+        <div class="col-md-5">
+            <!-- Danh sách sản phẩm -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <strong>Sản phẩm trong đơn</strong>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th class="text-center">Số lượng</th>
+                                    <th class="text-end">Đơn giá</th>
+                                    <th class="text-end">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.OrderItems != null && Model.OrderItems.Any())
+                                {
+                                    foreach (var item in Model.OrderItems)
+                                    {
+                                        var name = item.ProductName;
+                                        var lineTotal = item.LineTotal > 0
+                                        ? item.LineTotal
+                                        : item.Price * item.Quantity;
+
+                                        var img = string.IsNullOrWhiteSpace(item.ProductImage)
+                                        ? Url.Content("~/images/product_1.png")
+                                        : Url.Content(item.ProductImage);
+
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@img"
+                                                         alt="@name"
+                                                         class="me-2"
+                                                         style="width:60px;height:60px;object-fit:cover;border-radius:8px;" />
+                                                    <div>
+                                                        <div class="fw-semibold">@name</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-end">@VnMoney(item.Price)</td>
+                                            <td class="text-end">@VnMoney(lineTotal)</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center text-muted">
+                                            Không có sản phẩm nào trong đơn.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Tóm tắt thanh toán</strong>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tổng tiền hàng:</span>
+                        <span>@VnMoney(Model.Subtotal)</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Giảm giá:</span>
+                        <span class="text-danger">
+                            @(Model.Discount > 0 ? "-" + VnMoney(Model.Discount) : "0 ₫")
+                        </span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Phí ship:</span>
+                        <span>
+                            @(Model.ShippingFee > 0 ? VnMoney(Model.ShippingFee) : "Miễn phí")
+                        </span>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Thành tiền:</span>
+                        <span class="text-danger">@VnMoney(Model.Total)</span>
+                    </div>
+                </div>
+            </div>
+
+            <a asp-controller="Profile"
+               asp-action="MyOrders"
+               class="btn btn-dark w-100">
+                ← Quay lại lịch sử đơn hàng
+            </a>
+        </div>
+    </div>
+</div>

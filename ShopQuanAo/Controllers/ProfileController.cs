@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShopQuanAo.Data;
 using ShopQuanAo.Models;
 using ShopQuanAo.Models.ViewModels;
@@ -119,6 +120,34 @@ namespace ShopQuanAo.Controllers
             return View(orders);
         }
 
+        // GET: /Profile/OrderDetails/OrderCode...
+        [HttpGet]
+        public async Task<IActionResult> OrderDetail(string id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                TempData["Error"] = "Mã đơn hàng không hợp lệ.";
+                return RedirectToAction(nameof(MyOrders));
+            }
+
+            // Tìm đơn theo OrderCode + đúng user
+            var order = await _db.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o =>
+                    o.OrderCode == id &&
+                    o.ApplicationUserId == user.Id);
+
+            if (order == null)
+            {
+                TempData["Error"] = "Không tìm thấy đơn hàng.";
+                return RedirectToAction(nameof(MyOrders));
+            }
+
+            return View(order);
+        }
 
 
         // GET: /Profile/ChangePassword
