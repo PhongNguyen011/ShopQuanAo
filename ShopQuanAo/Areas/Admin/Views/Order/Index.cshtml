@@ -1,49 +1,140 @@
 @model IEnumerable<ShopQuanAo.Models.Order>
+
 @{
     ViewData["Title"] = "Quản lý đơn hàng";
+
+    // Hàm map status -> tiếng Việt
+    Func<string?, string> StatusText = s =>
+    {
+        switch (s)
+        {
+            case "Pending": return "Chờ xử lý";
+            case "Shipping": return "Đang giao";
+            case "Delivered": return "Đã giao";
+            case "Cancelled": return "Đã hủy";
+            default: return s ?? "Không rõ";
+        }
+    };
+
+    // Hàm map status -> màu badge Bootstrap
+    Func<string?, string> StatusClass = s =>
+    {
+        switch (s)
+        {
+            case "Pending": return "badge bg-warning text-dark";
+            case "Shipping": return "badge bg-info text-dark";
+            case "Delivered": return "badge bg-success";
+            case "Cancelled": return "badge bg-danger";
+            default: return "badge bg-secondary";
+        }
+    };
 }
+
 <div class="container my-4">
-    <h3 class="mb-3">Quản lý đơn hàng</h3>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle bg-white">
-            <thead class="table-light">
-                <tr>
-                    <th>Mã đơn</th>
-                    <th>Tên KH</th>
-                    <th>Địa chỉ</th>
-                    <th class="text-end">Phí ship</th>
-                    <th class="text-end">Tổng</th>
-                    <th>Trạng thái</th>
-                    <th class="text-center">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var o in Model)
-                {
-                    <tr>
-                        <td>@o.OrderCode</td>
-                        <td>@o.CustomerName</td>
-                        <td>@o.Address</td>
-                        <td class="text-end">@((o.ShippingFee > 0 ? o.ShippingFee.ToString("N0") + " ₫" : "Miễn phí"))</td>
-                        <td class="text-end">@o.Total.ToString("N0") ₫</td>
-                        <td>@o.Status</td>
-                        <td class="text-center">
-                            @if(o.Status == "Pending"){
-                                <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
-                                    <input type="hidden" name="status" value="Shipping" /><button class="btn btn-primary btn-sm" type="submit">Bàn giao giao vận</button>
-                                </form>
-                                <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
-                                    <input type="hidden" name="status" value="Cancelled" /><button class="btn btn-danger btn-sm" type="submit">Hủy</button>
-                                </form>
-                            } else if(o.Status == "Shipping"){
-                                <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" style="display:inline-block">
-                                    <input type="hidden" name="status" value="Delivered" /><button class="btn btn-success btn-sm" type="submit">Đã giao</button>
-                                </form>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">Quản lý đơn hàng</h5>
+                <small class="text-muted">Theo dõi và cập nhật trạng thái đơn hàng của khách</small>
+            </div>
+            <div class="text-muted small d-none d-md-block">
+                Tổng số: <strong>@Model.Count()</strong> đơn
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 120px;">Mã đơn</th>
+                            <th style="width: 170px;">Tên KH</th>
+                            <th>Địa chỉ</th>
+                            <th class="text-end" style="width: 120px;">Phí ship</th>
+                            <th class="text-end" style="width: 130px;">Tổng đơn</th>
+                            <th style="width: 120px;">Trạng thái</th>
+                            <th class="text-center" style="width: 220px;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    Chưa có đơn hàng nào.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @foreach (var o in Model)
+                            {
+                                <tr>
+                                    <td class="fw-semibold">@o.OrderCode</td>
+                                    <td>@o.CustomerName</td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 280px;">
+                                            @o.Address
+                                        </div>
+                                    </td>
+                                    <td class="text-end">
+                                        @(
+                                                                        o.ShippingFee > 0
+                                                                        ? o.ShippingFee.ToString("N0") + " ₫"
+                                                                        : "Miễn phí"
+                                                                        )
+                                </td>
+                                <td class="text-end fw-semibold">
+                                    @o.Total.ToString("N0") ₫
+                                </td>
+                                <td>
+                                    <span class="@StatusClass(o.Status)">
+                                        @StatusText(o.Status)
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    @* Các nút thao tác tuỳ theo trạng thái *@
+                                @if (o.Status == "Pending")
+                                        {
+                                            <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" class="d-inline-block me-1">
+                                                <input type="hidden" name="status" value="Shipping" />
+                                                <button class="btn btn-sm btn-outline-primary" type="submit">
+                                                    Bàn giao vận chuyển
+                                                </button>
+                                            </form>
+                                            <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" class="d-inline-block">
+                                                <input type="hidden" name="status" value="Cancelled" />
+                                                <button class="btn btn-sm btn-outline-danger" type="submit">
+                                                    Hủy đơn
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (o.Status == "Shipping")
+                                        {
+                                            <form asp-action="UpdateStatus" asp-route-id="@o.Id" method="post" class="d-inline-block">
+                                                <input type="hidden" name="status" value="Delivered" />
+                                                <button class="btn btn-sm btn-outline-success" type="submit">
+                                                    Xác nhận đã giao
+                                                </button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small fst-italic">
+                                                Không có thao tác
+                                            </span>
+                                        }
+                                    </td>
+                                </tr>
                             }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer bg-white text-muted small">
+            * Trạng thái: <strong>Chờ xử lý</strong>, <strong>Đang giao</strong>, <strong>Đã giao</strong>, <strong>Đã hủy</strong>.
+        </div>
     </div>
 </div>

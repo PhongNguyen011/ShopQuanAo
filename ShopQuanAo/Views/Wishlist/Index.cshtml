@@ -3,73 +3,107 @@
     ViewData["Title"] = "Yêu thích";
 }
 
-<div class="container">
+<div class="container my-4">
+
     <!-- Breadcrumbs -->
-    <div class="breadcrumbs d-flex flex-row align-items-center">
+    <div class="breadcrumbs d-flex flex-row align-items-center mb-3">
         <ul>
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
-            <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i> @ViewData["Title"]</a></li>
+            <li><a asp-controller="Home" asp-action="Index">Trang Chủ</a></li>
+            <li class="active">
+                <a href="#"><i class="fa fa-angle-right"></i> @ViewData["Title"]</a>
+            </li>
         </ul>
     </div>
 
     @if (!(Model?.Any() ?? false))
     {
-        <div class="empty-cart text-center py-5 bg-light border-1 rounded-4">
-            <div class="display-6 mb-2 text-danger"><i class="fa fa-heart"></i></div>
-            <p class="mb-3 text-muted">Danh sách yêu thích trống. Hãy bấm trái tim ở sản phẩm để lưu lại.</p>
-            <a asp-controller="Product" asp-action="Index" class="btn btn-dark px-4">Xem sản phẩm</a>
+        <!-- EMPTY STATE -->
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+                <div class="text-center py-5 px-3 bg-light border rounded-4 shadow-sm">
+                    <div class="display-5 mb-3 text-danger">
+                        <i class="fa fa-heart"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Danh sách yêu thích trống</h5>
+                    <p class="text-muted mb-3">
+                        Hãy bấm vào biểu tượng <i class="fa fa-heart text-danger"></i> trên sản phẩm để thêm vào yêu thích.
+                    </p>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-dark rounded-pill px-4">
+                        Xem sản phẩm
+                    </a>
+                </div>
+            </div>
         </div>
     }
     else
     {
-        <div class="row g-4">
-            <!-- LEFT: wishlist items -->
-            <div class="col-lg-8">
-                <div class="card border-1 shadow-sm">
+        <!-- ONLY LIST – CENTERED + BALANCED -->
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 d-flex align-items-center gap-2">
-                            <i class="fa fa-heart text-danger"></i>
-                            Có <span class="badge bg-dark rounded-pill">@Model.Count()</span> sản phẩm yêu thích
-                        </h6>
+                        <h5 class="mb-0 fw-semibold">
+                            <i class="fa fa-heart text-danger me-1"></i>
+                            Sản phẩm yêu thích
+                            <span class="badge bg-dark rounded-pill ms-1">@Model.Count()</span>
+                        </h5>
                     </div>
 
                     <div class="card-body p-0">
-                        <div class="table-responsive cart-table">
+                        <div class="table-responsive">
                             <table class="table align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
                                         <th style="width:12%">Ảnh</th>
-                                        <th style="width:38%">Sản phẩm</th>
-                                        <th style="width:20%" class="text-end d-none d-md-table-cell">Giá</th>
-                                        <th style="width:30%" class="text-end"></th>
+                                        <th>Sản phẩm</th>
+                                        <th class="text-end d-none d-md-table-cell" style="width:15%">Giá</th>
+                                        <th class="text-end" style="width:15%"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var p in Model!)
+                                    @foreach (var p in Model)
                                     {
-                                        var src = Url.Content(p.ImageUrl ?? "~/images/product_1.png");
+                                        var img = Url.Content(p.ImageUrl ?? "~/images/product_1.png");
+
                                         <tr>
                                             <td>
                                                 <a asp-controller="Product" asp-action="Detail" asp-route-id="@p.Id">
-                                                    <img src="@src" alt="@p.Name" style="width:70px;height:70px;object-fit:cover;border-radius:8px;" />
+                                                    <img src="@img" alt="@p.Name"
+                                                         class="rounded"
+                                                         style="width:70px;height:70px;object-fit:cover;" />
                                                 </a>
                                             </td>
+
                                             <td>
                                                 <div class="fw-semibold text-truncate">@p.Name</div>
-                                                <div class="small text-muted">@p.Category</div>
+                                                <div class="text-muted small">@p.Category</div>
+
+                                                <!-- Mobile price -->
                                                 <div class="d-md-none mt-1 small">
-                                                    <span class="text-muted me-2">Giá:</span>
+                                                    <span class="text-muted me-1">Giá:</span>
                                                     <strong>@p.Price.ToString("N0") ₫</strong>
                                                 </div>
                                             </td>
-                                            <td class="text-end d-none d-md-table-cell">@p.Price.ToString("N0") ₫</td>
+
+                                            <td class="text-end d-none d-md-table-cell">
+                                                @p.Price.ToString("N0") ₫
+                                            </td>
+
                                             <td class="text-end">
                                                 <div class="d-inline-flex gap-2">
-                                                    <a class="btn btn-dark btn-sm" asp-controller="Product" asp-action="Detail" asp-route-id="@p.Id">Xem</a>
+                                                    <a class="btn btn-dark btn-sm"
+                                                       asp-controller="Product"
+                                                       asp-action="Detail"
+                                                       asp-route-id="@p.Id">
+                                                        Xem
+                                                    </a>
+
                                                     <form asp-controller="Wishlist" asp-action="Remove" method="post" class="m-0">
                                                         @Html.AntiForgeryToken()
                                                         <input type="hidden" name="productId" value="@p.Id" />
-                                                        <button class="btn btn-outline-danger btn-sm" type="submit" title="Xoá"><i class="fa fa-trash"></i></button>
+                                                        <button class="btn btn-outline-danger btn-sm" type="submit" title="Xoá">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
@@ -80,35 +114,13 @@
                         </div>
                     </div>
 
-                    <div class="card-footer bg-white d-flex justify-content-between py-3">
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-outline-info rounded-pill">
+                    <div class="card-footer bg-white py-3 text-end">
+                        <a asp-controller="Product" asp-action="Index" class="btn btn-dark rounded-pill">
                             <i class="fa fa-arrow-left me-1"></i>Tiếp tục mua sắm
                         </a>
                     </div>
                 </div>
             </div>
-
-            <!-- RIGHT: small summary -->
-            <aside class="col-lg-4">
-                <div class="card border-1 shadow-sm">
-                    <div class="card-header bg-white py-3">
-                        <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fa fa-list"></i> Tóm tắt</h6>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between px-0">
-                                <span>Số sản phẩm yêu thích</span>
-                                <span class="badge bg-dark rounded-pill">@Model.Count()</span>
-                            </li>
-                        </ul>
-                        <div class="d-grid gap-2 mt-3">
-                            <a asp-controller="Product" asp-action="Index" class="btn btn-dark">Xem tất cả sản phẩm</a>
-                        </div>
-                    </div>
-                </div>
-            </aside>
         </div>
     }
 </div>
-
-
