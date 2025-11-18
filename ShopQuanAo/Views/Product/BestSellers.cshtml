@@ -44,7 +44,7 @@
                             <img src="@Url.Content(item.DisplayImageUrl)" alt="@item.Name" style="height:240px;">
                         </div>
 
-                        @* Badge: Sale / Featured / Bán chạy *@
+                        @* Badge: Sale *@
                         @if (item.IsOnSale && item.OldPrice.HasValue && item.OldPrice.Value > item.Price)
                         {
                             var percent = (int)Math.Round((item.OldPrice.Value - item.Price) / item.OldPrice.Value * 100m);
@@ -59,6 +59,7 @@
                             </div>
                         }
 
+                        @* Badge: Best Seller *@
                         <div class="product_bubble product_bubble_left product_bubble_red d-flex flex-column align-items-center" style="top:40px;">
                             <span><i class="fa fa-fire"></i></span>
                         </div>
@@ -67,6 +68,7 @@
                             <h6 class="product_name">
                                 <a asp-action="Detail" asp-route-id="@item.ProductId">@item.Name</a>
                             </h6>
+
                             <div class="product_price">
                                 @item.Price.ToString("N0")đ
                                 @if (item.OldPrice.HasValue && item.OldPrice.Value > item.Price)
@@ -74,11 +76,11 @@
                                     <span>@item.OldPrice.Value.ToString("N0")đ</span>
                                 }
                             </div>
-                            <div class="small text-muted mt-1">
-                                Đã bán: <strong>@item.SoldQuantity</strong> · Doanh thu: <strong>@item.Revenue.ToString("N0")đ</strong>
-                            </div>
+
+                            @* >>> Dòng ĐÃ BÁN + DOANH THU đã được xóa hoàn toàn <<< *@
                         </div>
                     </div>
+
                     <div class="red_button add_to_cart_button">
                         <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.ProductId" asp-route-qty="1">
                             Thêm Vào Giỏ
